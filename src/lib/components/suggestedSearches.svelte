@@ -7,7 +7,7 @@
 	const getRandomColour = () => colours[Math.floor(Math.random() * colours.length)]
 </script>
 
-<div class="flex flex-row flex-wrap justify-center w-1/2 gap-4">
+<div class="flex flex-row flex-wrap justify-center w-full sm:w-4/5 md:w-1/2  gap-4">
 	<div class="rounded-3xl flex items-center p-2 px-4 min-w-24 text-center bg-white/20 text-white">
 		Suggested
 	</div>

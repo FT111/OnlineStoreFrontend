@@ -3,6 +3,7 @@
 	import { Button } from "$lib/components/ui/button";
 	import { slide } from 'svelte/transition';
 	import { quintOut } from 'svelte/easing';
+	import { Skeleton } from "$lib/components/ui/skeleton";
 	import Image from "$lib/components/image.svelte";
 
 	export let listingName = "Product Name";
@@ -11,13 +12,20 @@
 	export let listingImage = "https://via.placeholder.com/800";
 	export let listingID= 1;
 	export let editMode = false;
+	export let isLoading;
+	console.log(isLoading)
 </script>
 
-<a href="/listings/{listingID}" class="w-min">
-	<Card.Root class="sm:w-full h-full w-[96vw] sm:min-w-min rounded-3xl group transition-all duration-250 ease-in-out hover:scale-[1.01]" href="/listings/{listingID}">
+<a href="/listings/{listingID}" class="w-full">
+	<Card.Root class="h-full w-full	 overflow-x-scroll rounded-3xl group transition-all duration-100 ease-in-out hover:scale-[1.01]" href="/listings/{listingID}">
 		<Card.Header>
-			<Card.Title>{ listingName }</Card.Title>
-			<Card.Description>{ listingDescription }</Card.Description>
+			{#if isLoading === true}
+				<Skeleton class="w-full h-4 rounded-md" />
+				<Skeleton class="w-1/2 h-4 rounded-md" />
+			{:else}
+				<Card.Title>{ listingName }</Card.Title>
+				<Card.Description>{ listingDescription }</Card.Description>
+			{/if}
 		</Card.Header>
 		<Card.Content>
 			<Image class="h-max rounded-md border-b" src="{listingImage}" alt="{listingDescription}" />
