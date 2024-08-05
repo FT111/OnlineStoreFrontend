@@ -26,7 +26,7 @@
  };
 
 
- const navHeroClasses = ['bg-cyan-950', 'text-white'];
+ const navHeroClasses = ['bg-cyan-950', 'text-white', 'rounded-b-3xl'];
  const navPageClasses = ['bg-background/50', 'text-black'];
 
  onMount(async () => {
@@ -46,17 +46,14 @@
   );
 
   observer.observe(searchHero);
-
-
-
-
+  
  });
 
 </script>
 
 <nav>
  <div bind:this={navBar} class="fixed w-screen min-h-16 h-fit align-center items-center justify-between
-                 flex flex-row p-5 px-8 gap-5 bg-cyan-950 text-white
+                 flex flex-row p-5 px-8 gap-5 bg-cyan-950 text-white rounded-b-3xl
                  backdrop-blur-2xl z-50 top-0 transition-all">
   <h1 class="font-bold text-3xl">eBuy</h1>
   <div class="flex flex-row gap-7">
@@ -81,14 +78,14 @@
  <SearchHero />
 </div>
 
-<div class="grid grid-cols-1 sm:grid-cols-3 md:grid-cols-4 gap-3 w-full p-1 sm:p-4 md:p-8 justify-left">
+<div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 w-full p-1 sm:p-4 md:p-8 justify-left">
  {#await fetchData()}
   {#each Array.from({ length: 10 }) as _, i}
    <Listing />
   {/each}
   {:then data}
   {#each data.data as listing}
-   <Listing listingName={listing.title} listingPrice={listing.basePrice} listingDescription={listing.description} editMode={false} />
+   <Listing listingName={listing.title} listingPrice={listing.basePrice} userName={listing.ownerUser.username} userRating={listing.ownerUser.rating} listingRating={listing.rating} userAvatarUrl={listing.ownerUser.profilePictureURL} listingDescription={listing.description} editMode={false} />
   {/each}
   {:catch error}
   <p>{error.message}</p>

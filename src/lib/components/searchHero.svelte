@@ -8,7 +8,7 @@
 </script>
 <!--bg-[url('/src/lib/assets/searchGradient1.png')]-->
 <div class="flex flex-col items-center justify-between w-full min-h-[75vh] h-fit bg-cyan-950 rounded-b-3xl">
-	<div class="flex flex-col items-center w-full md:p-32 md:pb-10 p-8">
+	<div class="flex flex-col items-center w-full md:p-32 md:pb-10 p-8 py-32 gap-3">
 		<h1 class="text-7xl text-white font-bold">What are you looking for?</h1>
 
 		<div class="flex flex-row md:w-1/2 w-full p-5 gap-5">
