@@ -11,7 +11,7 @@
 	<div class="rounded-3xl flex items-center p-2 px-4 min-w-24 text-center bg-white/20 text-white">
 		Suggested
 	</div>
-	{#each Array.from({ length: 13 }) as _,i}
+	{#each Array.from({ length: 8 }) as _,i}
 		<div class="rounded-3xl flex items-center p-2 px-4 min-w-24 text-center hover:bg-slate-100 hover:scale-[1.01] transition-all {getRandomColour()}">
 			{i}
 		</div>

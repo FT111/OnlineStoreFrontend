@@ -78,7 +78,7 @@
  <SearchHero />
 </div>
 
-<div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 w-full p-1 sm:p-4 md:p-8 justify-left">
+<div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 w-full p-1 sm:p-4 md:p-8 md:px-14 justify-left">
  {#await fetchData()}
   {#each Array.from({ length: 10 }) as _, i}
    <Listing />
