@@ -4,6 +4,8 @@
 	import { Input } from '$lib/components/ui/input/index.js';
 	import SuggestedSearches from '$lib/components/suggestedSearches.svelte';
 	import SearchGradient from '$lib/assets/searchGradient1.png';
+	
+	export let searchSuggestions;
 //bg-gradient-to-br from-indigo-500 to-fuchsia-800
 </script>
 <!--bg-[url('/src/lib/assets/searchGradient1.png')]-->
@@ -20,7 +22,7 @@
 			</Button>
 		</div>
 
-		<SuggestedSearches />
+		<SuggestedSearches suggestions={searchSuggestions} />
 	</div>
 
 	<div class="flex flex-col gap-8 sm:gap-0 sm:flex-row justify-between w-full p-8 px-24 font-bold text-xl text-slate-300">
