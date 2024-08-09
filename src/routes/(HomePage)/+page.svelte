@@ -63,7 +63,7 @@
  <SearchHero searchSuggestions={fetchCategories} />
 </div>
 
-<div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 w-full p-1 sm:p-4 md:p-8 md:px-14 justify-left">
+<div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 2xl:grid-cols-5 gap-3 w-full p-1 sm:p-4 md:p-8 md:px-14 justify-left">
  {#await fetchListings()}
   {#each Array.from({ length: 20 }) as _, i}
    <Listing isLoading={true} />
@@ -78,7 +78,7 @@
 
 </div>
 
-<div class="p-32">
+<div class="lg:p-32 sm:p-6">
  <Carousel.Root class="w-full" opts={{
   'dragFree': false,
   'loop': true,

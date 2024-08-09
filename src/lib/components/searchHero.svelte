@@ -25,7 +25,7 @@
 		<SuggestedSearches suggestions={searchSuggestions} />
 	</div>
 
-	<div class="flex flex-col gap-8 sm:gap-0 sm:flex-row justify-between w-full p-8 px-24 font-bold text-xl text-slate-300">
+	<div class="flex opacity-100 flex-col gap-8 sm:gap-0 sm:flex-row justify-between w-full p-8 px-24 font-bold text-xl text-slate-300">
 		<Button variant="ghost" class="text-muted p-6 text-xl font-bold">Recently viewed</Button>
 		<Button variant="ghost" class="text-muted p-6 text-xl font-bold">Recent categories</Button>
 		<Button variant="ghost" class="text-muted p-6 text-xl font-bold">Top offers</Button>
