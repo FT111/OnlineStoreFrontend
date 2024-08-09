@@ -4,37 +4,12 @@
  import { onMount } from 'svelte';
  import * as Carousel from "$lib/components/ui/carousel/index.js";
  import * as Card from "$lib/components/ui/card/index.js";
+ 
+ import { fetchListings } from '$lib/api/listings.js';
+ import { fetchCategories } from '$lib/api/categories.js';
 
  let navBar;
  let searchHero;
-
- const fetchCategorySuggestions = async () => {
-  let response = await fetch('http://127.0.0.1:8000/categories').then((response) => response.json())
-    .then((data) => {
-     console.log(data);
-     return data;
-    }).catch((error) => {
-     console.error('Error:', error);
-    })
-    return response;
-    };
-
- const fetchData = async () => {
-  let response = await fetch('http://127.0.0.1:8000/listings/?limit=24&sort=price&order=asc', {
-   method: 'GET',
-   headers: {
-    'Content-Type': 'application/json',
-   }
-  }).then((response) => response.json())
-    .then((data) => {
-     console.log(data);
-     return data;
-    }).catch((error) => {
-     console.error('Error:', error);
-    })
-  return response;
- };
-
 
  const navHeroClasses = ['bg-cyan-950', 'text-white', 'rounded-b-3xl'];
  const navPageClasses = ['bg-background/50', 'text-black'];
@@ -85,11 +60,11 @@
 </nav>
 
 <div bind:this={searchHero}>
- <SearchHero searchSuggestions={fetchCategorySuggestions} />
+ <SearchHero searchSuggestions={fetchCategories} />
 </div>
 
 <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 w-full p-1 sm:p-4 md:p-8 md:px-14 justify-left">
- {#await fetchData()}
+ {#await fetchListings()}
   {#each Array.from({ length: 20 }) as _, i}
    <Listing isLoading={true} />
   {/each}
@@ -111,7 +86,7 @@
 
  }}>
   <Carousel.Content class="-ml-1">
-   {#await fetchData()}
+   {#await fetchListings()}
    {#each Array.from({ length: 10 }) as _, i}
     <Listing isLoading={true} />
    {/each}

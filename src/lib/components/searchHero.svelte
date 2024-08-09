@@ -13,7 +13,7 @@
 	<div class="flex flex-col items-center w-full md:p-32 md:pb-10 p-8 py-32 gap-3">
 		<h1 class="text-7xl text-white font-bold">What are you looking for?</h1>
 
-		<div class="flex flex-row md:w-1/2 w-full p-5 gap-5">
+		<div class="flex flex-row sm:w-11/12 md:w-4/5 lg:w-1/2 w-full p-5 gap-5">
 			<Input placeholder="Search for anything..." class="rounded-3xl" />
 			<Button variant="secondary" class="gap-2 text-lg rounded-3xl">Go
 				<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
