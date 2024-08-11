@@ -25,7 +25,7 @@
 </script>
 
 <a href="/listings/{listingID}" class="w-full">
-	<Card.Root class="flex flex-col justify-between h-full  w-full	 overflow-x-scroll rounded-3xl group transition-all duration-100 ease-in-out hover:scale-[1.01]" href="/listings/{listingID}">
+	<Card.Root class="flex flex-col justify-between h-min  w-full	 overflow-x-scroll rounded-3xl group transition-all duration-100 ease-in-out hover:scale-[1.01]" href="/listings/{listingID}">
 		
 		<Card.Header class="pb-4">
 			{#if isLoading === true}
@@ -36,7 +36,7 @@
 			
 			{:else}
 				<Card.Title>{ listingName }</Card.Title>
-				<Card.Description>{ listingDescription }</Card.Description>
+				<Card.Description class="truncate hover:text-wrap">{ listingDescription }</Card.Description>
 			{/if}
 		
 			<div class="flex flex-row justify-between pt-2 items-center">
