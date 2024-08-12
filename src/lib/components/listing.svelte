@@ -21,11 +21,10 @@
 	export let listingID= 1;
 	export let editMode = false;
 	export let isLoading;
-	console.log(isLoading)
 </script>
 
 <a href="/listings/{listingID}" class="w-full">
-	<Card.Root class="flex flex-col justify-between h-min  w-full	 overflow-x-scroll rounded-3xl group transition-all duration-100 ease-in-out hover:scale-[1.01]" href="/listings/{listingID}">
+	<Card.Root class="flex flex-col justify-between h-min  w-full	 overflow-x-scroll group transition-all duration-100 ease-in-out hover:scale-[1.01]" href="/listings/{listingID}">
 		
 		<Card.Header class="pb-4">
 			{#if isLoading === true}

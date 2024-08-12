@@ -6,7 +6,7 @@
 	<div class="sticky top-0 w-screen min-h-16 h-fit align-center items-center justify-between
                  flex flex-row p-5 px-8 gap-5 bg-muted/50
                  text-black border-b border-b-slate-200 backdrop-blur-2xl z-50 transition-all">
-		<h1 class="font-bold text-3xl">.</h1>
+		<h1 class="font-bold text-3xl">eBuy</h1>
 		<div class="flex flex-row gap-7">
 			<p><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
 				<path stroke-linecap="round" stroke-linejoin="round" d="M8.25 6.75h12M8.25 12h12m-12 5.25h12M3.75 6.75h.007v.008H3.75V6.75Zm.375 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0ZM3.75 12h.007v.008H3.75V12Zm.375 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm-.375 5.25h.007v.008H3.75v-.008Zm.375 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Z" />

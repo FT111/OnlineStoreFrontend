@@ -6,5 +6,5 @@ export const fetchCategories = async () => {
 }
 
 export const fetchCategory = async (categoryName) => {
-	return await GET(`categories/${categoryName}/`);
+	return await GET(`categories/${categoryName}`);
 }

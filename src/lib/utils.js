@@ -46,3 +46,49 @@ export const flyAndScale = (
 		easing: cubicOut
 	};
 };
+
+export const formQueryURL = (query, category, subCategory, sort, order) => {
+
+	if (category === 'All Categories' || category === 'Categories') {
+		category = undefined;
+	}
+	if (subCategory === 'All Subcategories' || subCategory === 'Sub Categories') {
+		subCategory = undefined;
+	}
+	if (sort === 'Sort' || sort === 'All Sorts') {
+		sort = undefined;
+	}
+
+	switch (order) {
+		case 'Ascending':
+			order = 'asc';
+			break;
+		case 'Descending':
+			order = 'desc';
+			break;
+		default:
+			order = undefined;
+	}
+
+
+
+
+	let requestString = `listings/?`;
+	if (query) {
+		requestString += `query=${query}&`;
+	}
+	if (category) {
+		requestString += `category=${category}&`;
+	}
+	if (subCategory) {
+		requestString += `subCategory=${subCategory}&`;
+	}
+	if (sort) {
+		requestString += `sort=${sort}&`;
+	}
+	if (order) {
+		requestString += `order=${order}`;
+	}
+
+	return requestString;
+}
