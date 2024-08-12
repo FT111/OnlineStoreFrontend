@@ -3,6 +3,7 @@
   
 import { queryListings } from '$lib/api/listings.js';
 import Listing from '$lib/components/listing.svelte';
+	import { elasticIn } from 'svelte/easing';
 
 
 const query = $page.url.searchParams.get('query') || '';
@@ -15,9 +16,15 @@ const query = $page.url.searchParams.get('query') || '';
 			<Listing isLoading={true} />
 		{/each}
 	{:then data}
-		{#each data.data as listing}
-			<Listing listingName={listing.title} listingPrice={listing.basePrice} userName={listing.ownerUser.username} userRating={listing.ownerUser.rating} listingRating={listing.rating} userAvatarUrl={listing.ownerUser.profilePictureURL} listingDescription={listing.description} editMode={false} />
-		{/each}
+		{#if data.data.length === 0}
+			<div class="col-span-full p-16">
+				<p class="text-5xl text-center">No listings found</p>
+			</div>
+		{:else}
+			{#each data.data as listing}
+				<Listing listingName={listing.title} listingPrice={listing.basePrice} userName={listing.ownerUser.username} userRating={listing.ownerUser.rating} listingRating={listing.rating} userAvatarUrl={listing.ownerUser.profilePictureURL} listingDescription={listing.description} editMode={false} />
+			{/each}
+		{/if}
 	{:catch error}
 		<p>{error.message}</p>
 	{/await}
