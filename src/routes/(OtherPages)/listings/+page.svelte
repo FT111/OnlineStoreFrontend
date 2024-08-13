@@ -17,7 +17,7 @@ $: query = $page.url.searchParams.get('query') || '';
 $: category = $page.url.searchParams.get('category') || undefined;
 $: subCategory = $page.url.searchParams.get('subCategory') || undefined;
 $: sort = $page.url.searchParams.get('sort') || undefined;
-$: order = $page.url.searchParams.get('order') || 'asc';
+$: order = $page.url.searchParams.get('order') || undefined;
 </script>
 
 
@@ -34,7 +34,7 @@ $: order = $page.url.searchParams.get('order') || 'asc';
 				</div>
 			{:else}
 				{#each data.data as listing}
-					<Listing listingName={listing.title} listingPrice={listing.basePrice} userName={listing.ownerUser.username} userRating={listing.ownerUser.rating} listingRating={listing.rating} userAvatarUrl={listing.ownerUser.profilePictureURL} listingDescription={listing.description} editMode={false} />
+					<Listing listingName={listing.title} listingPrice={listing.basePrice} userName={listing.ownerUser.username} userRating={listing.ownerUser.rating} listingRating={listing.rating} userAvatarUrl={listing.ownerUser.profilePictureURL} listingDescription={listing.description} multipleSKUs={listing.multipleSKUs} editMode={false} />
 				{/each}
 			{/if}
 		{:catch error}

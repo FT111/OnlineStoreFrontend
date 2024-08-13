@@ -17,10 +17,16 @@
 	export let userName = "John Doe";
 	export let userRating = 5;
 	
-	
+	export let multipleSKUs = false;
 	export let listingID= 1;
 	export let editMode = false;
-	export let isLoading;
+	export let isLoading = false;
+	
+	// Convert price to integer and decimal from integer
+	listingPrice = listingPrice / 100
+	const priceInteger = Math.floor(listingPrice);
+	const priceDecimal = (listingPrice - priceInteger).toFixed(2).slice(2);
+	
 </script>
 
 <a href="/listings/{listingID}" class="w-full">
@@ -100,7 +106,14 @@
 					{#if isLoading === true}
 						<Skeleton class="w-28 h-10 rounded-md" />
 					{:else}
-						<p class="text-4xl font-bold">{listingPrice.toLocaleString("en-GB", {style:"currency", currency:"GBP"})}</p>
+						<div class="flex flex-col gap-0 w-full justify-end text-right">
+							{#if multipleSKUs === true}
+								<p class="text-sm font-bold">Starting at</p>
+								<p class="text-4xl font-bold">£{priceInteger}<sup class="text-xl font-medium">{priceDecimal}</sup> </p>
+							{:else}
+								<p class="text-4xl font-bold">£{priceInteger}<sup class="text-xl font-medium">{priceDecimal}</sup> </p>
+							{/if}
+						</div>
 					{/if}
 				</div>
 			</Card.Footer>
