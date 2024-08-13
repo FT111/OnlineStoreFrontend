@@ -29,14 +29,13 @@
 	
 </script>
 
-<a href="/listings/{listingID}" class="w-full">
-	<Card.Root class="flex flex-col justify-between h-min  w-full	 overflow-x-scroll group transition-all duration-100 ease-in-out hover:scale-[1.01]" href="/listings/{listingID}">
+<a href="/listings/{listingID}" class="w-full h-full">
+	<Card.Root class="flex flex-col justify-start h-full  w-full	 overflow-x-scroll group transition-all duration-100 ease-in-out hover:scale-[1.01]" href="/listings/{listingID}">
 		
 		<Card.Header class="pb-4">
 			{#if isLoading === true}
-				<Skeleton class="w-full h-5 rounded-md" />
-				<Skeleton class="w-full h-3 rounded-md" />
-				<Skeleton class="w-1/3 h-3 rounded-md" />
+				<Skeleton class="w-2/3 h-5 rounded-md" />
+				<Skeleton class="w-full h-4 rounded-md" />
 			
 			
 			{:else}
@@ -71,7 +70,7 @@
 			
 		</Card.Header>
 		<div class="flex flex-col justify-end">
-			<Card.Content>
+			<Card.Content class="pb-2">
 				<Image class="h-max rounded-md border-b" src="{listingImage}" alt="{listingDescription}" />
 			</Card.Content>
 			<Card.Footer class="gap-2 justify-end">
@@ -104,13 +103,17 @@
 	
 				<div class="flex w-full justify-end">
 					{#if isLoading === true}
-						<Skeleton class="w-28 h-10 rounded-md" />
+						<div class="flex flex-col gap-2 w-full justify-end items-end pt-2">
+							<Skeleton class="w-1/2 h-3 rounded-md" />
+							<Skeleton class="w-7/12 h-8 rounded-md" />
+						</div>
 					{:else}
 						<div class="flex flex-col gap-0 w-full justify-end text-right">
 							{#if multipleSKUs === true}
 								<p class="text-sm font-bold">Starting at</p>
 								<p class="text-4xl font-bold">£{priceInteger}<sup class="text-xl font-medium">{priceDecimal}</sup> </p>
 							{:else}
+								<br>
 								<p class="text-4xl font-bold">£{priceInteger}<sup class="text-xl font-medium">{priceDecimal}</sup> </p>
 							{/if}
 						</div>

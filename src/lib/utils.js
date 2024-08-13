@@ -60,10 +60,10 @@ export const formQueryURL = (query, category, subCategory, sort, order) => {
 	}
 
 	switch (order) {
-		case 'Ascending':
+		case 'Asc.':
 			order = 'asc';
 			break;
-		case 'Descending':
+		case 'Desc.':
 			order = 'desc';
 			break;
 		default:

@@ -1,6 +1,7 @@
 <script>
 import ListingsSidebar from '$lib/components/listingsSidebar.svelte'
 import Dropdown from '$lib/components/dropdown.svelte';
+import { Separator } from "$lib/components/ui/separator";
 import { onMount, setContext } from 'svelte';
 import { fetchCategories, fetchCategory } from '$lib/api/categories.js'
 import { goto } from '$app/navigation';
@@ -11,7 +12,7 @@ import { page } from '$app/stores';
 let categories = [];
 let subCategories = [];
 const sorts = ['None', 'Price', 'Rating', 'Views'];
-const orders = ['Ascending', 'Descending'];
+const orders = ['Asc.', 'Desc.'];
 
 let query = $page.url.searchParams.get('query') || '';
 let selectedCategory = $page.url.searchParams.get('category') || undefined;
@@ -57,10 +58,15 @@ $: if ([selectedCategory, selectedSubcategory, selectedSort, selectedOrder]) {
 
 <div class="w-full h-full flex flex-row">
 	<ListingsSidebar>
+		<div class="flex flex-row gap-2 w-full pt-20">
+			<Dropdown title="Sort" subtitle="Select a sort" options={ sorts } bind:selectedValue={selectedSort} />
+			<Dropdown title="Order" subtitle="Select an order" options={ orders } bind:selectedValue={selectedOrder} />
+		</div>
+		<Separator />
+		
 		<Dropdown title="Categories" subtitle="Select a category" options={ categories } bind:selectedValue={selectedCategory} />
 		<Dropdown title="Sub Categories" subtitle="Select a sub category" options={ subCategories } bind:selectedValue={selectedSubcategory} />
-		<Dropdown title="Sort" subtitle="Select a sort" options={ sorts } bind:selectedValue={selectedSort} />
-		<Dropdown title="Order" subtitle="Select an order" options={ orders } bind:selectedValue={selectedOrder} />
+
 	
 	</ListingsSidebar>
 	

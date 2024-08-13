@@ -21,7 +21,7 @@ $: order = $page.url.searchParams.get('order') || undefined;
 </script>
 
 
-<div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 2xl:grid-cols-4 gap-3 w-full p-1 sm:p-4 md:p-8 md:px-7 justify-left">
+<div class="mt-16 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 2xl:grid-cols-4 gap-3 w-full p-1 sm:p-4 md:p-8 md:px-7 justify-left">
 	{#key [query, category, subCategory, sort, order]}
 		{#await queryListings(query, category, subCategory, sort, order)}
 			{#each Array.from({ length: 20 }) as _, i}

@@ -2,8 +2,8 @@
 <script>
 </script>
 
-<nav class="sticky top-0 z-50">
-	<div class="sticky top-0 w-screen min-h-16 h-fit align-center items-center justify-between
+<nav class="fixed top-0 z-50">
+	<div class="fixed top-0 w-screen min-h-16 h-fit align-center items-center justify-between
                  flex flex-row p-5 px-8 gap-5 bg-muted/50
                  text-black border-b border-b-slate-200 backdrop-blur-2xl z-50 transition-all">
 		<h1 class="font-bold text-3xl">eBuy</h1>
