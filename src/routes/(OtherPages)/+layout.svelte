@@ -4,8 +4,8 @@
 
 <nav class="fixed top-0 z-50">
 	<div class="fixed top-0 w-screen min-h-16 h-fit align-center items-center justify-between
-                 flex flex-row p-5 px-8 gap-5 bg-muted/50
-                 text-black border-b border-b-slate-200 backdrop-blur-2xl z-50 transition-all">
+                 flex flex-row p-5 px-8 gap-5 bg-cyan-950/90 text-white
+                 border-b border-b-slate-200 backdrop-blur-2xl z-50 transition-all">
 		<h1 class="font-bold text-3xl">eBuy</h1>
 		<div class="flex flex-row gap-7">
 			<p><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">

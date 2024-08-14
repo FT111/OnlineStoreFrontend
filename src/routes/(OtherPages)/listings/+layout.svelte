@@ -17,8 +17,16 @@ const orders = ['Asc.', 'Desc.'];
 let query = $page.url.searchParams.get('query') || '';
 let selectedCategory = $page.url.searchParams.get('category') || undefined;
 let selectedSubcategory = $page.url.searchParams.get('subCategory') || undefined;
-let selectedSort = 'None';
-let selectedOrder = 'asc';
+let selectedSort = $page.url.searchParams.get('sort');
+let selectedOrder = $page.url.searchParams.get('order') || 'asc';
+
+switch (selectedOrder) {
+  case 'asc': {
+	selectedOrder = 'Asc.'
+	break
+  }
+  case 'desc': {selectedOrder = 'Desc.'}
+}
 
 // Fetches categories for the dropdown
 onMount(() => {
@@ -53,6 +61,7 @@ $: if ([selectedCategory, selectedSubcategory, selectedSort, selectedOrder]) {
 		}
 }
 
+console.log([selectedOrder, selectedSubcategory, selectedCategory, selectedSort])
 
 </script>
 

@@ -12,6 +12,10 @@
 
 	let open = false;
 	
+	if (selectedValue) {
+		title = selectedValue
+	}
+	
 	$: selectedValue =
 		options.find((f) => f === value) ??
 			`${title}`;
@@ -24,6 +28,7 @@
 		});
 	}
 	
+	console.log(selectedValue)
 </script>
 
 <Popover.Root bind:open let:ids>
