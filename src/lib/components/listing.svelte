@@ -14,7 +14,6 @@
 	export let listingRating = 5;
 	
 	export let userAvatarUrl = "https://via.placeholder.com/800";
-	export let userName = "John Doe";
 	export let userRating = 5;
 	
 	export let multipleSKUs = false;
@@ -30,7 +29,7 @@
 </script>
 
 <a href="/listings/{listingID}" class="w-full h-full">
-	<Card.Root class="flex flex-col justify-start h-full  w-full	 overflow-x-scroll group transition-all duration-100 ease-in-out hover:scale-[1.01]" href="/listings/{listingID}">
+	<Card.Root class="flex flex-col justify-start h-full  w-full	 overflow-x-scroll group transition-all duration-100 ease-in-out hover:scale-[1.00] hover:bg-slate-50 hover:border-0" href="/listings/{listingID}">
 		
 		<Card.Header class="pb-4">
 			{#if isLoading === true}
@@ -73,7 +72,7 @@
 			<Card.Content class="pb-2">
 				<Image class="h-max rounded-md border-b" src="{listingImage}" alt="{listingDescription}" />
 			</Card.Content>
-			<Card.Footer class="gap-2 justify-end">
+			<Card.Footer class="gap-2 justify-end pb-3">
 				<div in:slide={{duration:300}} class="flex flex-row gap-1">
 				{#if editMode === true}
 						<Button variant="ghost" class="hover:bg-red-600/60 hover:text-white md:w-md opacity-0 group-hover:opacity-100 transition-all duration-200" on:click={() => console.log("Delete")}>
@@ -87,7 +86,7 @@
 							</svg>
 						</Button>
 					{:else}
-					<Button variant="ghost" class="w-min opacity-0 group-hover:opacity-100 transition-all duration-200" on:click={() => console.log("Added")}>
+					<Button variant="ghost" class="w-min opacity-100 group-hover:opacity-100 transition-all duration-200" on:click={() => console.log("Added")}>
 						<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-8">
 							<path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
 						</svg>

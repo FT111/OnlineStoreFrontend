@@ -12,9 +12,9 @@
 
 	let open = false;
 	
-	if (selectedValue) {
-		title = selectedValue
-	}
+	// if (selectedValue) {
+	// 	title = selectedValue
+	// }
 	
 	$: selectedValue =
 		options.find((f) => f === value) ??
@@ -27,8 +27,6 @@
 			document.getElementById(triggerId)?.focus();
 		});
 	}
-	
-	console.log(selectedValue)
 </script>
 
 <Popover.Root bind:open let:ids>
@@ -38,9 +36,13 @@
 		  variant="outline"
 		  role="combobox"
 		  aria-expanded={open}
-		  class="w-[200px] justify-between text-ellipsis"
+		  class="w-full justify-between text-ellipsis"
 		>
-			{selectedValue}
+			{#if selectedValue !== undefined}
+				{selectedValue}
+			{:else}
+				{title}
+			{/if}
 			<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-4">
 				<path stroke-linecap="round" stroke-linejoin="round" d="m4.5 5.25 7.5 7.5 7.5-7.5m-15 6 7.5 7.5 7.5-7.5" />
 			</svg>

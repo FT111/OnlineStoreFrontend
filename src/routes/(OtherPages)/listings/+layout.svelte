@@ -74,7 +74,9 @@ console.log([selectedOrder, selectedSubcategory, selectedCategory, selectedSort]
 		<Separator />
 		
 		<Dropdown title="Categories" subtitle="Select a category" options={ categories } bind:selectedValue={selectedCategory} />
-		<Dropdown title="Sub Categories" subtitle="Select a sub category" options={ subCategories } bind:selectedValue={selectedSubcategory} />
+		{#key selectedCategory}
+			<Dropdown title="Sub Categories" subtitle="Select a sub category" options={ subCategories } bind:selectedValue={selectedSubcategory} />
+		{/key}
 
 	
 	</ListingsSidebar>
