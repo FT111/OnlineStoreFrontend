@@ -36,7 +36,7 @@
 		  variant="outline"
 		  role="combobox"
 		  aria-expanded={open}
-		  class="w-full justify-between text-ellipsis"
+		  class="w-full justify-between text-ellipsis hover:bg-secondary active:bg-primary active:text-white"
 		>
 			{#if selectedValue !== undefined}
 				{selectedValue}
@@ -48,13 +48,14 @@
 			</svg>
 		</Button>
 	</Popover.Trigger>
-	<Popover.Content class="w-[200px] p-0">
+	<Popover.Content class="w-[210px] p-0">
 		<Command.Root>
 			<Command.Input placeholder="{subtitle}..." />
 			<Command.Empty>No {title} found.</Command.Empty>
 			<Command.Group>
 				{#each options as option}
 					<Command.Item
+					  class="aria-selected:text-white transition-all duration-100"
 					  value={option}
 					  onSelect={(currentValue) => {
               value = currentValue;
