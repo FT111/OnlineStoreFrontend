@@ -36,7 +36,7 @@
 		  variant="outline"
 		  role="combobox"
 		  aria-expanded={open}
-		  class="w-full justify-between text-ellipsis hover:bg-secondary active:bg-primary active:text-white"
+		  class="w-full justify-between text-ellipsis hover:bg-secondary"
 		>
 			{#if selectedValue !== undefined}
 				{selectedValue}

@@ -1,6 +1,8 @@
 <script>
 import ListingsSidebar from '$lib/components/listingsSidebar.svelte'
 import Dropdown from '$lib/components/dropdown.svelte';
+import * as Resizable from "$lib/components/ui/resizable";
+
 import { Separator } from "$lib/components/ui/separator";
 import { onMount, setContext } from 'svelte';
 import { fetchCategories, fetchCategory } from '$lib/api/categories.js'
@@ -78,8 +80,8 @@ console.log([selectedOrder, selectedSubcategory, selectedCategory, selectedSort]
 			<Dropdown title="Sub Categories" subtitle="Select a sub category" options={ subCategories } bind:selectedValue={selectedSubcategory} />
 		{/key}
 
-	
+		
 	</ListingsSidebar>
-	
+
 	<slot class="grow" />
 </div>
