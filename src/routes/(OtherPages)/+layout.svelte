@@ -1,18 +1,25 @@
 
 <script>
 import { Input } from '$lib/components/ui/input/index.js';
+import { Button } from '$lib/components/ui/button'
 </script>
 
 <nav class="fixed top-0 z-50">
-	<div class="fixed top-0 w-screen min-h-16 h-fit align-center items-center justify-between
+	<div class="fixed top-0 w-screen h-16 align-center items-center justify-between
                  flex flex-row p-5 px-8 gap-5 bg-primary //border-t-accent text-white
                  //border-t-[6px] backdrop-blur-2xl z-50 transition-all">
 		<h1 class="font-bold text-3xl">eBuy</h1>
 		
-		<div class="lg:w-2/5 md:w-2/3">
-			<Input class="text-black rounded-3xl" >
-				Search for anything...
-			</Input>
+		<div class="lg:w-1/2 md:w-2/3">
+			<div class="flex flex-row gap-3">
+				<Input class="text-black rounded-3xl h-9/10" placeholder="Search for anything..." />
+				<Button class="rounded-3xl flex flex-row gap-2" variant="secondary">
+					<p>Go</p>
+					<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-5">
+						<path stroke-linecap="round" stroke-linejoin="round" d="M6 12 3.269 3.125A59.769 59.769 0 0 1 21.485 12 59.768 59.768 0 0 1 3.27 20.875L5.999 12Zm0 0h7.5" />
+					</svg>
+				</Button>
+			</div>
 		</div>
 		
 		<div class="flex flex-row gap-7">
