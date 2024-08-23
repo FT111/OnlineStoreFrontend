@@ -24,8 +24,5 @@ export const queryListings = async (query, category, subCategory, sort, order) =
 	}
 
 	requestString += `&limit=36`
-
-	console.log(requestString)
-
 	return await GET(requestString)
 }

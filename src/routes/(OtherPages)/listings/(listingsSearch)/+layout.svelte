@@ -1,9 +1,9 @@
 <script>
 import ListingsSidebar from '$lib/components/listingsSidebar.svelte'
 import Dropdown from '$lib/components/dropdown.svelte';
-import * as Resizable from "$lib/components/ui/resizable";
+import * as Resizable from "$lib/components/ui/resizable/index.js";
 
-import { Separator } from "$lib/components/ui/separator";
+import { Separator } from "$lib/components/ui/separator/index.js";
 import { onMount, setContext } from 'svelte';
 import { fetchCategories, fetchCategory } from '$lib/api/categories.js'
 import { goto } from '$app/navigation';
