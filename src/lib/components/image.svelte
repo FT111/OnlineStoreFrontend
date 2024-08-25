@@ -4,6 +4,10 @@
 
 	export let src = "https://via.placeholder.com/800";
 	export let alt = "Image";
+	
+	let className = undefined;
+	export { className as class };
+
 
 
 	let loaded = false;
@@ -26,6 +30,6 @@
 		<div class="absolute aspect-square w-max h-auto" />
 		<Skeleton class="absolute w-full h-full rounded-md"  />
 	{/if}
-	<img alt={alt} class="rounded-md border-b" {src} on:load={handleLoad}  />
+	<img alt={alt} class="rounded-md border-b object-cover {className}" {src} on:load={handleLoad}  />
 
 </div>
