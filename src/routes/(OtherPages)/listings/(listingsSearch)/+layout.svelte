@@ -10,6 +10,7 @@ import { goto } from '$app/navigation';
 import { browser } from '$app/environment';
 import { formQueryURL } from '$lib/utils.js';
 import { page } from '$app/stores';
+import { Slider } from '$lib/components/ui/slider/index.js';
 
 let categories = [];
 let subCategories = [];
@@ -63,8 +64,9 @@ $: if ([selectedCategory, selectedSubcategory, selectedSort, selectedOrder]) {
 		}
 }
 
-console.log([selectedOrder, selectedSubcategory, selectedCategory, selectedSort])
-
+// TESTING
+let slider1Value = [10];
+let slider2Value = 10;
 </script>
 
 <div class="w-full h-full flex flex-row">
@@ -79,8 +81,29 @@ console.log([selectedOrder, selectedSubcategory, selectedCategory, selectedSort]
 		{#key selectedCategory}
 			<Dropdown title="Sub Categories" subtitle="Select a sub category" options={ subCategories } bind:selectedValue={selectedSubcategory} />
 		{/key}
-
 		
+		<Separator class="opacity-0" />
+		
+		<div class="flex flex-col p-2 gap-1 outline rounded-md outline-1 outline-muted-foreground/10">
+			<Dropdown title="Relevant filter 1" subtitle="Select a sub category" options={ subCategories }  />
+			<Dropdown title="Relevant filter 2" subtitle="Select a sub category" options={ subCategories }  />
+			<Dropdown title="Relevant filter 3" subtitle="Select a sub category" options={ subCategories }  />
+			
+			<div class="py-2 px-4 rounded-md flex flex-col gap-0 outline outline-1 outline-muted-foreground/10 bg-white">
+				<p class="text-xs font-medium">Relevant filter 4</p>
+				<div class="flex flex-row gap-4">
+					<Slider class="basis-10/12" bind:value={slider1Value} />
+					<p class="basis-2/12 text-center">{slider1Value}</p>
+				</div>
+			</div>
+			
+			<Dropdown title="Relevant filter 5" subtitle="Select a sub category" options={ subCategories }  />
+		</div>
+		
+	
+	
+	
+	
 	</ListingsSidebar>
 
 	<slot class="grow" />
