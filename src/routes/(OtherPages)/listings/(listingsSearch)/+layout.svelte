@@ -84,7 +84,7 @@ let slider2Value = 10;
 		
 		<Separator class="opacity-0" />
 		
-		<div class="flex flex-col p-2 gap-1 outline rounded-md outline-1 outline-muted-foreground/10">
+		<div class="flex flex-col p-2 gap-1 rounded-md bg-muted-foreground/5">
 			<Dropdown title="Relevant filter 1" subtitle="Select a sub category" options={ subCategories }  />
 			<Dropdown title="Relevant filter 2" subtitle="Select a sub category" options={ subCategories }  />
 			<Dropdown title="Relevant filter 3" subtitle="Select a sub category" options={ subCategories }  />

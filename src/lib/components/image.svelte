@@ -25,11 +25,13 @@
 	});
 </script>
 
-<div class="relative w-full h-full">
-	{#if !loaded}
-		<div class="absolute aspect-square w-max h-auto" />
-		<Skeleton class="absolute w-full h-full rounded-md"  />
-	{/if}
-	<img alt={alt} class="rounded-md border-b object-cover {className}" {src} on:load={handleLoad}  />
 
-</div>
+{#if !loaded}
+	<div class="absolute aspect-square w-max h-auto" />
+	<Skeleton class="absolute w-full h-full rounded-md"  />
+{/if}
+<picture class="rounded-md border-b w-full h-full">
+	<source type="image/webp" srcset={src} src={src} on:load={handleLoad} />
+	<img src={src} alt={alt} class="rounded-md border-b object-cover w-fit h-full {className}" on:load={handleLoad} />
+</picture>
+<!--	<img alt={alt} width="100" height="100" class="rounded-md border-b object-cover {className}" {src} on:load={handleLoad}  />-->
