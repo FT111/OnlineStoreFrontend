@@ -98,9 +98,9 @@
 <!--				SKU Details -->
 			{#if skus}
 				<div class="flex flex-col bg-muted rounded-2xl overflow-x-scroll w-full">
-					<div class="flex flex-row relative rounded-t-2xl bg-neutral-200 p-4 overflow-x-scroll gap-3 w-full">
+					<div class="flex flex-row relative rounded-t-2xl bg-neutral-200 p-3 overflow-x-scroll gap-3 w-full">
 						{#each skuData as sku}
-							<div class="bg-accent text-white w-20 p-2 px-3 rounded-3xl flex-shrink-0">
+							<div class="bg-primary text-primary-foreground  hover:bg-accent w-20 p-2 px-3 rounded-3xl flex-shrink-0 transition-all duration-250 ease-in-out cursor-pointer">
 								{sku.sku}
 							</div>
 						{/each}

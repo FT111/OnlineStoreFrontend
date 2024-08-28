@@ -5,6 +5,10 @@ export const fetchListings = async () => {
 	return await GET('listings/?limit=24');
 }
 
+export const fetchListing = async (id) => {
+	return await GET(`listings/${id}`);
+}
+
 export const queryListings = async (query, category, subCategory, sort, order) => {
 	let requestString = `listings/?`
 	if (query) {
