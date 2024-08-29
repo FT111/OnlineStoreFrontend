@@ -30,7 +30,7 @@
 	<div class="absolute aspect-square w-max h-auto" />
 	<Skeleton class="absolute w-full h-full rounded-md"  />
 {/if}
-<picture class="rounded-md border-b w-full h-full">
+<picture class="rounded-md border-b h-full border-none">
 	<source type="image/webp" srcset={src} src={src} on:load={handleLoad} />
 	<img src={src} alt={alt} class="rounded-md border-b object-cover w-fit h-full {className}" on:load={handleLoad} />
 </picture>

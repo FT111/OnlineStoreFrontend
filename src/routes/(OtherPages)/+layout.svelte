@@ -57,29 +57,31 @@ const productsInBasket = [
 				</Sheet.Trigger>
 				<Sheet.Content>
 					<div class="flex flex-col justify-between h-full">
-						<Sheet.Header>
-							<Sheet.Title>Your Basket</Sheet.Title>
-							<Sheet.Description class="overflow-y-scroll">
-								{#each productsInBasket as product}
-									<a href="/listings/1">
-										<div class="flex flex-row gap-2 items-center">
-											<Image src={product.imageURL} alt="Product " class="w-10 h-10" />
-											<p>{product.title}</p>
-										</div>
-										
-									</a>
-								{/each}
-							</Sheet.Description>
-							
-						</Sheet.Header>
+						<div class="flex flex-col justify-between h-fit">
+							<Sheet.Header>
+								<Sheet.Title>Your Basket</Sheet.Title>
+								<Sheet.Description>
+									{#each productsInBasket as product}
+										<a href="/listings/1">
+											<div class="bg-muted rounded-2xl flex flex-row h-28 gap-2 p-2.5 align-middle items-center">
+												<Image src={product.imageURL} alt="Product " class="w-10 h-10" />
+												<p>{product.title}</p>
+											</div>
+											
+										</a>
+									{/each}
+								</Sheet.Description>
+								
+							</Sheet.Header>
+						</div>
+						
 						
 						<Sheet.Footer>
-							<div class="bg-muted w-full flex flex-row gap-5 p-2 rounded-xl items-center">
-								<p></p>
-								
-								<a class="w-full" href="/checkout"><Button>Checkout</Button></a>
-							</div>
-						</Sheet.Footer>
+								<div class=" bg-muted w-full flex flex-row gap-5 p-2.5 mt-2 items-center justify-end">
+									
+									<a href="/checkout"><Button>Checkout</Button></a>
+								</div>
+							</Sheet.Footer>
 					</div>
 					
 				</Sheet.Content>
