@@ -3,6 +3,7 @@
 import { Input } from '$lib/components/ui/input/index.js';
 import { Button } from '$lib/components/ui/button'
 import Image from '$lib/components/image.svelte'
+import Price from '\$lib/components/price.svelte';
 import * as Sheet from '$lib/components/ui/sheet/index.js';
 
 const productsInBasket = [
@@ -63,9 +64,14 @@ const productsInBasket = [
 								<Sheet.Description>
 									{#each productsInBasket as product}
 										<a href="/listings/1">
-											<div class="bg-muted rounded-2xl flex flex-row h-28 gap-2 p-2.5 align-middle items-center">
+											<div class="bg-muted rounded-2xl flex flex-row justify-between h-28 gap-2 p-2.5 align-middle items-center">
+												<div class="flex flex-row gap-1 h-full w-auto">
 												<Image src={product.imageURL} alt="Product " class="w-10 h-10" />
-												<p>{product.title}</p>
+												<div class="flex flex-col p-2">
+													<p class="font-semibold text-xl">{product.title}</p>
+												</div>
+												</div>
+												<Price price={product.price} />
 											</div>
 											
 										</a>
@@ -75,13 +81,12 @@ const productsInBasket = [
 							</Sheet.Header>
 						</div>
 						
-						
 						<Sheet.Footer>
 								<div class=" bg-muted w-full flex flex-row gap-5 p-2.5 mt-2 items-center justify-end">
 									
 									<a href="/checkout"><Button>Checkout</Button></a>
 								</div>
-							</Sheet.Footer>
+						</Sheet.Footer>
 					</div>
 					
 				</Sheet.Content>

@@ -1,5 +1,8 @@
 
 <script>
+	let className = undefined;
+	export {className as class};
+
 	export let price;
 	price = price / 100;
 	
