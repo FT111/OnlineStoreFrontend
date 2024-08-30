@@ -5,6 +5,7 @@
 	import { quintOut } from 'svelte/easing';
 	import { Skeleton } from "$lib/components/ui/skeleton";
 	import Image from "$lib/components/image.svelte";
+	import Price from "$lib/components/price.svelte";
 	import * as Avatar from "$lib/components/ui/avatar";
 
 	export let listingName = "Product Name";
@@ -21,10 +22,10 @@
 	export let editMode = false;
 	export let isLoading = false;
 	
-	// Convert price to integer and decimal from integer
-	listingPrice = listingPrice / 100
-	const priceInteger = Math.floor(listingPrice);
-	const priceDecimal = (listingPrice - priceInteger).toFixed(2).slice(2);
+	// // Convert price to integer and decimal from integer
+	// listingPrice = listingPrice / 100
+	// const priceInteger = Math.floor(listingPrice);
+	// const priceDecimal = (listingPrice - priceInteger).toFixed(2).slice(2);
 	
 </script>
 
@@ -110,10 +111,10 @@
 						<div class="flex flex-col gap-0 w-full justify-end text-right">
 							{#if multipleSKUs === true}
 								<p class="text-sm font-bold">Starting at</p>
-								<p class="text-4xl font-bold">£{priceInteger}<sup class="text-xl font-medium">{priceDecimal}</sup> </p>
+								<Price price={listingPrice} />
 							{:else}
 								<br>
-								<p class="text-4xl font-bold">£{priceInteger}<sup class="text-xl font-medium">{priceDecimal}</sup> </p>
+								<Price price={listingPrice} />
 							{/if}
 						</div>
 					{/if}
