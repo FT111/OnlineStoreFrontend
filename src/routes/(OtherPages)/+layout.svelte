@@ -61,12 +61,12 @@ const productsInBasket = [
 						</svg>
 					</div>
 				</Sheet.Trigger>
-				<Sheet.Content>
+				<Sheet.Content class="p-0">
 					<div class="flex flex-col justify-between h-full">
-						<div class="flex flex-col justify-between h-fit">
+						<div class="flex flex-col grow justify-between h-full p-6 pb-2">
 							<Sheet.Header>
 								<Sheet.Title>Your Basket</Sheet.Title>
-								<Sheet.Description>
+								<Sheet.Description class="rounded-2xl grow">
 									{#each productsInBasket as product}
 										<a href="/listings/1" on:click={() => {basketOpen=false}}>
 											<div class="bg-muted rounded-2xl flex flex-row justify-between h-28 gap-2 p-2.5 align-middle items-center">
@@ -87,8 +87,9 @@ const productsInBasket = [
 							</Sheet.Header>
 						</div>
 						
-						<Sheet.Footer>
-								<div class=" bg-muted w-full flex flex-row gap-5 p-2.5 mt-2 items-center justify-end">
+						<Sheet.Footer class=" justify-end">
+								<div class="h-fit bg-muted w-full flex flex-row gap-8 p-5 mt-2 items-center justify-end">
+									<Price price={productsInBasket.reduce((acc, product) => acc + product.price, 0)} />
 									
 									<a href="/checkout"><Button>Checkout</Button></a>
 								</div>
