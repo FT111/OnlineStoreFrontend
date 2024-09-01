@@ -1,4 +1,6 @@
 
+import { initAnalytics } from './core.js';
+
 export const isConsentGiven = () => {
 	return localStorage.getItem('consent') === 'true';
 }
@@ -34,21 +36,20 @@ const hidePopup = (popupElement) => {
 	});
 }
 
-const initAnalytics = () => {
-	//
-	console.log('Analytics initialized');
-}
 
 
-export const giveConsent = (popupElement) => {
-	console.log('Consent pressed');
+export const giveConsent = (popupElement=null) => {
 	localStorage.setItem('consent', 'true');
-	hidePopup(popupElement);
+	if (popupElement) {
+		hidePopup(popupElement);
+
+	}
 }
 
-export const revokeConsent = (popupElement) => {
+export const revokeConsent = (popupElement=null) => {
 	localStorage.setItem('consent', 'false');
-	hidePopup(popupElement);
-
+	if (popupElement) {
+		hidePopup(popupElement);
+	}
 }
 
