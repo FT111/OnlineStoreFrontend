@@ -6,6 +6,8 @@ import Image from '$lib/components/image.svelte'
 import Price from '\$lib/components/price.svelte';
 import * as Sheet from '$lib/components/ui/sheet/index.js';
 
+let basketOpen = false;
+
 const productsInBasket = [
 {'title': 'Product 1', 'imageURL': 'https://via.placeholder.com/1000', 'price': 1099, 'quantity': 1, 'SKUtitle': 'Product Type 1'},
 {'title': 'Product 2', 'imageURL': 'https://via.placeholder.com/1000', 'price': 1099, 'quantity': 1, 'SKUtitle': 'Product Type 2'},
@@ -50,7 +52,7 @@ const productsInBasket = [
 			</svg>
 			</p>
 			
-			<Sheet.Root>
+			<Sheet.Root bind:open={basketOpen}>
 				<Sheet.Trigger>
 					<div>
 						<span class="absolute top-3 text-xs bg-secondary rounded-3xl text-primary w-5">{productsInBasket.length}</span>
@@ -66,7 +68,7 @@ const productsInBasket = [
 								<Sheet.Title>Your Basket</Sheet.Title>
 								<Sheet.Description>
 									{#each productsInBasket as product}
-										<a href="/listings/1">
+										<a href="/listings/1" on:click={() => {basketOpen=false}}>
 											<div class="bg-muted rounded-2xl flex flex-row justify-between h-28 gap-2 p-2.5 align-middle items-center">
 												<div class="flex flex-row gap-1 h-full w-auto">
 													<Image src={product.imageURL} alt="Product " class="w-10 h-10" />
