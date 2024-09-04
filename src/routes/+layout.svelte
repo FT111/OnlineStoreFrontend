@@ -2,8 +2,9 @@
 	import "../app.css";
 
 	import { onMount } from "svelte";
+
 	import { checkConsent, giveConsent, revokeConsent } from '$lib/analytics/consent.js';
-		import { Button } from '$lib/components/ui/button/index.js';
+	import { Button } from '$lib/components/ui/button/index.js';
 	
 	let consentPopup;
 	
@@ -14,10 +15,11 @@
 </script>
 
 
-
 <slot />
 
 
+
+<!--Consent Popup-->
 <div bind:this={consentPopup} class="fixed bottom-10 flex-row w-full justify-center items-center transition-all duration-150 ease-in-out hidden">
 	<div class="sm:w-3/4 w-full m-2 flex flex-row gap-5 shadow-sm bg-slate-200/70 border-slate-400/40 border-1 border backdrop-blur-xl p-4 rounded-2xl items-center justify-between">
 		<div class="flex flex-row gap-5 items-center">

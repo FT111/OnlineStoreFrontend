@@ -9,7 +9,13 @@
 	
 	export let navElement;
 	export let searchElement;
+	export let hideSearch = false;
 	let basketOpen = false;
+	
+	let hideClass = '';
+	if (hideSearch) {
+		hideClass = '-translate-y-32';
+	}
 
 
 	const productsInBasket = [
@@ -28,9 +34,6 @@
 	]
 	
 	
-
-	
-	
 </script>
 
 
@@ -43,7 +46,7 @@
 		</a>
 		
 		
-			<div class="lg:w-1/2 md:w-2/3 transition-all ease-in-out" bind:this={searchElement}>
+			<div class="lg:w-1/2 md:w-2/3 transition-all ease-in-out {hideClass}" bind:this={searchElement}>
 				<div class="flex flex-row gap-3">
 					<Input class="text-black rounded-3xl h-9/10 focus-visible:ring-accent focus-visible:outline-accent focus-visible:ring-offset-0 focus-visible:ring-1" placeholder="Search for anything..." />
 					<Button class="rounded-3xl flex flex-row gap-2" variant="secondary">

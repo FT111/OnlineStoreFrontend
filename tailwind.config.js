@@ -14,6 +14,10 @@ const config = {
 			}
 		},
 		extend: {
+			transitionTimingFunction: {
+				'ease-custom': 'cubic-bezier(1, 0, 0, 1)'
+			},
+
 			colors: {
 				border: "hsl(var(--border) / <alpha-value>)",
 				input: "hsl(var(--input) / <alpha-value>)",
