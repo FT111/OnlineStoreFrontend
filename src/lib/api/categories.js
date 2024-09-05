@@ -1,5 +1,5 @@
 
-import {GET} from './base';
+import {GET} from './core.js';
 
 export const fetchCategories = async () => {
 	return await GET('categories/');

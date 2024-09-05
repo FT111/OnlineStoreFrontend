@@ -1,5 +1,5 @@
 
-import {GET} from './base';
+import {GET} from './core.js';
 
 export const fetchListings = async () => {
 	return await GET('listings/?limit=24');
