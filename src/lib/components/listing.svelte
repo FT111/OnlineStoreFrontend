@@ -30,7 +30,9 @@
 </script>
 
 <a href="/listings/{listingID}" class="w-full h-full">
-	<Card.Root class="flex flex-col justify-start h-full  w-full overflow-x-scroll group transition-all duration-150 ease-in-out hover:scale-[1.00] hover:bg-slate-50 hover:border-accent" href="/listings/{listingID}">
+	<Card.Root class="flex flex-col justify-start h-full w-full shadow-sm group rounded-xl bg-muted/60
+					transition-all duration-150 ease-in-out hover:scale-[1.00] hover:bg-slate-200/50 hover:border-accent/50
+					border-slate-200/80 border-2" href="/listings/{listingID}">
 		
 		<Card.Header class="pb-4">
 			{#if isLoading === true}

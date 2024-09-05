@@ -11,7 +11,7 @@
 
 
 	const navHeroClasses = ['bg-primary', 'text-white', 'rounded-b-3xl'];
-	const navPageClasses = ['bg-background/70', 'text-black'];
+	const navPageClasses = ['bg-slate-200/70', 'text-black'];
 
 	const heroSearchClasses = ['-translate-y-32']
 
@@ -67,7 +67,7 @@
 			<SearchHero searchSuggestions={fetchCategories} bind:searchElement={heroSearchBar} />
 		</div>
 		
-		<div class="z-0 w-full h-[40vh] bg-muted rounded-b-3xl p-6 text-primary-foreground text-3xl font-semibold">
+		<div class="z-0 w-full h-[40vh] max-h-fit bg-muted rounded-b-3xl p-6 text-primary-foreground text-3xl font-semibold">
 			<div class="flex md:flex-row flex-col h-full w-full content-stretch items-stretch gap-6 flex-grow flex-1 transition-all">
 				<MenuCard href="/listings" class="bg-emerald-600">
 					Recently Viewed
@@ -75,7 +75,7 @@
 				<MenuCard class="bg-yellow-600">
 					Trending Offers
 				</MenuCard>
-				<div class="flex flex-col flex-1 grow gap-6 basis-1/4 transition-all">
+				<div class="flex flex-col h-full flex-1 grow gap-6 basis-1/4 hover:basis-4/12 transition-all">
 					<MenuCard class="bg-cyan-700">
 						Categories
 					</MenuCard>
@@ -83,7 +83,7 @@
 						Top Categories
 					</MenuCard>
 				</div>
-				<MenuCard class="bg-primary basis-0">
+				<MenuCard class="bg-primary basis-1/12">
 					Your Basket
 				</MenuCard>
 
