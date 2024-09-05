@@ -10,7 +10,7 @@
 //bg-gradient-to-br from-indigo-500 to-fuchsia-800
 </script>
 <!--bg-[url('/src/lib/assets/searchGradient1.png')]-->
-<div class="flex flex-col items-center justify-between w-full min-h-[60vh] h-fit bg-cyan-950 rounded-b-3xl">
+<div class="flex flex-col items-center justify-between w-full min-h-[60vh] h-fit bg-primary rounded-b-3xl">
 	<div class="flex flex-col items-center w-full md:p-32 md:pb-10 p-8 py-32 gap-3">
 		<h1 class="text-7xl text-white font-bold">What are you looking for?</h1>
 
