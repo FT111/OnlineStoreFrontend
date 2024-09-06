@@ -23,6 +23,7 @@ let selectedSubcategory = $page.url.searchParams.get('subCategory') || undefined
 let selectedSort = $page.url.searchParams.get('sort');
 let selectedOrder = $page.url.searchParams.get('order') || 'asc';
 
+
 switch (selectedOrder) {
   case 'asc': {
 	selectedOrder = 'Asc.'
@@ -30,6 +31,10 @@ switch (selectedOrder) {
   }
   case 'desc': {selectedOrder = 'Desc.'}
 }
+
+// logs all
+console.log('meoow')
+console.log(selectedCategory, selectedSubcategory, selectedSort, selectedOrder)
 
 // Fetches categories for the dropdown
 onMount(() => {

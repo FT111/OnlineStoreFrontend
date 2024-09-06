@@ -83,7 +83,7 @@
 						Top Categories
 					</MenuCard>
 				</div>
-				<MenuCard class="bg-primary basis-1/12">
+				<MenuCard class="bg-primary basis-2/12">
 					Your Basket
 				</MenuCard>
 

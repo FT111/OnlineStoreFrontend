@@ -21,7 +21,7 @@ export let title = 'Listings';
 		<Carousel.Content class="-ml-1">
 			{#await fetcher()}
 				{#each Array.from({ length: 10 }) as _, i}
-					<Listing isLoading={true} />
+					<Listing class="pl-1 md:basis-1/3 lg:basis-1/4" isLoading={true} />
 				{/each}
 			{:then data}
 				{#each data.data as listing}

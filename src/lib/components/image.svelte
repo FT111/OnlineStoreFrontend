@@ -27,8 +27,7 @@
 
 
 {#if !loaded}
-	<div class="absolute aspect-square w-max h-auto" />
-	<Skeleton class="absolute w-full h-full rounded-md"  />
+	<Skeleton class="absolute h-full rounded-md"  />
 {/if}
 <picture class="rounded-md border-b h-full border-none">
 	<source type="image/webp" srcset={src} src={src} on:load={handleLoad} />

@@ -7,6 +7,9 @@
 	import Image from "$lib/components/image.svelte";
 	import Price from "$lib/components/price.svelte";
 	import * as Avatar from "$lib/components/ui/avatar";
+	
+	let className;
+	export { className as class };
 
 	export let listingName = "Product Name";
 	export let listingDescription = "Product Description";
@@ -29,7 +32,7 @@
 	
 </script>
 
-<a href="/listings/{listingID}" class="w-full h-full">
+<a href="/listings/{listingID}" class="w-full h-full {className}">
 	<Card.Root class="flex flex-col justify-start h-full w-full shadow-sm group rounded-xl bg-muted/60
 					transition-all duration-150 ease-in-out hover:scale-[1.00] hover:bg-slate-200/50 hover:border-accent/50
 					border-slate-200/80 border-2" href="/listings/{listingID}">
@@ -73,7 +76,7 @@
 		</Card.Header>
 		<div class="flex flex-col justify-end">
 			<Card.Content class="pb-2">
-				<Image class="h-max rounded-md border-b" src="{listingImage}" alt="{listingDescription}" />
+				<Image class="h-full rounded-md border-b" src="{listingImage}" alt="{listingDescription}" />
 			</Card.Content>
 			<Card.Footer class="gap-2 justify-end pb-3">
 				<div in:slide={{duration:300}} class="flex flex-row gap-1">
