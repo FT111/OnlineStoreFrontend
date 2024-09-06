@@ -18,10 +18,14 @@ export let title = 'Listings';
   'slidesToScroll': 4
 
  }}>
-		<Carousel.Content class="-ml-1">
+		<Carousel.Content class="-ml-1 flex-1 grow">
 			{#await fetcher()}
 				{#each Array.from({ length: 10 }) as _, i}
-					<Listing class="pl-1 md:basis-1/3 lg:basis-1/4" isLoading={true} />
+					<Carousel.Item class="pl-1 md:basis-1/3 lg:basis-1/4">
+						<div class="p-1">
+							<Listing isLoading={true} />
+						</div>
+					</Carousel.Item>
 				{/each}
 			{:then data}
 				{#each data.data as listing}

@@ -24,18 +24,13 @@
 	export let listingID= 1;
 	export let editMode = false;
 	export let isLoading = false;
-	
-	// // Convert price to integer and decimal from integer
-	// listingPrice = listingPrice / 100
-	// const priceInteger = Math.floor(listingPrice);
-	// const priceDecimal = (listingPrice - priceInteger).toFixed(2).slice(2);
-	
+
 </script>
 
 <a href="/listings/{listingID}" class="w-full h-full {className}">
 	<Card.Root class="flex flex-col justify-start h-full w-full shadow-sm group rounded-xl bg-muted/60
 					transition-all duration-150 ease-in-out hover:scale-[1.00] hover:bg-slate-200/50 hover:border-accent/50
-					border-slate-200/80 border-2" href="/listings/{listingID}">
+					border-slate-200 " href="/listings/{listingID}">
 		
 		<Card.Header class="pb-4">
 			{#if isLoading === true}
