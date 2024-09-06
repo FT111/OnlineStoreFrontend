@@ -11,26 +11,19 @@
 
 
 	let loaded = false;
+	let imageElement;
 
 	let handleLoad = () => {
 		loaded = true;
+		imageElement.classList.remove('opacity-0');
 	};
-
-	onMount(() => {
-		const img = new Image();
-		img.src = src;
-		img.onload = () => {
-			loaded = true;
-		};
-	});
+	
 </script>
 
-
-{#if !loaded}
-	<Skeleton class="absolute h-full rounded-md"  />
-{/if}
-<picture class="rounded-md border-b h-full border-none">
-	<source type="image/webp" srcset={src} src={src} on:load={handleLoad} />
-	<img src={src} alt={alt} class="rounded-md border-b object-cover w-fit h-full {className}" on:load={handleLoad} />
-</picture>
-<!--	<img alt={alt} width="100" height="100" class="rounded-md border-b object-cover {className}" {src} on:load={handleLoad}  />-->
+<div class="w-full h-full max-h-full grid grid-cols-1 grid-rows-1">
+	{#if !loaded}
+		<Skeleton class="aspect-square h-full w-auto rounded-md col" style="grid-column: 1;grid-row: 1" />
+	{/if}
+	<img bind:this={imageElement} src={src} alt={alt} class="rounded-md border-b object-cover w-fit h-full opacity-0 {className}" style="grid-column: 1;grid-row: 1" on:load={handleLoad} />
+	
+</div>
