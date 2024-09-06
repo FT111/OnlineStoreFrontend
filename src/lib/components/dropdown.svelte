@@ -4,21 +4,22 @@
 	import * as Command from '$lib/components/ui/command/index.js';
 	import { tick } from 'svelte';
 
-	let value;
+	export let value = undefined;
 	export let title;
 	export let subtitle;
-	export let selectedValue;
 	export let options = []
+	
+	export let clickAction = () => {};
+	$: console.log(title, value)
+
 
 	let open = false;
 	
-	// if (selectedValue) {
-	// 	title = selectedValue
-	// }
+
 	
-	$: selectedValue =
-		options.find((f) => f === value) ??
-			`${title}`;
+	// $: value =
+	// 	options.find((f) => f === value) ??
+	// 		`${title}`;
 
 
 	function closeAndFocusTrigger(triggerId) {
@@ -27,6 +28,7 @@
 			document.getElementById(triggerId)?.focus();
 		});
 	}
+	
 </script>
 
 <Popover.Root bind:open let:ids>
@@ -38,8 +40,8 @@
 		  aria-expanded={open}
 		  class="w-full justify-between text-ellipsis hover:bg-secondary"
 		>
-			{#if selectedValue !== undefined}
-				{selectedValue}
+			{#if value !== undefined}
+				{value}
 			{:else}
 				{title}
 			{/if}
@@ -58,8 +60,10 @@
 					  class="aria-selected:text-white transition-all duration-100"
 					  value={option}
 					  onSelect={(currentValue) => {
-              value = currentValue;
-              closeAndFocusTrigger(ids.trigger);
+								
+							  value = currentValue;
+								clickAction();
+							  closeAndFocusTrigger(ids.trigger);
             }}
 					>
 						{option}
