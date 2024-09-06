@@ -6,7 +6,7 @@
 	import { Button } from '$lib/components/ui/button/index.js';
 	import * as Sheet from '$lib/components/ui/sheet/index.js';
 	import Image from '$lib/components/image.svelte';
-	
+	import * as Avatar from '$lib/components/ui/avatar/index.js';
 	export let navElement;
 	export let searchElement;
 	export let hideSearch = false;
@@ -58,13 +58,9 @@
 				</div>
 			</div>
 		
-		<div class="flex flex-row gap-7">
+		<div class="flex flex-row gap-7 items-center">
 			<p><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
 				<path stroke-linecap="round" stroke-linejoin="round" d="M8.25 6.75h12M8.25 12h12m-12 5.25h12M3.75 6.75h.007v.008H3.75V6.75Zm.375 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0ZM3.75 12h.007v.008H3.75V12Zm.375 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm-.375 5.25h.007v.008H3.75v-.008Zm.375 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Z" />
-			</svg>
-			</p>
-			<p><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
-				<path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z" />
 			</svg>
 			</p>
 			
@@ -114,6 +110,11 @@
 				
 				</Sheet.Content>
 			</Sheet.Root>
+			
+			<Avatar.Root class="text-primary h-9 w-9">
+<!--				<Avatar.Image src="https://via.placeholder.com/100" alt="Avatar" />-->
+				<Avatar.Fallback>EB</Avatar.Fallback>
+			</Avatar.Root>
 		</div>
 	</div>
 </nav>

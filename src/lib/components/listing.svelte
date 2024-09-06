@@ -8,7 +8,7 @@
 	import Price from "$lib/components/price.svelte";
 	import * as Avatar from "$lib/components/ui/avatar";
 	
-	let className;
+	let className = '';
 	export { className as class };
 
 	export let listingName = "Product Name";

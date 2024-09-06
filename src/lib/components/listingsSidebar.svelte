@@ -1,6 +1,5 @@
 
 <script>
-import Dropdown from '$lib/components/dropdown.svelte'
 
 let isCollapsed = false;
 
