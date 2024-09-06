@@ -73,6 +73,8 @@ export const formQueryURL = (query, category, subCategory, sort, order) => {
 
 
 
+	console.log(category, subCategory, sort, order);
+
 	let requestString = `listings/?`;
 	if (query) {
 		requestString += `query=${query}&`;

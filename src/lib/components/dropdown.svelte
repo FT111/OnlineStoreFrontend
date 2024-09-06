@@ -40,7 +40,7 @@
 		  aria-expanded={open}
 		  class="w-full justify-between text-ellipsis hover:bg-secondary"
 		>
-			{#if value !== undefined}
+			{#if value !== undefined && value !== null}
 				{value}
 			{:else}
 				{title}
