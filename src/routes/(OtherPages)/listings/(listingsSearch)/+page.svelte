@@ -18,6 +18,7 @@ import { fetchCategories, fetchCategory } from '$lib/api/categories.js'
 import { goto } from '$app/navigation';
 import { browser } from '$app/environment';
 import { formQueryURL } from '$lib/utils.js';
+import { Skeleton } from '$lib/components/ui/skeleton/index.js';
 
 let categories = [];
 let subCategories = [];
@@ -30,6 +31,7 @@ let selectedSubcategory = $page.url.searchParams.get('subCategory') || undefined
 let selectedSort = $page.url.searchParams.get('sort');
 let selectedOrder = $page.url.searchParams.get('order') || 'asc';
 
+let showCategoryHeader = $page.url.searchParams.get('showCategoryHeader') === 'true';
 
 switch (selectedOrder) {
 	case 'asc': {
@@ -38,10 +40,6 @@ switch (selectedOrder) {
 	}
 	case 'desc': {selectedOrder = 'Desc.'}
 }
-
-// logs all
-console.log('meoow')
-console.log(selectedCategory, selectedSubcategory, selectedSort, selectedOrder)
 
 // Fetches categories for the dropdown
 onMount(() => {
@@ -70,12 +68,9 @@ $: if (selectedCategory !== 'All Categories' && selectedCategory !== 'Categories
 // Navigates to the listings page with the selected category, subcategory, and sort whenever the params are changed
 
 const refineListings = () => {
-		console.log(query, selectedCategory, selectedSubcategory, selectedSort, selectedOrder)
-	  console.log('went')
 		goto(formQueryURL(query, selectedCategory, selectedSubcategory, selectedSort, selectedOrder));
 }
 
-console.log(selectedCategory, selectedSubcategory, selectedSort, selectedOrder)
 
 
 // TESTING
@@ -119,8 +114,30 @@ $: console.log(selectedCategory, selectedSubcategory, selectedSort, selectedOrde
 	
 	</ListingsSidebar>
 	
-	
+
+<!--	Listings   -->
 	<div class="mt-16 grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 2xl:grid-cols-5 gap-3 w-full p-1 sm:p-4 md:p-8 md:px-7 justify-left">
+	
+<!--	Category Header	-->
+		{#key selectedCategory}
+			{#if showCategoryHeader}
+				<div class="w-full flex flex-col gap-2 min-h-32 bg-muted p-8 col-span-full rounded-xl">
+					{#await fetchCategory(selectedCategory)}
+						<Skeleton class="w-1/5 h-8" />
+						<Skeleton class="w-full h-4" />
+						<Skeleton class="w-full h-4" />
+						<Skeleton class="w-1/5 h-4" />
+					{:then data}
+							<h3 class="text-4xl font-bold">{data.data['title']}</h3>
+							<p>{data.data['description']}</p>
+					{:catch error}
+						<p>{error.message}</p>
+					{/await}
+				</div>
+			{/if}
+		{/key}
+		
+		<!-- Listings -->
 		{#key [query, selectedCategory, selectedSubcategory, selectedSort, selectedOrder]}
 			{#await queryListings(query, selectedCategory, selectedSubcategory, selectedSort, selectedOrder)}
 				{#each Array.from({ length: 20 }) as _, i}
