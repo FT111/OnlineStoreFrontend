@@ -125,12 +125,14 @@ $: console.log(selectedCategory, selectedSubcategory, selectedSort, selectedOrde
 			{#if showCategoryHeader}
 				<!--Header Container-->
 				{#await fetchCategory(selectedCategory)}
-					<CategoryHeader isLoading={true} />
-				{:then data}
-					<CategoryHeader title={data.data['title']} description={data.data['description']}>
+					<CategoryHeader isLoading={true} categoryColour='#0f172a'>
+
+					</CategoryHeader>
+				{:then categoryData}
+					<CategoryHeader title={categoryData.data['title']} description={categoryData.data['description']} categoryColour={'#'+categoryData.data['colour']}>
 						<div class="py-8">
-							<ListingCarousel compactLayout={true} title="Top deals in {data.data['title']}" />
-							<ListingCarousel compactLayout={true} title="New arrivals in {data.data['title']}" />
+							<ListingCarousel compactLayout={true} title="Top deals in {categoryData.data['title']}" />
+							<ListingCarousel compactLayout={true} title="New arrivals in {categoryData.data['title']}" />
 						</div>
 					</CategoryHeader>
 				{:catch error}
@@ -142,7 +144,7 @@ $: console.log(selectedCategory, selectedSubcategory, selectedSort, selectedOrde
 		<!-- Listings -->
 		{#key [query, selectedCategory, selectedSubcategory, selectedSort, selectedOrder]}
 			{#await queryListings(query, selectedCategory, selectedSubcategory, selectedSort, selectedOrder)}
-				{#each Array.from({ length: 20 }) as _, i}
+				{#each Array.from({ length: 40 }) as _, i}
 					<Listing isLoading={true} />
 				{/each}
 
