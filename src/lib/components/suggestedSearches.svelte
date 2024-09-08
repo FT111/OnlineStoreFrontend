@@ -23,9 +23,9 @@
 		</div>
 		{:then suggestions}
 		{#each [...Array(3).keys()] as i}
-			<div class="bg-amber-700 text-white rounded-3xl flex items-center p-2 px-4 min-w-24 cursor-pointer text-center hover:bg-amber-800 hover:scale-[1.01] transition-all">
+			<a href="/listings?category={suggestions.data[i].title}&showCategoryHeader=true" class="bg-amber-700 text-white rounded-3xl flex items-center p-2 px-4 min-w-24 cursor-pointer text-center hover:bg-amber-800 hover:scale-[1.01] transition-all">
 				{suggestions.data[i].title}
-			</div>
+			</a>
 		{/each}
 		{:catch error}
 		<div>{error.message}</div>

@@ -6,11 +6,17 @@ import { fetchListings } from '$lib/api/listings.js';
 export let fetcher = fetchListings; // Function to fetch listings from the API
 export let title = 'Listings';
 
+export let compactLayout = false;
+
+let className = '';
+export { className as class };
+
+let paddingClasses = compactLayout ? 'lg:px-14 lg:py-4 sm:p-4 ' : 'lg:p-20 lg:py-10 sm:p-6'
 </script>
 
 
 
-<div class="lg:p-20 lg:py-10 sm:p-6 flex flex-col gap-3">
+<div class="flex flex-col gap-3 {paddingClasses} {className}">
 	<p class="text-4xl font-semibold">{title}</p>
 	<Carousel.Root class="w-full" opts={{
   'dragFree': false,

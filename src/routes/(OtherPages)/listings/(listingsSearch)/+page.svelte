@@ -4,6 +4,8 @@ export let data;
 
 import { queryListings } from '$lib/api/listings.js';
 import Listing from '$lib/components/listing.svelte';
+import ListingCarousel from '$lib/components/listingCarousel.svelte';
+import CategoryHeader from '$lib/components/categoryHeader.svelte';
 import { elasticIn } from 'svelte/easing';
 import { getContext } from 'svelte';
 import { Separator } from '$lib/components/ui/separator/index.js';
@@ -121,19 +123,19 @@ $: console.log(selectedCategory, selectedSubcategory, selectedSort, selectedOrde
 <!--	Category Header	-->
 		{#key selectedCategory}
 			{#if showCategoryHeader}
-				<div class="w-full flex flex-col gap-2 min-h-32 bg-muted p-8 col-span-full rounded-xl">
-					{#await fetchCategory(selectedCategory)}
-						<Skeleton class="w-1/5 h-8" />
-						<Skeleton class="w-full h-4" />
-						<Skeleton class="w-full h-4" />
-						<Skeleton class="w-1/5 h-4" />
-					{:then data}
-							<h3 class="text-4xl font-bold">{data.data['title']}</h3>
-							<p>{data.data['description']}</p>
-					{:catch error}
-						<p>{error.message}</p>
-					{/await}
-				</div>
+				<!--Header Container-->
+				{#await fetchCategory(selectedCategory)}
+					<CategoryHeader isLoading={true} />
+				{:then data}
+					<CategoryHeader title={data.data['title']} description={data.data['description']}>
+						<div class="py-8">
+							<ListingCarousel compactLayout={true} title="Top deals in {data.data['title']}" />
+							<ListingCarousel compactLayout={true} title="New arrivals in {data.data['title']}" />
+						</div>
+					</CategoryHeader>
+				{:catch error}
+					<p>{error.message}</p>
+				{/await}
 			{/if}
 		{/key}
 		
