@@ -6,6 +6,7 @@
 	import { Button } from '$lib/components/ui/button/index.js';
 	import * as Sheet from '$lib/components/ui/sheet/index.js';
 	import Image from '$lib/components/image.svelte';
+	import * as DropdownMenu from "$lib/components/ui/dropdown-menu";
 	import * as Avatar from '$lib/components/ui/avatar/index.js';
 	export let navElement;
 	export let searchElement;
@@ -111,10 +112,27 @@
 				</Sheet.Content>
 			</Sheet.Root>
 			
-			<Avatar.Root class="text-primary h-9 w-9">
-<!--				<Avatar.Image src="https://via.placeholder.com/100" alt="Avatar" />-->
-				<Avatar.Fallback>EB</Avatar.Fallback>
-			</Avatar.Root>
+			<DropdownMenu.Root>
+				<DropdownMenu.Trigger>
+					<Avatar.Root class="text-primary h-9 w-9">
+		<!--				<Avatar.Image src="https://via.placeholder.com/100" alt="Avatar" />-->
+						<Avatar.Fallback>EB</Avatar.Fallback>
+					</Avatar.Root>
+				</DropdownMenu.Trigger>
+				<DropdownMenu.Content>
+					<DropdownMenu.Group>
+						<DropdownMenu.Label>My Account</DropdownMenu.Label>
+						<DropdownMenu.Separator />
+						<DropdownMenu.Item>Profile</DropdownMenu.Item>
+						<DropdownMenu.Item>My orders</DropdownMenu.Item>
+						<DropdownMenu.Item>Settings</DropdownMenu.Item>
+						<DropdownMenu.Separator />
+						<DropdownMenu.Label>My Sales</DropdownMenu.Label>
+						<DropdownMenu.Separator />
+						<DropdownMenu.Item>Dashboard</DropdownMenu.Item>
+					</DropdownMenu.Group>
+				</DropdownMenu.Content>
+			</DropdownMenu.Root>
 		</div>
 	</div>
 </nav>
