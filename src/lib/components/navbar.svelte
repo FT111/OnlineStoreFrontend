@@ -125,11 +125,13 @@
 						<DropdownMenu.Separator />
 						<DropdownMenu.Item>Profile</DropdownMenu.Item>
 						<DropdownMenu.Item>My orders</DropdownMenu.Item>
+						<DropdownMenu.Item>My watchlist</DropdownMenu.Item>
 						<DropdownMenu.Item>Settings</DropdownMenu.Item>
-						<DropdownMenu.Separator />
-						<DropdownMenu.Label>My Sales</DropdownMenu.Label>
-						<DropdownMenu.Separator />
-						<DropdownMenu.Item>Dashboard</DropdownMenu.Item>
+					</DropdownMenu.Group>
+					<DropdownMenu.Group>
+							<DropdownMenu.Label>My Sales</DropdownMenu.Label>
+							<DropdownMenu.Separator />
+							<DropdownMenu.Item>Dashboard</DropdownMenu.Item>
 					</DropdownMenu.Group>
 				</DropdownMenu.Content>
 			</DropdownMenu.Root>

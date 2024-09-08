@@ -8,6 +8,7 @@ import ListingCarousel from '$lib/components/listingCarousel.svelte';
 import CategoryHeader from '$lib/components/categoryHeader.svelte';
 import { elasticIn } from 'svelte/easing';
 import { getContext } from 'svelte';
+import {afterNavigate} from '$app/navigation';
 import { Separator } from '$lib/components/ui/separator/index.js';
 import { Slider } from '$lib/components/ui/slider/index.js';
 
@@ -33,8 +34,7 @@ let selectedSubcategory = $page.url.searchParams.get('subCategory') || undefined
 let selectedSort = $page.url.searchParams.get('sort');
 let selectedOrder = $page.url.searchParams.get('order') || 'asc';
 
-let showCategoryHeader = $page.url.searchParams.get('showCategoryHeader') === 'true';
-
+let showCategoryHeader = false;
 switch (selectedOrder) {
 	case 'asc': {
 		selectedOrder = 'Asc.'
@@ -43,8 +43,12 @@ switch (selectedOrder) {
 	case 'desc': {selectedOrder = 'Desc.'}
 }
 
-// Fetches categories for the dropdown
+afterNavigate(() => {
+	showCategoryHeader = $page.url.searchParams.get('showCategoryHeader') === 'true';
+})
+
 onMount(() => {
+	// Fetches categories for the 'Categories' dropdown
 	fetchCategories().then((data) => {
 		categories.push('All Categories')
 		for (let i = 0; i < data.data.length; i++) {
@@ -70,7 +74,7 @@ $: if (selectedCategory !== 'All Categories' && selectedCategory !== 'Categories
 // Navigates to the listings page with the selected category, subcategory, and sort whenever the params are changed
 
 const refineListings = () => {
-		goto(formQueryURL(query, selectedCategory, selectedSubcategory, selectedSort, selectedOrder));
+	goto(formQueryURL(query, selectedCategory, selectedSubcategory, selectedSort, selectedOrder));
 }
 
 
@@ -122,7 +126,7 @@ $: console.log(selectedCategory, selectedSubcategory, selectedSort, selectedOrde
 	
 <!--	Category Header	-->
 		{#key selectedCategory}
-			{#if showCategoryHeader}
+			{#if showCategoryHeader && selectedCategory !== 'All Categories' && selectedCategory !== 'Categories' && selectedCategory !== undefined}
 				<!--Header Container-->
 				{#await fetchCategory(selectedCategory)}
 					<CategoryHeader isLoading={true} categoryColour='#0f172a'>

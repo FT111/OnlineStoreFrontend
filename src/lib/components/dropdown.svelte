@@ -38,7 +38,7 @@
 		  variant="outline"
 		  role="combobox"
 		  aria-expanded={open}
-		  class="w-full justify-between text-ellipsis hover:bg-secondary"
+		  class="w-full justify-between text-ellipsis hover:bg-secondary hover:text-secondary-foreground"
 		>
 			{#if value !== undefined && value !== null}
 				{value}
