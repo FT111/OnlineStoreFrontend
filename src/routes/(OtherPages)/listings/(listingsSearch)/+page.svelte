@@ -22,17 +22,23 @@ import { goto } from '$app/navigation';
 import { browser } from '$app/environment';
 import { formQueryURL } from '$lib/utils.js';
 import { Skeleton } from '$lib/components/ui/skeleton/index.js';
+import { Badge } from '$lib/components/ui/badge/index.js';
 
 let categories = [];
 let subCategories = [];
 const sorts = ['None', 'Price', 'Rating', 'Views'];
 const orders = ['Asc.', 'Desc.'];
 
+
 let query = $page.url.searchParams.get('query') || '';
 let selectedCategory = $page.url.searchParams.get('category') || undefined;
 let selectedSubcategory = $page.url.searchParams.get('subCategory') || undefined;
 let selectedSort = $page.url.searchParams.get('sort');
 let selectedOrder = $page.url.searchParams.get('order') || 'asc';
+
+const filterTitles = ['Categories', 'Sub Categories', 'Sort', 'Order'];
+$: filters = [query, selectedCategory, selectedSubcategory, selectedSort, selectedOrder];
+$: selectedFilters = filters.filter((filter) => filter !== undefined);
 
 let showCategoryHeader = false;
 switch (selectedOrder) {
@@ -79,6 +85,7 @@ const refineListings = () => {
 
 
 
+
 // TESTING
 let slider1Value = [10];
 let slider2Value = 10;
@@ -89,7 +96,22 @@ $: console.log(selectedCategory, selectedSubcategory, selectedSort, selectedOrde
 
 <div class="w-full h-full flex flex-row">
 	<ListingsSidebar>
-		<div class="flex flex-row gap-2 w-full pt-20">
+	
+<!--		Spacer -->
+		<div class="h-20" />
+	
+<!--	Quick filters container	-->
+		<div class="flex flex-row flex-wrap gap-2 rounded-lg w-full p-4 min-h-24 bg-slate-200">
+			{#each selectedFilters as filter, i}
+				<Badge class="min-w-12 ">
+					{filter}
+				</Badge>
+			{/each}
+		</div>
+		
+		<Separator />
+		
+		<div class="flex flex-row gap-2 w-full ">
 			<Dropdown clickAction={refineListings} title="Sort" subtitle="Select a sort" options={ sorts } bind:value={selectedSort} />
 			<Dropdown clickAction={refineListings} title="Order" subtitle="Select an order" options={ orders } bind:value={selectedOrder} />
 		</div>
