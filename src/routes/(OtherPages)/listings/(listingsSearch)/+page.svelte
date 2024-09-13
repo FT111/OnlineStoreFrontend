@@ -101,14 +101,18 @@ $: console.log(selectedCategory, selectedSubcategory, selectedSort, selectedOrde
 		<div class="h-20" />
 	
 <!--	Quick filters container	-->
-		<div class="flex flex-row flex-wrap gap-2 rounded-lg w-full p-4 min-h-24 bg-slate-200">
-			{#each selectedFilters as filter, i}
-				<Badge class="min-w-12 ">
-					{filter}
-				</Badge>
-			{/each}
+		<div class="bg-slate-200 rounded-lg flex flex-col">
+			<p class="text-sm font-medium p-1.5 px-2.5">Applied Filters</p>
+			<div class="flex flex-row flex-wrap gap-2 border border-slate-200 rounded-b-lg w-full p-3 min-h-24 bg-white">
+				{#each selectedFilters as filter, i}
+					{#if filter !== 'All Categories' && filter !== 'Categories' && filter !== 'All Sub Categories' && filter !== undefined && filter !== '' && filter !== null}
+						<Badge class="min-w-12 text-xs font-normal h-fit p-1.5 px-3 ">
+							{filter}
+						</Badge>
+					{/if}
+				{/each}
+			</div>
 		</div>
-		
 		<Separator />
 		
 		<div class="flex flex-row gap-2 w-full ">
