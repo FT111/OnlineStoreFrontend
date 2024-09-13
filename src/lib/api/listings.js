@@ -9,7 +9,7 @@ export const fetchListing = async (id) => {
 	return await GET(`listings/${id}`);
 }
 
-export const queryListings = async (query, category, subCategory, sort, order) => {
+export const queryListings = async (query=null, category=null, subCategory=null, sort=null, order=null) => {
 
 	let requestString = `listings/?`
 	if (query) {

@@ -27,7 +27,7 @@
 
 </script>
 
-<a href="/listings/{listingID}" class="w-full h-full {className}">
+<a href="/listings/{listingID}" class="w-full h-min {className}">
 	<Card.Root class="flex flex-col justify-start h-full w-full shadow-sm group rounded-xl bg-muted/60
 					transition-all duration-150 ease-in-out hover:scale-[1.00] hover:bg-slate-200/50 hover:border-accent/50
 					border-slate-200 " href="/listings/{listingID}">
