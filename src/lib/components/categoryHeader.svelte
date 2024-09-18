@@ -9,7 +9,7 @@
   export let isLoading = false;
 </script>
 
-<div class="w-full flex flex-col gap-2 min-h-32 h-fit bg-slate-50 mb-10 p-8 mt-16 col-span-full rounded-2xl">
+<div class="w-full flex flex-col gap-2 min-h-32 h-fit bg-slate-50 mb-10 p-2 col-span-full rounded-2xl">
 	<!--				Main info -->
 	<div class="flex flex-col gap-2 min-h-32 h-fit text-white p-8 rounded-2xl" style="background-color: {categoryColour};">
 		{#if isLoading}

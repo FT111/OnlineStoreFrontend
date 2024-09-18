@@ -148,7 +148,7 @@ $: console.log(selectedCategory, selectedSubcategory, selectedSort, selectedOrde
 	
 
 <!--	Listings   -->
-	<div class="mt-16 grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 2xl:grid-cols-5 gap-3 w-full p-1 sm:p-4 md:p-8 md:px-7 justify-left">
+	<div class="mt-16 grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 2xl:grid-cols-5 gap-3 w-full p-1 sm:p-4 md:p-8 md:px-6 justify-left">
 	
 <!--	Category Header	-->
 		{#key selectedCategory}
