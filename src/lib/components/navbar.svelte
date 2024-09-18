@@ -8,9 +8,19 @@
 	import Image from '$lib/components/image.svelte';
 	import * as DropdownMenu from "$lib/components/ui/dropdown-menu";
 	import * as Avatar from '$lib/components/ui/avatar/index.js';
-	export let navElement;
+	import { queryListings } from '$lib/api/listings.js';
+	import { goto } from '$app/navigation';
+	import { enhance } from '$app/forms';
+		export let navElement;
 	export let searchElement;
 	export let hideSearch = false;
+	
+	const searchListings = (query) => {
+			console.log(query);
+	  		window.location.replace(`/listings?query=${query}`);
+		}
+	
+	$: searchQuery = '';
 	let basketOpen = false;
 	
 	let hideClass = '';
@@ -39,7 +49,7 @@
 
 
 <nav class="fixed top-0 z-50">
-	<div bind:this={navElement} class="fixed top-0 w-screen h-16 align-center items-center justify-between
+	<div bind:this={navElement}  class="fixed top-0 w-screen h-16 align-center items-center justify-between
                  flex flex-row p-5 px-8 gap-5 bg-primary //border-t-accent text-white
                  //border-t-[6px] backdrop-blur-2xl z-50 transition-all">
 		<a href="/">
@@ -48,15 +58,17 @@
 		
 		
 			<div class="lg:w-1/2 md:w-2/3 transition-all ease-in-out {hideClass}" bind:this={searchElement}>
-				<div class="flex flex-row gap-3">
-					<Input class="text-black rounded-3xl h-9/10 focus-visible:ring-accent focus-visible:outline-accent focus-visible:ring-offset-0 focus-visible:ring-1" placeholder="Search for anything..." />
+				
+				<form class="flex flex-row gap-3" on:submit={() => {searchListings(searchQuery)}}>
+					<Input bind:value={searchQuery} class="text-black rounded-3xl h-9/10 focus-visible:ring-accent focus-visible:outline-accent focus-visible:ring-offset-0 focus-visible:ring-1" placeholder="Search for anything..." />
 					<Button class="rounded-3xl flex flex-row gap-2" variant="secondary">
 						<p>Go</p>
 						<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-5">
 							<path stroke-linecap="round" stroke-linejoin="round" d="M6 12 3.269 3.125A59.769 59.769 0 0 1 21.485 12 59.768 59.768 0 0 1 3.27 20.875L5.999 12Zm0 0h7.5" />
 						</svg>
 					</Button>
-				</div>
+				</form>
+				
 			</div>
 		
 		<div class="flex flex-row w-min gap-7 items-center">
@@ -74,41 +86,40 @@
 						</svg>
 					</div>
 				</Sheet.Trigger>
-				<Sheet.Content class="p-0">
-					<div class="flex flex-col justify-between h-full">
-						<div class="flex flex-col grow justify-between h-full p-6 pb-2">
-							<Sheet.Header>
-								<Sheet.Title>Your Basket</Sheet.Title>
-								<Sheet.Description class="rounded-2xl grow">
-									{#each productsInBasket as product}
-										<a href="/listings/1" on:click={() => {basketOpen=false}}>
-											<div class="bg-muted rounded-2xl flex flex-row justify-between h-28 gap-2 p-2.5 align-middle items-center">
-												<div class="flex flex-row gap-1 h-full w-auto">
-													<Image src={product.imageURL} alt="Product " class="w-10 h-10" />
-													<div class="flex flex-col p-2">
-														<p class="font-semibold text-xl">{product.title}</p>
-													
-													</div>
-												</div>
-												<Price price={product.price} />
-											</div>
+				<Sheet.Content class="p-0 overflow-y-scroll ">
+					<Sheet.Header class="sticky top-0 bg-white/50 backdrop-blur-2xl z-10 flex flex-row items-center pr-6 justify-between">
+						<Sheet.Title class="p-8">Your Basket</Sheet.Title>
+						<Button variant="ghost" on:click={()=>{basketOpen=!basketOpen}}>
+							<svg   xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+							<path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
+						</svg>
+						</Button>
+					
+					</Sheet.Header>
+					
+					<div class="grow flex flex-col gap-2 ">
+						{#each productsInBasket as product}
+							<a href="/listings/1" on:click={() => {basketOpen=false}}>
+								<div class="bg-muted flex flex-row justify-between h-28 mx-8 rounded-2xl gap-2 p-2.5 align-middle items-center">
+									<div class="flex flex-row gap-1 h-full w-auto">
+										<Image src={product.imageURL} alt="Product " class="w-10 h-10" />
+										<div class="flex flex-col p-2">
+											<p class="font-semibold text-xl">{product.title}</p>
 										
-										</a>
-									{/each}
-								</Sheet.Description>
+										</div>
+									</div>
+									<Price price={product.price} />
+								</div>
 							
-							</Sheet.Header>
-						</div>
+							</a>
+						{/each}
 						
-						<Sheet.Footer class=" justify-end">
-							<div class="h-fit bg-muted w-full flex flex-row gap-8 p-5 mt-2 items-center justify-end">
-								<Price price={productsInBasket.reduce((acc, product) => acc + product.price, 0)} />
-								
-								<a href="/checkout"><Button>Checkout</Button></a>
-							</div>
-						</Sheet.Footer>
+						<div class="h-fit bottom-0 sticky bg-muted/50 backdrop-blur-2xl w-full flex flex-row gap-8 p-5 mt-2 items-center justify-end">
+							<Price price={productsInBasket.reduce((acc, product) => acc + product.price, 0)} />
+							
+							<a href="/checkout"><Button>Checkout</Button></a>
+						</div>
 					</div>
-				
 				</Sheet.Content>
 			</Sheet.Root>
 			
