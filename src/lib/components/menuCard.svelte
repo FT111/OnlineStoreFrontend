@@ -4,6 +4,8 @@
 	export let href;
 	export { className as class };
 	
+	export let altArrow = false;
+	
 </script>
 
 
@@ -11,19 +13,23 @@
 <a class="rounded-xl hover:basis-1/3 basis-1/4 p-5 justify-end align-bottom grow
  			hover:bg-opacity-90 transition-all duration-200 grid grid-cols-1 grid-rows-1 {className}" href={href}>
 	
-	<div style="grid-column: 1;grid-row: 1" class="w-full h-full">
+	<div class="w-full h-full" style="grid-column: 1;grid-row: 1">
 		<div class="flex w-full h-full p-2 justify-end align-bottom justify-items-end items-end">
-			<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-				 stroke="currentColor"
-				 class="size-6 items-end opacity-50 bg-blend-lighten group-hover:opacity-100 transition-all duration-100">
-				<path stroke-linecap="round" class="mix-blend-screen bg-blend-color-burn" stroke-linejoin="round"
-					  d="m11.99 7.5 3.75-3.75m0 0 3.75 3.75m-3.75-3.75v16.499H4.49"/>
+		{#if altArrow}
+			<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+				<path stroke-linecap="round" stroke-linejoin="round" d="M13.5 6H5.25A2.25 2.25 0 0 0 3 8.25v10.5A2.25 2.25 0 0 0 5.25 21h10.5A2.25 2.25 0 0 0 18 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25" />
 			</svg>
-		</div>
-
 		
-		<div style="grid-column: 1;grid-row: 1" class="w-min">
-			<slot />
+		{:else}
+			<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+				<path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3" />
+			</svg>
+			{/if}
 		</div>
 	</div>
+
+		
+		<div class="w-min flex justify-end align-bottom flex-col h-full" style="grid-column: 1;grid-row: 1">
+			<slot />
+		</div>
 </a>
