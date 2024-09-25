@@ -1,4 +1,6 @@
 <script>
+  	export let data;
+  
 	import Listing from '$lib/components/listing.svelte';
 	import ListingCarousel from '$lib/components/listingCarousel.svelte';
 	import MenuCard from '$lib/components/menuCard.svelte';
@@ -59,7 +61,7 @@
 	});
 </script>
 
-<Navbar bind:navElement={navElement} bind:searchElement={navSearch} hideSearch={true} />
+<Navbar bind:navElement={navElement} bind:searchElement={navSearch} hideSearch={true} user={data.user} />
 
 <main>
 	<div class="flex flex-col -gap-5 bg-muted rounded-b-3xl">

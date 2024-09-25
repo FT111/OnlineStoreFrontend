@@ -1,11 +1,8 @@
 <script>
 	import "../app.css";
-
 	import { onMount } from "svelte";
-
 	import { checkConsent, giveConsent, revokeConsent } from '$lib/analytics/consent.js';
 	import { Button } from '$lib/components/ui/button/index.js';
-	
 	let consentPopup;
 	
 	onMount(() => {

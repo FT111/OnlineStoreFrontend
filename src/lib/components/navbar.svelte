@@ -1,5 +1,4 @@
 <script>
-
 	import { onMount } from 'svelte';
 	import Price from './price.svelte';
 	import { Button } from '$lib/components/ui/button/index.js';
@@ -8,10 +7,10 @@
 	import * as DropdownMenu from "$lib/components/ui/dropdown-menu";
 	import * as Avatar from '$lib/components/ui/avatar/index.js';
 	import Searchbar from './searchbar.svelte';
-		export let navElement;
+	export let navElement;
 	export let searchElement;
 	export let hideSearch = false;
-	
+	export let user;
 	
 	let basketOpen = false;
 	
@@ -107,29 +106,37 @@
 				</Sheet.Content>
 			</Sheet.Root>
 			
-			<DropdownMenu.Root>
-				<DropdownMenu.Trigger>
-					<Avatar.Root class="text-primary h-9 w-9">
-		<!--				<Avatar.Image src="https://via.placeholder.com/100" alt="Avatar" />-->
-						<Avatar.Fallback>EB</Avatar.Fallback>
-					</Avatar.Root>
-				</DropdownMenu.Trigger>
-				<DropdownMenu.Content>
-					<DropdownMenu.Group>
-						<DropdownMenu.Label>My Account</DropdownMenu.Label>
+			{#if user}
+				<DropdownMenu.Root>
+					<DropdownMenu.Trigger>
+						<Avatar.Root class="text-primary h-9 w-9">
+			<!--				<Avatar.Image src="https://via.placeholder.com/100" alt="Avatar" />-->
+							<Avatar.Fallback>EB</Avatar.Fallback>
+						</Avatar.Root>
+					</DropdownMenu.Trigger>
+					<DropdownMenu.Content class="w-48">
+						<DropdownMenu.Label class="font-bold text-lg text-primary">Hello {user.name}!</DropdownMenu.Label>
 						<DropdownMenu.Separator />
-						<DropdownMenu.Item>Profile</DropdownMenu.Item>
-						<DropdownMenu.Item>My orders</DropdownMenu.Item>
-						<DropdownMenu.Item>My watchlist</DropdownMenu.Item>
-						<DropdownMenu.Item>Settings</DropdownMenu.Item>
-					</DropdownMenu.Group>
-					<DropdownMenu.Group>
-							<DropdownMenu.Label>My Sales</DropdownMenu.Label>
+						<DropdownMenu.Group>
+							<DropdownMenu.Label>My Account</DropdownMenu.Label>
 							<DropdownMenu.Separator />
-							<DropdownMenu.Item>Dashboard</DropdownMenu.Item>
-					</DropdownMenu.Group>
-				</DropdownMenu.Content>
-			</DropdownMenu.Root>
+							<DropdownMenu.Item>Profile</DropdownMenu.Item>
+							<DropdownMenu.Item>My orders</DropdownMenu.Item>
+							<DropdownMenu.Item>My watchlist</DropdownMenu.Item>
+							<DropdownMenu.Item>Settings</DropdownMenu.Item>
+						</DropdownMenu.Group>
+						<DropdownMenu.Group>
+								<DropdownMenu.Label>My Sales</DropdownMenu.Label>
+								<DropdownMenu.Separator />
+								<DropdownMenu.Item>Dashboard</DropdownMenu.Item>
+						</DropdownMenu.Group>
+					</DropdownMenu.Content>
+				</DropdownMenu.Root>
+				{:else}
+				<a href="/login">
+					<Button class="bg-slate-50/0" variant="outline">Log in</Button>
+				</a>
+				{/if}
 		</div>
 	</div>
 </nav>

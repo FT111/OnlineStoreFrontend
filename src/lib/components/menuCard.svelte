@@ -10,7 +10,7 @@
 
 
 
-<a class="rounded-xl hover:basis-1/3 basis-1/4 p-5 justify-end align-bottom grow
+<a class="rounded-xl hover:basis-4/12 basis-1/4 p-5 justify-end align-bottom grow
  			hover:bg-opacity-90 transition-all duration-200 grid grid-cols-1 grid-rows-1 {className}" href={href}>
 	
 	<div class="w-full h-full" style="grid-column: 1;grid-row: 1">
