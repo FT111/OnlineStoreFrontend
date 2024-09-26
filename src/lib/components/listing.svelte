@@ -114,17 +114,22 @@
 								<p class="text-sm font-bold">Starting at</p>
 							{:else}
 								<br>
-								<Price price={listingPrice} />
 							{/if}
-							
-								<div class="flex-row flex gap-2 items-center justify-end">
-									{#if hasDiscount === true}
-										<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" class="w-3 h-3 fill-red-500 animate-ping">
+							<div class="flex-row flex gap-2 items-center justify-end">
+								{#if hasDiscount === true}
+									<div class="items-center justify-center align-middle">
+										<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" class="absolute w-4 h-4 fill-red-500 animate-ping opacity-60">
 											<circle cx="50" cy="50" r="50" />
 										</svg>
-									{/if}
+										<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 fill-accent animate-pulse">
+											<circle cx="50" cy="50" r="50" />
+										</svg>
+									</div>
+									<Price price={listingPrice} discounted={true} />
+								{:else}
 									<Price price={listingPrice} />
-								</div>
+								{/if}
+							</div>
 						</div>
 					{/if}
 				</div>
