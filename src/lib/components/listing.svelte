@@ -14,6 +14,7 @@
 	export let listingName = "Product Name";
 	export let listingDescription = "Product Description";
 	export let listingPrice = 1.59;
+	export let hasDiscount = false;
 	export let listingImage = "https://via.placeholder.com/1000";
 	export let listingRating = 5;
 	
@@ -111,11 +112,19 @@
 						<div class="flex flex-col gap-0 w-full justify-end text-right">
 							{#if multipleSKUs === true}
 								<p class="text-sm font-bold">Starting at</p>
-								<Price price={listingPrice} />
 							{:else}
 								<br>
 								<Price price={listingPrice} />
 							{/if}
+							
+								<div class="flex-row flex gap-2 items-center justify-end">
+									{#if hasDiscount === true}
+										<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" class="w-3 h-3 fill-red-500 animate-ping">
+											<circle cx="50" cy="50" r="50" />
+										</svg>
+									{/if}
+									<Price price={listingPrice} />
+								</div>
 						</div>
 					{/if}
 				</div>

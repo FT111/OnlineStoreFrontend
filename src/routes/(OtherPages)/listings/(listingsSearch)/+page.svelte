@@ -187,7 +187,10 @@ $: console.log(selectedCategory, selectedSubcategory, selectedSort, selectedOrde
 					</div>
 				{:else}
 					{#each data.data as listing}
-						<Listing listingName={listing.title} listingPrice={listing.basePrice} userRating={listing.ownerUser.rating} listingRating={listing.rating} userAvatarUrl={listing.ownerUser.profilePictureURL} listingDescription={listing.description} multipleSKUs={listing.multipleSKUs} editMode={false} />
+						<Listing listingName={listing.title} listingPrice={listing.basePrice} userRating={listing.ownerUser.rating}
+								 listingRating={listing.rating} userAvatarUrl={listing.ownerUser.profilePictureURL}
+								 listingDescription={listing.description} multipleSKUs={listing.multipleSKUs}
+								 editMode={false} hasDiscount={listing.hasDiscount} />
 					{/each}
 				{/if}
 			{:catch error}
