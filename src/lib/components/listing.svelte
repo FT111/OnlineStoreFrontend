@@ -47,7 +47,7 @@
 			<div class="flex flex-row justify-between pt-2 items-center">
 				<div class="flex flex-row gap-2 h-3 align-middle items-center p-0">
 					<Avatar.Root>
-<!--						<Avatar.Image src={userAvatarUrl} alt='Avatar' />-->
+						<Avatar.Image src={userAvatarUrl} alt='Avatar' />
 						<Avatar.Fallback>EB</Avatar.Fallback>
 					</Avatar.Root>
 					<div class="flex flex-col">
