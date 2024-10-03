@@ -137,7 +137,7 @@
 		
 <!--	Detail Container	-->
 		<div class="basis-1/2 w-1/2 flex flex-col gap-4 flex-shrink-0 justify-between">
-			
+		
 <!--		Top info	-->
 			<div class="flex flex-col gap-4 flex-shrink-0 ">
 	<!--			Quick Info Row -->
@@ -210,8 +210,8 @@
 				{/if}
 			</div>
 			
-<!--		Basket options	-->
-			<div class="w-full sticky  bottom-0 min-h-24 p-3 bg-slate-300 rounded-3xl flex flex-row justify-between shadow-sm">
+			<!--		Basket options	-->
+			<div class="w-full bottom-16 min-h-24 p-3 bg-slate-300 rounded-3xl flex flex-row justify-between shadow-sm z-20">
 				<div />
 				<Button class="w-full h-full text-2xl rounded-3xl basis-1/2 font-bold border border-slate-400 bg-slate-100" variant="secondary">Add to Basket</Button>
 			</div>

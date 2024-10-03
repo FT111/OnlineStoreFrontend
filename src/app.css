@@ -2,23 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-
-@font-face {
-  font-family: 'Orbiter';
-  font-style: normal;
-  font-weight: 500;
-  src:
-    url('/fonts/Orbiter-Bold.otf') format('opentype')
-}
-
-@font-face {
-  font-family: 'Syne';
-    font-style: normal;
-    font-weight: 400;
-  src:
-          url('/fonts/Syne-Bold') format('truetype')
-}
-
 h1 {
     font-family: 'Syne', sans-serif;
 }

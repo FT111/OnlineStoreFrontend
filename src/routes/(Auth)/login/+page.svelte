@@ -1,8 +1,33 @@
 
 <script>
+  	import { baseURL } from '$lib/api/core.js';
 	import {Input} from "$lib/components/ui/input"
-		import { Card } from '$lib/components/ui/card/index.js';
-		import { Button } from '$lib/components/ui/button/index.js';
+	import { Card } from '$lib/components/ui/card/index.js';
+	import { Button } from '$lib/components/ui/button/index.js';
+	import { login } from '$lib/api/authentication.js';
+	import { enhance } from '$app/forms';
+	
+	let signInFormElement;
+	let submitBtnElement;
+	let email;
+	let password;
+	
+	let formData;
+	let loginAttempt = false;
+	
+	async function signIn(event) {
+		event.preventDefault();
+		
+		if (!signInFormElement.checkValidity()) {
+			return;
+		}
+		
+	  loginAttempt = true;
+	}
+	
+	async function handleLoginAttempt() {
+		await login(email, password);
+	}
 </script>
 
 <div class="flex flex-row w-full md:p-4 p-2 h-screen">
@@ -31,17 +56,38 @@
 			</div>
 
 			
-			<div class="flex flex-col gap-4 md:w-5/6 w-full">
-				<Input placeholder="Username"  />
-				<Input placeholder="Password"  />
-				<Button class="w-full justify-between hover:drop-shadow-xl drop-shadow-none transition-all duration-200"><div />Sign In
-					<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-5">
-					<path stroke-linecap="round" stroke-linejoin="round" d="M16.5 10.5V6.75a4.5 4.5 0 1 0-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 0 0 2.25-2.25v-6.75a2.25 2.25 0 0 0-2.25-2.25H6.75a2.25 2.25 0 0 0-2.25 2.25v6.75a2.25 2.25 0 0 0 2.25 2.25Z" />
-				</svg>
+			<form bind:this={signInFormElement} on:submit={signIn} use:enhance class="flex flex-col gap-4 md:w-5/6 w-full">
+				<Input bind:value={email} type="email" required placeholder="Email" name="username" />
+				<Input bind:value={password} type="password" required placeholder="Password" name="password"  />
 				
-				</Button>
+				{#if loginAttempt}
+					{#await handleLoginAttempt()}
+						<div class="flex flex-row gap-2 items-center justify-center">
+							<div class="w-5 h-5 border-2 border-primary rounded-full animate-spin"></div>
+							<p class="text-primary">Signing in</p>
+						</div>
+					{:then response}
+						<div class="flex flex-row gap-2 items-center justify-center">
+							<div class="w-5 h-5 border-2 border-success rounded-full"></div>
+							<p class="text-success">Signed in successfully!</p>
+						</div>
+					{:catch error}
+					  						<div class="flex flex-row gap-2 items-center justify-center">
+							<div class="w-5 h-5 border-2 border-error rounded-full"></div>
+							<p class="text-error
+							">An error occurred. Please try again.</p>
+						</div>
+					{/await}
+				{:else}
+					<Button bind:this={submitBtnElement} type="submit" class="w-full justify-between hover:drop-shadow-xl drop-shadow-none transition-all duration-200"><div />Sign In
+						<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-5">
+						<path stroke-linecap="round" stroke-linejoin="round" d="M16.5 10.5V6.75a4.5 4.5 0 1 0-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 0 0 2.25-2.25v-6.75a2.25 2.25 0 0 0-2.25-2.25H6.75a2.25 2.25 0 0 0-2.25 2.25v6.75a2.25 2.25 0 0 0 2.25 2.25Z" />
+					</svg>
+					
+					</Button>
+				{/if}
 			
-			</div>
+			</form>
 		
 		</Card>
 		

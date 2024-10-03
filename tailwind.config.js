@@ -14,6 +14,13 @@ const config = {
 			}
 		},
 		extend: {
+			dropShadow: {
+				glow: [
+					"0 0px 20px rgba(255,255, 255, 0.35)",
+					"0 0px 65px rgba(255, 255,255, 0.2)"
+				]
+			},
+
 			transitionTimingFunction: {
 				'ease-custom': 'cubic-bezier(1, 0, 0, 1)'
 			},
