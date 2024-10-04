@@ -59,6 +59,7 @@
 
 		searchObserver.observe(heroSearchBar);
 	});
+	
 </script>
 
 <Navbar bind:navElement={navElement} bind:searchElement={navSearch} hideSearch={true} user={data.user} />

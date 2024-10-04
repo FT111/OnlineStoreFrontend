@@ -12,21 +12,16 @@
 	let email;
 	let password;
 	
-	let formData;
 	let loginAttempt = false;
 	
 	async function signIn(event) {
 		event.preventDefault();
-		
-		if (!signInFormElement.checkValidity()) {
-			return;
-		}
-		
+
 	  loginAttempt = true;
 	}
 	
 	async function handleLoginAttempt() {
-		await login(email, password);
+		await login(email, password)
 	}
 </script>
 
@@ -56,7 +51,7 @@
 			</div>
 
 			
-			<form bind:this={signInFormElement} on:submit={signIn} use:enhance class="flex flex-col gap-4 md:w-5/6 w-full">
+			<form bind:this={signInFormElement} on:submit={signIn} class="flex flex-col gap-4 md:w-5/6 w-full">
 				<Input bind:value={email} type="email" required placeholder="Email" name="username" />
 				<Input bind:value={password} type="password" required placeholder="Password" name="password"  />
 				
