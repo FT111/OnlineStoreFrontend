@@ -115,7 +115,7 @@
 						</Avatar.Root>
 					</DropdownMenu.Trigger>
 					<DropdownMenu.Content class="w-48">
-						<DropdownMenu.Label class="font-bold text-lg text-primary">Hello {user.name}!</DropdownMenu.Label>
+						<DropdownMenu.Label class="font-bold text-lg text-primary">Hello {user['username']}!</DropdownMenu.Label>
 						<DropdownMenu.Separator />
 						<DropdownMenu.Group>
 							<DropdownMenu.Label>My Account</DropdownMenu.Label>
@@ -125,10 +125,11 @@
 							<DropdownMenu.Item>My watchlist</DropdownMenu.Item>
 							<DropdownMenu.Item>Settings</DropdownMenu.Item>
 						</DropdownMenu.Group>
+						<DropdownMenu.Separator />
 						<DropdownMenu.Group>
-								<DropdownMenu.Label>My Sales</DropdownMenu.Label>
-								<DropdownMenu.Separator />
-								<DropdownMenu.Item>Dashboard</DropdownMenu.Item>
+							<DropdownMenu.Label>My Sales</DropdownMenu.Label>
+							<DropdownMenu.Separator />
+							<DropdownMenu.Item>Dashboard</DropdownMenu.Item>
 						</DropdownMenu.Group>
 					</DropdownMenu.Content>
 				</DropdownMenu.Root>
