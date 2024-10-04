@@ -1,9 +1,13 @@
+import { browser } from '$app/environment';
 
 export const baseURL = 'http://localhost:8000/'
 
 const formHeaders = () => {
+	let token = null;
 	// Gets JWT authorisation token from session storage
-	const token = sessionStorage.getItem('token');
+	if (browser) {
+		token = sessionStorage.getItem('token');
+	}
 
 	let headers = {'Content-Type': 'application/json', }
 	// If token exists, add it to the headers to provide credentials to the server
@@ -20,7 +24,7 @@ export const GET = async (endpoint) => {
 	return await fetch(baseURL + endpoint,
 		{
 			method: 'GET',
-			headers: formHeaders()
+			headers: formHeaders(),
 		}
 	).then((response) => response.json())
 		.then((data) => {
