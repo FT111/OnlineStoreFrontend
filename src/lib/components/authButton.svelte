@@ -2,7 +2,7 @@
 <script>
  
 	import { Button } from '$lib/components/ui/button/index.js';
-	import { goto } from '$app/navigation';
+		import { goto, invalidateAll } from '$app/navigation';
 	
 	import { fade } from 'svelte/transition';
 	export let authFunction;
@@ -19,12 +19,13 @@
 	  		authFunction().then(() => {
 			state = 'success';
 			btnAnimationClasses = 'bg-emerald-300 outline-emerald-700 outline-[3px] fill-primary text-primary disabled '
-			setTimeout(() => {
-				btnAnimationClasses = ' bg-primary ';
-					
-				  goto('/listings')
-				  goto('/')
-			}, 750);
+			setTimeout(async () => {
+							btnAnimationClasses = ' bg-primary ';
+
+							await invalidateAll().then(() => {
+								goto('/')
+							});
+						}, 750);
 		}).catch(() => {
 			state = 'error';
 			btnAnimationClasses = 'bg-red-800 text-slate-50 '
