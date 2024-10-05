@@ -2,14 +2,14 @@ import { browser } from '$app/environment';
 
 export const baseURL = 'http://localhost:8000/'
 
-const formHeaders = () => {
-	let token = null;
+const formHeaders = (token=null) => {
 	// Gets JWT authorisation token from session storage
-	if (browser) {
+	if (browser && !token) {
 		token = sessionStorage.getItem('token');
 	}
 
-	let headers = {'Content-Type': 'application/json', }
+	let headers = {'Content-Type': 'application/json',
+	'Access-Control-Allow-Origin': 'http://localhost:8000'}
 	// If token exists, add it to the headers to provide credentials to the server
 	if (token) {
 		headers['Authorization'] = `JWT ${token}`;
@@ -18,13 +18,14 @@ const formHeaders = () => {
 	return headers;
 }
 
-export const GET = async (endpoint) => {
+export const GET = async (endpoint, token=null, credentialsOpt='omit') => {
 
 
 	return await fetch(baseURL + endpoint,
 		{
 			method: 'GET',
-			headers: formHeaders(),
+			headers: formHeaders(token),
+			credentials: credentialsOpt,
 		}
 	).then((response) => response.json())
 		.then((data) => {
@@ -35,11 +36,12 @@ export const GET = async (endpoint) => {
 
 }
 
-export const POST = async (endpoint, data) => {
+export const POST = async (endpoint, data, credentialsOpt='omit') => {
 	return await fetch(baseURL + endpoint, {
 		method: 'POST',
 		headers: formHeaders(),
-		body: data
+		body: data,
+		credentials: credentialsOpt,
 
 	}).then((response) => response.json())
 		.then((data) => {

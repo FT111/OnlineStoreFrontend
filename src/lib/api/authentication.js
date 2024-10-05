@@ -7,7 +7,8 @@ export const login = async (email, password) => {
 	if (!response.data.token) {
 		return false;
 	}
-
+	document.cookie = `token=${response.data.token}; path=/;`;
 	sessionStorage.setItem('token', response.data.token);
+
 	return true;
 }

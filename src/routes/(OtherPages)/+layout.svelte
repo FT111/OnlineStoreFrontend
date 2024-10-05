@@ -6,7 +6,7 @@
 	
 	import Navbar from '$lib/components/navbar.svelte'
 	export let data;
-
+	console.log(data)
 
 </script>
 
