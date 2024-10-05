@@ -105,39 +105,41 @@
 					</div>
 				</Sheet.Content>
 			</Sheet.Root>
-			
-			{#if user}
-				<DropdownMenu.Root>
-					<DropdownMenu.Trigger>
-						<Avatar.Root class="text-primary h-9 w-9">
-			<!--				<Avatar.Image src="https://via.placeholder.com/100" alt="Avatar" />-->
-							<Avatar.Fallback>EB</Avatar.Fallback>
-						</Avatar.Root>
-					</DropdownMenu.Trigger>
-					<DropdownMenu.Content class="w-48">
-						<DropdownMenu.Label class="font-bold text-lg text-primary">Hello {user['username']}!</DropdownMenu.Label>
-						<DropdownMenu.Separator />
-						<DropdownMenu.Group>
-							<DropdownMenu.Label>My Account</DropdownMenu.Label>
-							<DropdownMenu.Separator />
-							<DropdownMenu.Item>Profile</DropdownMenu.Item>
-							<DropdownMenu.Item>My orders</DropdownMenu.Item>
-							<DropdownMenu.Item>My watchlist</DropdownMenu.Item>
-							<DropdownMenu.Item>Settings</DropdownMenu.Item>
-						</DropdownMenu.Group>
-						<DropdownMenu.Separator />
-						<DropdownMenu.Group>
-							<DropdownMenu.Label>My Sales</DropdownMenu.Label>
-							<DropdownMenu.Separator />
-							<DropdownMenu.Item>Dashboard</DropdownMenu.Item>
-						</DropdownMenu.Group>
-					</DropdownMenu.Content>
-				</DropdownMenu.Root>
-				{:else}
-				<a href="/login">
-					<Button class="bg-slate-50/0" variant="outline">Log in</Button>
-				</a>
+			{#key user}
+				{#if user}
+						<DropdownMenu.Root>
+							<DropdownMenu.Trigger>
+								<Avatar.Root class="text-primary h-9 w-9">
+					<!--				<Avatar.Image src="https://via.placeholder.com/100" alt="Avatar" />-->
+									<Avatar.Fallback>EB</Avatar.Fallback>
+								</Avatar.Root>
+							</DropdownMenu.Trigger>
+							<DropdownMenu.Content class="w-48">
+								<DropdownMenu.Label class="font-bold text-lg text-primary">Hello {user['username']}!</DropdownMenu.Label>
+								<DropdownMenu.Separator />
+								<DropdownMenu.Group>
+									<DropdownMenu.Label>My Account</DropdownMenu.Label>
+									<DropdownMenu.Separator />
+									<DropdownMenu.Item>Profile</DropdownMenu.Item>
+									<DropdownMenu.Item>My orders</DropdownMenu.Item>
+									<DropdownMenu.Item>My watchlist</DropdownMenu.Item>
+									<DropdownMenu.Item>Settings</DropdownMenu.Item>
+								</DropdownMenu.Group>
+								<DropdownMenu.Separator />
+								<DropdownMenu.Group>
+									<DropdownMenu.Label>My Sales</DropdownMenu.Label>
+									<DropdownMenu.Separator />
+									<DropdownMenu.Item>Dashboard</DropdownMenu.Item>
+								</DropdownMenu.Group>
+							</DropdownMenu.Content>
+						</DropdownMenu.Root>
+						{:else}
+						<a href="/login">
+							<Button class="bg-slate-50/0" variant="outline">Log in</Button>
+						</a>
 				{/if}
+			{/key}
+		
 		</div>
 	</div>
 </nav>
