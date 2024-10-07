@@ -1,6 +1,7 @@
 
 <script>
   	import { baseURL } from '$lib/api/core.js';
+	import { fade } from 'svelte/transition';
 	import {Input} from "$lib/components/ui/input"
 	import { Card } from '$lib/components/ui/card/index.js';
 	import { Button } from '$lib/components/ui/button/index.js';
@@ -40,7 +41,7 @@
 <!--	Form -->
 	<div class="flex flex-col grow h-full items-center justify-center">
 		
-		<Card class="flex flex-col justify-between basis-7/12 md:p-16 md:px-16 p-8 w-fit border-slate-200/20 bg-slate-100 shadow-none rounded-2xl items-center">
+		<Card class="flex flex-col justify-between basis-7/12 md:p-16 md:px-16 p-8 w-fit border-slate-300 bg-slate-50 shadow-none rounded-2xl items-center">
 			<div class="flex flex-col gap-1 items-center">
 				<h1 class="text-5xl font-bold text-primary">Welcome back!</h1>
 				<p class="font-medium text-slate-600">Please sign in to your account</p>
@@ -53,7 +54,7 @@
 				
 				<AuthButton bind:this={submitBtnElement} authFunction={handleLoginAttempt} bind:onPress={signIn} class="w-full justify-between hover:drop-shadow-xl drop-shadow-none transition-all duration-150">
 					Sign in
-					<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-5">
+					<svg out:fade xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-5">
 						<path stroke-linecap="round" stroke-linejoin="round" d="M16.5 10.5V6.75a4.5 4.5 0 1 0-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 0 0 2.25-2.25v-6.75a2.25 2.25 0 0 0-2.25-2.25H6.75a2.25 2.25 0 0 0-2.25 2.25v6.75a2.25 2.25 0 0 0 2.25 2.25Z" />
 					</svg>
 				</AuthButton>
