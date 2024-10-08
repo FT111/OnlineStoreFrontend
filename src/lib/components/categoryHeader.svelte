@@ -18,8 +18,8 @@
 			<Skeleton class="w-full h-4" />
 			<Skeleton class="w-1/5 h-4" />
 		{:else}
-			<h3 class="text-4xl font-bold">{title}</h3>
-			<p>{description}</p>
+			<h3 class="text-5xl font-black">{title}</h3>
+			<p class="text-slate-200">{description}</p>
 		{/if}
 	</div>
 	<!--				Content	-->

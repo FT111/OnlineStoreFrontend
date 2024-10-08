@@ -8,17 +8,38 @@
 	import AuthButton from '$lib/components/authButton.svelte';
 	import { enhance } from '$app/forms';
 	import { goto, invalidateAll } from '$app/navigation';
+		import { Label } from '$lib/components/ui/dropdown-menu/index.js';
+
+	
+	let passwordInput;
+	let passwordConfirmInput;
+	
+	// Passwords matching?
 
 
 	let email;
 	let password;
+	let username;
+	let confirmPassword;
+	let name;
 	let signInFormElement;
 	let submitBtnElement;
 	let signIn;
 
-	async function handleLoginAttempt() {
-		await login(email, password)
+	async function handleSignUp() {
+		if (confirmPassword === password) {
+			await login(email, password)
+		}
 	}
+
+	if (passwordConfirmInput) {
+		if (password === confirmPassword) {
+			passwordConfirmInput.setCustomValidity('')
+		} else {
+			passwordConfirmInput.setCustomValidity('Passwords do not match')
+		}
+	}
+
 </script>
 
 <div class="flex flex-row w-full md:p-4 p-2 h-screen">
@@ -34,14 +55,14 @@
 			
 			
 			<form bind:this={signInFormElement} on:submit={signIn} class="flex flex-col gap-4 md:w-5/6 w-full">
-				<Input bind:value={email} type="email" required placeholder="Username" name="username" />
+				<Input bind:value={name} type="text" required placeholder="Your first and last name" name="name" />
+				<Input bind:value={username} type="text" required placeholder="Username" name="username" />
 				<Input bind:value={email} type="email" required placeholder="Email" name="email" />
-				<Input bind:value={password} type="password" required placeholder="Password" name="password"  />
-				<Input bind:value={email} type="password" required placeholder="Confirm Password" name="passwordConfirm" />
-				<Input bind:value={email} type="email" required placeholder="Email" name="username" />
+				<Input bind:this={passwordInput} bind:value={password} type="password" required placeholder="Password" name="password"  />
+				<Input bind:this={passwordConfirmInput} type="password" required placeholder="Confirm Password" name="passwordConfirm" />
 				
 				
-				<AuthButton bind:this={submitBtnElement} authFunction={handleLoginAttempt} bind:onPress={signIn} class="w-full justify-between hover:drop-shadow-xl drop-shadow-none transition-all duration-150 ">
+				<AuthButton bind:this={submitBtnElement} authFunction={handleSignUp} bind:onPress={signIn} class="w-full justify-between hover:drop-shadow-xl drop-shadow-none transition-all duration-150 ">
 					Sign up
 					<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
 						<path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3" />
