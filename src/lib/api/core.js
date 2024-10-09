@@ -19,8 +19,6 @@ const formHeaders = (token=null) => {
 }
 
 export const GET = async (endpoint, token=null, credentialsOpt='omit') => {
-
-
 	return await fetch(baseURL + endpoint,
 		{
 			method: 'GET',
@@ -40,6 +38,21 @@ export const POST = async (endpoint, data, credentialsOpt='omit') => {
 	return await fetch(baseURL + endpoint, {
 		method: 'POST',
 		headers: formHeaders(),
+		body: data,
+		credentials: credentialsOpt,
+
+	}).then((response) => response.json())
+		.then((data) => {
+			return data;
+		}).catch((error) => {
+			console.error('Error:', error);
+		});
+}
+
+export const PUT = async (endpoint, data, token=null, credentialsOpt='omit') => {
+	return await fetch(baseURL + endpoint, {
+		method: 'PUT',
+		headers: formHeaders(token),
 		body: data,
 		credentials: credentialsOpt,
 

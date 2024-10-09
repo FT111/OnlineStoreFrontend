@@ -4,7 +4,7 @@
 	import {Input} from "$lib/components/ui/input"
 	import { Card } from '$lib/components/ui/card/index.js';
 	import { Button } from '$lib/components/ui/button/index.js';
-	import { login } from '$lib/api/authentication.js';
+	import { signUp } from '$lib/api/authentication.js';
 	import AuthButton from '$lib/components/authButton.svelte';
 	import { enhance } from '$app/forms';
 	import { goto, invalidateAll } from '$app/navigation';
@@ -28,15 +28,7 @@
 
 	async function handleSignUp() {
 		if (confirmPassword === password) {
-			await login(email, password)
-		}
-	}
-
-	if (passwordConfirmInput) {
-		if (password === confirmPassword) {
-			passwordConfirmInput.setCustomValidity('')
-		} else {
-			passwordConfirmInput.setCustomValidity('Passwords do not match')
+			await signUp(email, password)
 		}
 	}
 
