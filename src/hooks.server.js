@@ -7,6 +7,9 @@ export const handle = async ({ event, request, resolve }) => {
 
 	if (token) {
 		await me(token).then((data) => {
+			if (!data) {
+				return resolve(event);
+			}
 			event.locals.user = data.data;
 
 		});
