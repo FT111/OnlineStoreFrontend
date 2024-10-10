@@ -70,7 +70,7 @@
 			<SearchHero searchSuggestions={fetchCategories} bind:searchElement={heroSearchBar} />
 		</div>
 		
-		<div class="z-0 w-full h-fit bg-muted rounded-b-3xl p-6 text-primary-foreground text-3xl font-semibold">
+		<div class="z-0 w-full h-[40vh] bg-muted rounded-b-3xl p-6 text-primary-foreground text-3xl font-semibold">
 			<div class="flex md:flex-row flex-col h-full w-full content-stretch items-stretch gap-6 flex-grow flex-1 transition-all">
 				<MenuCard href="/listings" class="bg-emerald-600">
 					Recently Viewed

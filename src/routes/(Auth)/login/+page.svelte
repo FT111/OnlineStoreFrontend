@@ -20,7 +20,7 @@
 	}
 </script>
 
-<div class="flex flex-row w-full md:p-4 p-2 h-screen">
+<div class="flex flex-row w-full md:p-4 p-2 h-screen gap-2">
 <!--	Image -->
 	<div class="h-full hidden md:flex basis-1/2 p-7 rounded-3xl text-white bg-primary overflow-hidden">
 		<svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%">

@@ -134,9 +134,14 @@
 							</DropdownMenu.Content>
 						</DropdownMenu.Root>
 						{:else}
-						<a href="/login">
-							<Button class="bg-slate-50/0" variant="outline">Log in</Button>
-						</a>
+							<div class="flex flex-row gap-3">
+								<a href="/signup">
+									<Button variant="secondary">Sign up</Button>
+								</a>
+								<a href="/login">
+									<Button class="bg-slate-50/0" variant="outline">Log in</Button>
+								</a>
+							</div>
 				{/if}
 			{/key}
 		
