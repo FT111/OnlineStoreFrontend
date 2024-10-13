@@ -27,14 +27,16 @@
 	let signIn;
 
 	async function handleSignUp() {
+		console.log('Signing up');
 		if (confirmPassword === password) {
-			await signUp(email, password)
+			console.log('Passwords match');
+			await signUp(username, name, email, password);
 		}
 	}
 
 </script>
 
-<div class="flex flex-row w-full md:p-4 p-2 h-screen">
+<div class="flex flex-row w-full md:p-4 p-2 h-screen gap-2">
 	
 	<!--	Form -->
 	<div class="flex flex-col grow h-full items-center justify-center">
@@ -51,7 +53,7 @@
 				<Input bind:value={username} type="text" required placeholder="Username" name="username" />
 				<Input bind:value={email} type="email" required placeholder="Email" name="email" />
 				<Input bind:this={passwordInput} bind:value={password} type="password" required placeholder="Password" name="password"  />
-				<Input bind:this={passwordConfirmInput} type="password" required placeholder="Confirm Password" name="passwordConfirm" />
+				<Input bind:this={passwordConfirmInput} bind:value={confirmPassword} type="password" required placeholder="Confirm Password" name="passwordConfirm" />
 				
 				
 				<AuthButton bind:this={submitBtnElement} authFunction={handleSignUp} bind:onPress={signIn} class="w-full justify-between hover:drop-shadow-xl drop-shadow-none transition-all duration-150 ">
