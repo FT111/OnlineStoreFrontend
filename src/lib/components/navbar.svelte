@@ -44,7 +44,7 @@
                  flex flex-row p-3 sm:p-5 sm:px-8 px-4 gap-5 bg-primary //border-t-accent text-white
                  //border-t-[6px] backdrop-blur-2xl z-50 transition-all">
 		<a href="/" class="hidden sm:block">
-			<h2 class="font-black text-3xl tracking-tight ">eBuy</h2>
+			<h2 class=" text-3xl tracking-tight font-black">eBuy</h2>
 		</a>
 		
 		
@@ -110,7 +110,7 @@
 						<DropdownMenu.Root>
 							<DropdownMenu.Trigger>
 								<Avatar.Root class="text-primary h-9 w-9">
-					<!--				<Avatar.Image src="https://via.placeholder.com/100" alt="Avatar" />-->
+									<Avatar.Image src={user['profilePictureURL']} alt="Avatar" />
 									<Avatar.Fallback>EB</Avatar.Fallback>
 								</Avatar.Root>
 							</DropdownMenu.Trigger>
@@ -120,7 +120,7 @@
 								<DropdownMenu.Group>
 									<DropdownMenu.Label>My Account</DropdownMenu.Label>
 									<DropdownMenu.Separator />
-									<DropdownMenu.Item>Profile</DropdownMenu.Item>
+									<DropdownMenu.Item href="/users/{user['id']}">Profile</DropdownMenu.Item>
 									<DropdownMenu.Item>My orders</DropdownMenu.Item>
 									<DropdownMenu.Item>My watchlist</DropdownMenu.Item>
 									<DropdownMenu.Item>Settings</DropdownMenu.Item>
