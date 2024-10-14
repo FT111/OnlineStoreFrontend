@@ -211,9 +211,9 @@
 			</div>
 			
 			<!--		Basket options	-->
-			<div class="w-full bottom-16 min-h-24 p-3 bg-slate-100 rounded-3xl flex flex-row justify-between shadow-sm z-20">
+			<div class="w-full bottom-16 min-h-24 p-3 bg-slate-100 rounded-xl flex flex-row justify-between shadow-sm z-20">
 				<div />
-				<Button class="w-full h-full text-2xl rounded-3xl basis-1/2 font-bold border-4 border-amber-500 bg-primary shadow-md " variant="default">Add to Basket</Button>
+				<Button class="w-full h-full text-2xl basis-1/2 font-bold border-[3px] border-amber-500 bg-primary shadow-md rounded-xl" variant="default">Add to Basket</Button>
 			</div>
 			
 		</div>
