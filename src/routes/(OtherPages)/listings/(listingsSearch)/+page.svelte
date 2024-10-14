@@ -148,7 +148,7 @@ $: console.log(selectedCategory, selectedSubcategory, selectedSort, selectedOrde
 	
 
 <!--	Listings   -->
-	<div class="mt-16 grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 2xl:grid-cols-5 gap-3 w-full p-1 sm:p-4 md:p-8 md:px-6 justify-left">
+	<div class="mt-16 grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 2xl:grid-cols-5 gap-3 w-full p-1 sm:p-4 md:p-8 md:px-4 justify-left">
 	
 <!--	Category Header	-->
 		{#key selectedCategory}
@@ -190,7 +190,7 @@ $: console.log(selectedCategory, selectedSubcategory, selectedSort, selectedOrde
 						<Listing listingName={listing.title} listingPrice={listing.basePrice} userRating={listing.ownerUser.rating}
 								 listingRating={listing.rating} userAvatarUrl={listing.ownerUser.profilePictureURL}
 								 listingDescription={listing.description} multipleSKUs={listing.multipleSKUs}
-								 editMode={false} hasDiscount={listing.hasDiscount} />
+								 editMode={false} hasDiscount={listing.hasDiscount} userID={listing.ownerUser.id} />
 					{/each}
 				{/if}
 			{:catch error}

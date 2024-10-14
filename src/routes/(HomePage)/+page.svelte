@@ -108,8 +108,10 @@
 			{/each}
 		{:then data}
 			{#each data.data as listing}
-				<Listing listingName={listing.title} listingPrice={listing.basePrice} userName={listing.ownerUser.username} userRating={listing.ownerUser.rating} listingRating={listing.rating} userAvatarUrl={listing.ownerUser.profilePictureURL} listingDescription={listing.description} editMode={false} />
-			{/each}
+				<Listing listingName={listing.title} listingPrice={listing.basePrice} userRating={listing.ownerUser.rating}
+						 listingRating={listing.rating} userAvatarUrl={listing.ownerUser.profilePictureURL}
+						 listingDescription={listing.description} multipleSKUs={listing.multipleSKUs}
+						 editMode={false} hasDiscount={listing.hasDiscount} userID={listing.ownerUser.id} />			{/each}
 		{:catch error}
 			<p>{error.message}</p>
 		{/await}

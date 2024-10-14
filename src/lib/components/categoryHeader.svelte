@@ -23,7 +23,7 @@
 		{/if}
 	</div>
 	<!--				Content	-->
-	<div class="rounded-b-xl bg-slate-50">
+	<div class="rounded-b-xl bg-neutral-50">
 		<slot />
 	</div>
 </div>
