@@ -3,6 +3,9 @@
   import * as Avatar from '$lib/components/ui/avatar/index.js';
   	import { Skeleton } from '$lib/components/ui/skeleton/index.js';
 	import { Button } from '$lib/components/ui/button/index.js';
+	import ListingCarousel from '$lib/components/listingCarousel.svelte';
+	import { fetchListings } from '$lib/api/listings.js';
+	import Listing from '$lib/components/listing.svelte';
 	
 	export let data;
 	
@@ -47,7 +50,7 @@
 			<div class="grow items flex flex-row sm:justify-end">
 				<div class="sm:basis-7/12 basis-1 w-full flex-1 sm:flex-initial h-fit gap-4 flex-col flex">
 					<!--			Quick Info Row -->
-					<div class="sm:flex sm:flex-row grid grid-cols-2 rounded-lg bg-slate-100 flex-1 w-full sm:h-20  justify-evenly overflow-hidden border border-slate-200">
+					<div class="sm:flex sm:flex-row grid grid-cols-2 gap-0.5 sm:gap-0 rounded-lg bg-slate-100 flex-1 w-full sm:h-20  justify-evenly overflow-hidden border border-slate-200">
 						<div class="basis-1/5 h-full flex flex-col grow items-center flex-wrap align-middle justify-center">
 							<p class="text-2xl font-bold">4.2</p>
 							<p class="text-lg">rating</p>
@@ -77,4 +80,38 @@
 		</div>
 	</div>
 
+</div>
+
+<ListingCarousel compactLayout={true} title="New arrivals" />
+
+<div class="sm:px-8 px-1 mt-16 bg-slate-50">
+	<h3 class="px-8 py-6 text-5xl font-bold">Listings</h3>
+	<div class="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 2xl:grid-cols-5 gap-3 w-full p-1 sm:p-4 md:p-8 md:px-6 !pt-0 justify-left">
+		{#await fetchListings()}
+			{#each Array.from({ length: 40 }) as _, i}
+				<Listing isLoading={true} />
+			{/each}
+			{#each Array.from({ length: 40 }) as _, i}
+				<Listing isLoading={true} />
+			{/each}
+		
+		{:then data}
+			{#if data.data.length === 0}
+				<div class="col-span-full p-16 flex flex-row gap-4 justify-center">
+					<p class="text-5xl text-center"> No listings found
+					</p>
+				
+				</div>
+			{:else}
+				{#each data.data as listing}
+					<Listing listingName={listing.title} listingPrice={listing.basePrice} userRating={listing.ownerUser.rating}
+							 listingRating={listing.rating} userAvatarUrl={listing.ownerUser.profilePictureURL}
+							 listingDescription={listing.description} multipleSKUs={listing.multipleSKUs}
+							 editMode={false} hasDiscount={listing.hasDiscount} userID={listing.ownerUser.id} />
+				{/each}
+			{/if}
+		{:catch error}
+			<p>{error.message}</p>
+		{/await}
+	</div>
 </div>
