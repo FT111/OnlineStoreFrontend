@@ -80,10 +80,10 @@
 					
 					</Sheet.Header>
 					
-					<div class="grow flex flex-col gap-2 pt-1">
+					<div class="grow flex flex-col gap-3 pt-1">
 						{#each productsInBasket as product}
 							<a href="/listings/1" on:click={() => {basketOpen=false}}>
-								<div class="bg-muted flex flex-row justify-between h-28 mx-8 rounded-2xl gap-2 p-2.5 align-middle items-center transition-all duration-75 hover:outline-accent outline-1 outline outline-slate-50">
+								<div class="flex flex-row justify-between h-28 mx-8 rounded-2xl gap-2 p-2.5 align-middle items-center transition-all duration-75 hover:outline-slate-300 outline-1 outline outline-slate-200 bg-slate-50 hover:bg-slate-100">
 									<div class="flex flex-row gap-1 h-full w-auto">
 										<Image src={product.imageURL} alt="Product " class="w-10 h-10" />
 										<div class="flex flex-col p-2">
