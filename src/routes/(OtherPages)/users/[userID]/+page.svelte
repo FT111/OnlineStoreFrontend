@@ -81,12 +81,20 @@
 		</div>
 		
 		<div class="h-52 bg-slate-100 border-t-[1px] border-t-slate-200 rounded-b-xl flex flex-row p-4 gap-3.5">
-			<div class="rounded-3xl flex items-center p-2 px-4 min-w-24 text-center bg-slate-800 text-white font-semibold outline outline-accent">
+			<div class="rounded-3xl flex items-center p-2 px-4 min-w-24 text-center bg-slate-200 text-secondary-foreground font-semibold outline-2 outline outline-accent">
 				{data.profileUser.username}'s Categories
 			</div>
-			<div class="rounded-3xl flex items-center p-2 px-4 min-w-24 text-center bg-emerald-700 text-white">
-				Gaming
-			</div>
+			{#await fetchUserListings(data.profileUser.id)}
+				<div class="rounded-3xl flex items-center p-2 px-4 min-w-24 text-center bg-primary text-white animate-pulse" />
+			{:then data}
+					{#each data.meta.topCategories as category}
+						<a href="/listings?category={category}&showCategoryHeader=true" class="h-full">
+							<div class="rounded-3xl flex items-center p-2 px-4 min-w-24 text-center h-full bg-primary text-white justify-center font-medium outline outline-primary hover:brightness-150 hover:outline-accent transition-all">
+								{category}
+							</div>
+						</a>
+						{/each}
+			{/await}
 		</div>
 	</div>
 
