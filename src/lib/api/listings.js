@@ -9,7 +9,7 @@ export const fetchListing = async (id) => {
 	return await GET(`listings/${id}`);
 }
 
-export const queryListings = async (query=null, category=null, subCategory=null, sort=null, order=null) => {
+export const queryListings = async (query=null, category=null, subCategory=null, sort=null, order=null, username=null) => {
 
 	let requestString = `listings/?`
 	if (query) {
@@ -27,9 +27,16 @@ export const queryListings = async (query=null, category=null, subCategory=null,
 	if (order) {
 		requestString += `&order=${order.toLowerCase().slice(0, -1)}`
 	}
+	if (username) {
+		requestString += `&username=${username}`
+	}
 
 	requestString += `&limit=36`
 
 	console.log('REQUEST STRING: ',requestString)
 	return await GET(requestString)
+}
+
+export const fetchUserListings = async (userID) => {
+	return await GET(`users/${userID}/listings`);
 }

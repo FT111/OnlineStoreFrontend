@@ -4,10 +4,11 @@
   	import { Skeleton } from '$lib/components/ui/skeleton/index.js';
 	import { Button } from '$lib/components/ui/button/index.js';
 	import ListingCarousel from '$lib/components/listingCarousel.svelte';
-	import { fetchListings } from '$lib/api/listings.js';
+	import { fetchListings, queryListings, fetchUserListings } from '$lib/api/listings.js';
 	import Listing from '$lib/components/listing.svelte';
 	
 	export let data;
+	const userID = data.profileUser.id;
 	
 	const profileUser = {
 		username: 'johndoe',
@@ -96,7 +97,13 @@
 <div class="sm:px-8 px-1 mt-16 bg-slate-50">
 	<h3 class="px-8 py-6 text-5xl font-bold">Listings</h3>
 	<div class="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 2xl:grid-cols-5 gap-3 w-full p-1 sm:p-4 md:p-8 md:px-6 !pt-0 justify-left">
-		{#await fetchListings()}
+		{#await fetchUserListings(data.profileUser.id)}
+			{#each Array.from({ length: 40 }) as _, i}
+				<Listing isLoading={true} />
+			{/each}
+			{#each Array.from({ length: 40 }) as _, i}
+				<Listing isLoading={true} />
+			{/each}
 			{#each Array.from({ length: 40 }) as _, i}
 				<Listing isLoading={true} />
 			{/each}
