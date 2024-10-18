@@ -44,7 +44,7 @@
                  flex flex-row p-3 sm:p-5 sm:px-8 px-4 gap-5 bg-primary //border-t-accent text-white
                  //border-t-[6px] backdrop-blur-2xl z-50 transition-all">
 		<a href="/" class="hidden sm:block">
-			<h2 class=" text-3xl tracking-tight font-black">eBuy</h2>
+			<h2 class=" text-3xl tracking-tight font-medium">eBuy</h2>
 		</a>
 		
 		
