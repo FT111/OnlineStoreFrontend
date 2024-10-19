@@ -3,7 +3,11 @@
 	import Image from '$lib/components/image.svelte'
 	import { Button } from '$lib/components/ui/button/index.js';
 	import { Badge } from '$lib/components/ui/badge/index.js';
-
+	import { Skeleton } from '$lib/components/ui/skeleton/index.js';
+	import { fetchListing } from '$lib/api/listings.js';
+	import { page } from '$app/stores';
+	
+	let listingID = $page.params.listingID;
 	let skus = true;
 
 	const skuList = [{
@@ -123,6 +127,17 @@
 			}
 		]
 
+	let listing;
+	let listingLoading = true;
+	const listingPromise = fetchListing(listingID).then(
+		(data) => {
+			console.log(data.data);
+			listingLoading = false;
+			listing = data.data;
+			return data.data;
+		}
+	);
+	
 </script>
 
 <!--Page Container-->
@@ -166,8 +181,13 @@
 				
 				<!--				Listing Heading-->
 				<div class="flex flex-col gap-1 mt-4">
-					<h1 class="text-4xl font-bold mb-1">Listing Title</h1>
-					<main class="line-clamp-3">Lorem ipsum dolor sit amet consectetur adipisicing elit. Mollitia, perferendis nostrum! Incidunt dolores nisi perspiciatis ex blanditiis magnam et culpa, commodi, voluptas, pariatur nesciunt asperiores iste rerum odio libero fugiat?</main>
+					{#if listingLoading}
+						<Skeleton class="w-2/3 h-5 rounded-md" />
+						<Skeleton class="w-full h-4 rounded-md" />
+					{:else}
+						<h1 class="text-4xl font-bold mb-1">{listing.title}</h1>
+						<main class="line-clamp-3">{listing.description}</main>
+					{/if}
 				</div>
 				
 	<!--				SKU Details -->

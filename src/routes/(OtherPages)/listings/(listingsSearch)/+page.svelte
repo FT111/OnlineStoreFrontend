@@ -66,6 +66,7 @@ onMount(() => {
 // Resets subcategories when category is changed
 $: if (selectedCategory) {
 	subCategories = []
+  	selectedSubcategory = 'All Sub Categories'
 }
 
 // Fetches subcategories based on selected category
