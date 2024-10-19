@@ -1,13 +1,16 @@
 
 <script>
 	import Image from '$lib/components/image.svelte'
+	import Price from '$lib/components/price.svelte'
 	import { Button } from '$lib/components/ui/button/index.js';
 	import { Badge } from '$lib/components/ui/badge/index.js';
 	import { Skeleton } from '$lib/components/ui/skeleton/index.js';
 	import { fetchListing } from '$lib/api/listings.js';
 	import { page } from '$app/stores';
+	export let data;
 	
-	let listingID = $page.params.listingID;
+	const listing = data.listing;
+	console.log(listing);
 	let skus = true;
 
 	const skuList = [{
@@ -126,17 +129,15 @@
 				'stock': 6
 			}
 		]
-
-	let listing;
-	let listingLoading = true;
-	const listingPromise = fetchListing(listingID).then(
-		(data) => {
-			console.log(data.data);
-			listingLoading = false;
-			listing = data.data;
-			return data.data;
-		}
-	);
+	// let listingLoading = true;
+	// const listingPromise = fetchListing(listingID).then(
+	// 	(data) => {
+	// 		console.log(data.data);
+	// 		listingLoading = false;
+	// 		listing = data.data;
+	// 		return data.data;
+	// 	}
+	// );
 	
 </script>
 
@@ -158,7 +159,7 @@
 	<!--			Quick Info Row -->
 				<div class="flex flex-row rounded-2xl bg-slate-100 border-4 border-slate-100 w-full h-20 ">
 					<div class="basis-1/5 h-full flex flex-col gap-2 items-center flex-wrap align-middle justify-center">
-						<p class="text-2xl font-bold">1024</p>
+						<p class="text-2xl font-bold">{listing.views}</p>
 						<p class="text-lg">views</p>
 					</div>
 					<div class="basis-1/5 h-full bg-zinc-50 rounded-2xl flex flex-col items-center flex-wrap align-middle justify-center">
@@ -166,7 +167,7 @@
 						<p class="text-lg">sales</p>
 					</div>
 					<div class="basis-1/5 h-full flex flex-col  items-center flex-wrap align-middle justify-center">
-						<p class="text-2xl font-bold">4.2</p>
+						<p class="text-2xl font-bold">{listing.rating}</p>
 						<p class="text-lg">rating</p>
 					</div>
 					<div class="basis-1/5 h-full bg-zinc-50 rounded-2xl  flex flex-col  items-center flex-wrap align-middle justify-center">
@@ -181,13 +182,9 @@
 				
 				<!--				Listing Heading-->
 				<div class="flex flex-col gap-1 mt-4">
-					{#if listingLoading}
-						<Skeleton class="w-2/3 h-5 rounded-md" />
-						<Skeleton class="w-full h-4 rounded-md" />
-					{:else}
-						<h1 class="text-4xl font-bold mb-1">{listing.title}</h1>
-						<main class="line-clamp-3">{listing.description}</main>
-					{/if}
+
+					<h1 class="text-4xl font-bold mb-1">{listing.title}</h1>
+					<main class="line-clamp-3">{listing.description}</main>
 				</div>
 				
 	<!--				SKU Details -->
@@ -231,9 +228,13 @@
 			</div>
 			
 			<!--		Basket options	-->
-			<div class="w-full bottom-16 min-h-24 p-3 bg-slate-100 rounded-xl flex flex-row justify-between shadow-sm z-20">
+			<div class="w-full bottom-16 min-h-24 p-3 bg-slate-100 rounded-xl flex flex-row align-middle items-center justify-between shadow-sm z-20">
 				<div />
-				<Button class="w-full h-full text-2xl basis-1/2 font-bold border-[3px] border-amber-500 bg-primary shadow-md rounded-xl" variant="default">Add to Basket</Button>
+				
+				<div class="flex flex-row items-center h-full gap-4">
+					<Price price={listing.basePrice} />
+					<Button class="w-full h-full text-2xl basis-1/2 font-bold border-[3px] border-amber-500 bg-primary shadow-md rounded-xl" variant="default">Add to Basket</Button>
+				</div>
 			</div>
 			
 		</div>
