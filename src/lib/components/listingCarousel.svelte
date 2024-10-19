@@ -37,7 +37,7 @@ let paddingClasses = compactLayout ? 'lg:px-14 lg:py-4 sm:p-4 ' : 'lg:p-20 lg:py
 				{#each data.data as listing}
 					<Carousel.Item class="pl-1 md:basis-1/3 lg:basis-1/4">
 						<div class="p-1">
-							<Listing listingName={listing.title} listingDescription={listing.description} isLoading={false} listingPrice={listing.basePrice} />
+							<Listing listingName={listing.title} listingID={listing.id}  listingDescription={listing.description} isLoading={false} listingPrice={listing.basePrice} />
 						</div>
 					</Carousel.Item>   {/each}
 			{:catch error}
