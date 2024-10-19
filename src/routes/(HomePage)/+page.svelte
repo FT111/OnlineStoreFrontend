@@ -101,7 +101,7 @@
 	<ListingCarousel listingsFetcher={queryListings} title='Popular' />
 	<ListingCarousel listingsFetcher={queryListings} title='Computing' />
 	
-	<div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 2xl:grid-cols-5 gap-3 w-full p-1 sm:p-4 md:p-8 md:px-14 justify-left">
+	<div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 2xl:grid-cols-5 gap-3 w-full p-2 sm:p-4 md:p-8 md:px-14 justify-left">
 		{#await fetchListings()}
 			{#each Array.from({ length: 20 }) as _, i}
 				<Listing isLoading={true} />
