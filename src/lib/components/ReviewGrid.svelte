@@ -50,7 +50,7 @@
 
 
 
-<div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
+<div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4 sm:p-0 p-2">
 	{#each reviews as review}
 		<div class="flex flex-col gap-3 p-5 bg-slate-100 rounded-xl overflow-y-scroll">
 			<div class="flex flex-row justify-between items-center">

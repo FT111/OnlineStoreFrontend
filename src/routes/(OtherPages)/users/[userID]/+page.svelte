@@ -24,7 +24,7 @@
 	
 	<div class="flex flex-col w-full p-4 h-96 mt-20 overflow-hidden">
 		<div class="grow overflow-hidden h-80">
-			<img src={profileUser.bannerURL} alt="User Profile" class="w-full h-96 object-cover rounded-t-2xl" />
+			<img src={profileUser.bannerURL} alt="User Profile" class="w-full h-96 object-cover rounded-t-3xl" />
 		</div>
 		
 		<div class="grow bg-secondary h-full w-full p-6 flex flex-col sm:flex-row justify-between gap-4">

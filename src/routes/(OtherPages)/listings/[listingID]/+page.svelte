@@ -147,7 +147,7 @@
 <!--Page Container-->
 <div class="mt-20 md:px-14 px-1">
 	<!-- Listing Container	-->
-	<div class="h-[80vh] bg-muted/30 rounded-2xl flex flex-col sm:flex-row gap-5 p-5">
+	<div class="h-fit sm:h-[80vh] bg-muted/30 rounded-2xl flex flex-col sm:flex-row gap-5 p-5">
 	
 <!--	Images Container	-->
 		<div class="basis-1/2">
@@ -261,7 +261,7 @@
 </div>
 
 <div class="sticky w-full sm:w-1/2 justify-self-end bottom-4 min-h-24 p-3 z-20 right-3 min-w-fit">
-	<div class=" bg-slate-100 rounded-xl p-3 flex flex-row align-middle items-center justify-between border-2 border-slate-200">
+	<div class=" bg-slate-100 rounded-xl p-3 flex flex-row align-middle items-center justify-between border-2 border-slate-200 shadow-md">
 		
 		<div />
 		
