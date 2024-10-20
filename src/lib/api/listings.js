@@ -18,7 +18,7 @@ export const queryListings = async (query=null, category=null, subCategory=null,
 	if (category && category !== 'All Categories' && category !== 'Categories') {
 		requestString += `category=${category}&`
 	}
-	if (subCategory && subCategory !== 'All Subcategories' && subCategory !== 'Sub Categories') {
+	if (subCategory && subCategory !== 'All Sub Categories' && subCategory !== 'Sub Categories') {
 		requestString += `subCategory=${subCategory}&`
 	}
 	if (sort) {
