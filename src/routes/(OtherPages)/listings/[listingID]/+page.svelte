@@ -2,13 +2,14 @@
 <script>
 	import Image from '$lib/components/image.svelte'
 	import Price from '$lib/components/price.svelte'
-	import ReviewGrid from '$lib/components/reviewGrid.svelte'
+	import ReviewGrid from '$lib/components/ReviewGrid.svelte'
 	import ListingCarousel from '$lib/components/listingCarousel.svelte'
 	import { Button } from '$lib/components/ui/button/index.js';
 	import { Badge } from '$lib/components/ui/badge/index.js';
 	import * as Avatar from '$lib/components/ui/avatar/index.js';
 	import { Skeleton } from '$lib/components/ui/skeleton/index.js';
-	import { fetchListing } from '$lib/api/listings.js';
+	
+	import { queryListings } from '$lib/api/listings.js';
 	import { page } from '$app/stores';
 	export let data;
 	
@@ -184,8 +185,9 @@
 				</div>
 				
 				<!--				Listing Heading-->
-				<div class="flex flex-col gap-1 mt-4 relative">
+				<div class="flex flex-col gap-1 relative">
 					<!-- Title and description section -->
+					<p class="text-xs text-muted-foreground">{listing.category} • <span class="text-muted-foreground/60">{listing.subCategory}</span></p>
 					<h1 class="text-4xl font-bold mb-1">{listing.title}</h1>
 					<main class="line-clamp-3">{listing.description}</main>
 					
@@ -249,7 +251,6 @@
 				{/if}
 			</div>
 			
-			<!--		Basket options	-->
 
 			
 		</div>
@@ -260,7 +261,8 @@
 	<ReviewGrid  />
 </div>
 
-<div class="sticky w-full sm:w-1/2 justify-self-end bottom-4 min-h-24 p-3 z-20 right-3 min-w-fit">
+<!--		Basket options	-->
+<div class="fixed w-full sm:w-1/2 justify-self-end bottom-4 min-h-24 p-3 z-20 right-3 min-w-fit">
 	<div class=" bg-slate-100 rounded-xl p-3 flex flex-row align-middle items-center justify-between border-2 border-slate-200 shadow-md">
 		
 		<div />
@@ -272,9 +274,15 @@
 	</div>
 </div>
 <div class="h-20" />
-<div class="bg-slate-100 ">
+<div class="bg-slate-50 ">
 	<div class="h-10"></div>
-	<ListingCarousel compactLayout={true} title="More from {listing.category}" />
-	<div class="h-20" />
+	{#await queryListings(null, listing.category, null, null)}
+		<ListingCarousel isLoading={true} compactLayout={true} title={`More from ${listing.category}`} />
+	{:then data}
+		<ListingCarousel listings={data.data} compactLayout={true} title={`More from ${listing.category}`} />
+	{:catch error}
+		<p>{error.message}</p>
+	{/await}
+	<div class="h-32" />
 
 </div>

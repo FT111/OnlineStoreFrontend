@@ -117,7 +117,13 @@
 
 </div>
 
-<ListingCarousel compactLayout={true} title="New arrivals" />
+{#await fetchUserListings(data.profileUser.id)}
+	<ListingCarousel compactLayout={true} isLoading={true} title="New arrivals" />
+{:then data}
+	<ListingCarousel compactLayout={true} listings={data.data} title="New arrivals" />
+{:catch error}
+	<p>{error.message}</p>
+{/await}
 
 <div class="sm:px-8 px-1 mt-16 bg-slate-50">
 	<h3 class="px-8 py-6 text-5xl font-bold">Listings</h3>

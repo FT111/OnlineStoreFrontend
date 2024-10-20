@@ -98,8 +98,15 @@
 		
 	</div>
 	
-	<ListingCarousel listingsFetcher={queryListings} title='Popular' />
-	<ListingCarousel listingsFetcher={queryListings} title='Computing' />
+	{#await queryListings()}
+		<ListingCarousel isLoading={true} title='Popular' />
+		<ListingCarousel isLoading={true} title='Computing' />
+		{:then data}
+			<ListingCarousel listings={data.data} title='Popular' />
+			<ListingCarousel listings={data.data} title='Computing' />
+		{:catch error}
+			<p>{error.message}</p>
+	{/await}
 	
 	<div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 2xl:grid-cols-5 gap-3 w-full p-2 sm:p-4 md:p-8 md:px-14 justify-left">
 		{#await fetchListings()}

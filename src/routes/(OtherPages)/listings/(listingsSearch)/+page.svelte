@@ -162,8 +162,22 @@ $: console.log(selectedCategory, selectedSubcategory, selectedSort, selectedOrde
 				{:then categoryData}
 					<CategoryHeader title={categoryData.data['title']} description={categoryData.data['description']} categoryColour={'#'+categoryData.data['colour']}>
 						<div class="py-8">
-							<ListingCarousel compactLayout={true} title="Top deals in {categoryData.data['title']}" />
-							<ListingCarousel compactLayout={true} title="New arrivals in {categoryData.data['title']}" />
+							{#await queryListings(null, selectedCategory, selectedSubcategory, null, null)}
+								<ListingCarousel isLoading={true} compactLayout={true} title={`Top deals in ${categoryData.data['title']}`} />
+							{:then data}
+								<ListingCarousel listings={data.data} compactLayout={true} title={`Top deals in ${categoryData.data['title']}`} />
+							{:catch error}
+								<p>{error.message}</p>
+							{/await}
+							
+							{#await queryListings(null, selectedCategory, selectedSubcategory, 'Views', null)}
+								<ListingCarousel isLoading={true} compactLayout={true} title={`New arrivals in ${categoryData.data['title']}`} />
+							{:then data}
+								<ListingCarousel listings={data.data} compactLayout={true} title={`New arrivals in ${categoryData.data['title']}`} />
+							{:catch error}
+								<p>{error.message}</p>
+							{/await}
+						
 						</div>
 					</CategoryHeader>
 				{:catch error}
