@@ -104,6 +104,7 @@
 			{#await fetchUserListings(data.profileUser.id)}
 				<div class="rounded-3xl flex items-center p-2 px-4 min-w-24 text-center bg-primary text-white animate-pulse" />
 			{:then data}
+				{#if 'meta' in data}
 					{#each data.meta.topCategories as category}
 						<a href="/listings?category={category}&showCategoryHeader=true" class="h-full">
 							<div class="rounded-3xl flex items-center p-2 px-4 min-w-24 text-center h-full bg-primary text-white justify-center font-medium outline outline-primary hover:brightness-150 hover:outline-accent transition-all">
@@ -111,6 +112,7 @@
 							</div>
 						</a>
 						{/each}
+				{/if}
 			{/await}
 		</div>
 	</div>
@@ -120,7 +122,9 @@
 {#await fetchUserListings(data.profileUser.id)}
 	<ListingCarousel compactLayout={true} isLoading={true} title="New arrivals" />
 {:then data}
-	<ListingCarousel compactLayout={true} listings={data.data} title="New arrivals" />
+	{#if 'meta' in data}
+		<ListingCarousel compactLayout={true} listings={data.data} title="New arrivals" />
+	{/if}
 {:catch error}
 	<p>{error.message}</p>
 {/await}
@@ -143,19 +147,20 @@
 			{/each}
 		
 		{:then data}
-			{#if data.data.length === 0}
-				<div class="col-span-full p-16 flex flex-row gap-4 justify-center">
-					<p class="text-5xl text-center"> No listings found
-					</p>
-				
-				</div>
-			{:else}
+			{#if 'data' in data}
 				{#each data.data as listing}
 					<Listing listingName={listing.title} listingPrice={listing.basePrice} userRating={listing.ownerUser.rating}
 							 listingRating={listing.rating} userAvatarUrl={listing.ownerUser.profilePictureURL}
 							 listingDescription={listing.description} multipleSKUs={listing.multipleSKUs} listingID={listing.id}
 							 editMode={false} hasDiscount={listing.hasDiscount} userID={listing.ownerUser.id} />
 				{/each}
+
+			{:else}
+				<div class="col-span-full p-16 flex flex-row gap-4 justify-center">
+					<p class="text-5xl text-center font-medium"> No listings found
+					</p>
+				
+				</div>
 			{/if}
 		{:catch error}
 			<p>{error.message}</p>

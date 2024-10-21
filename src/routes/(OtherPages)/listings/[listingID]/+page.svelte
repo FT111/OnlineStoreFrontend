@@ -162,7 +162,7 @@
 			<div class="flex flex-col gap-4 flex-shrink-0 ">
 	<!--			Quick Info Row -->
 				<div class="flex flex-row rounded-2xl bg-slate-100 border-4 border-slate-100 w-full h-20 ">
-					<div class="basis-1/5 h-full flex flex-col gap-2 items-center flex-wrap align-middle justify-center">
+					<div class="basis-1/5 h-full flex flex-col items-center flex-wrap align-middle justify-center">
 						<p class="text-2xl font-bold">{listing.views}</p>
 						<p class="text-lg">views</p>
 					</div>
@@ -269,7 +269,7 @@
 		
 		<div class="flex flex-row items-center h-full gap-4">
 			<Price price={listing.basePrice} />
-			<Button class="w-full h-full text-2xl basis-1/2 font-bold border-[3px] border-amber-500 p-3 px-5 bg-primary shadow-md rounded-xl" variant="default">Add to Basket</Button>
+			<Button class="w-full h-full text-2xl basis-1/2 font-bold border-[1.5px] border-accent p-3 px-5 bg-accent hover:bg-accent hover:brightness-125 hover:border-amber-900 transition-all shadow-md rounded-xl" variant="default">Add to Basket</Button>
 		</div>
 	</div>
 </div>
