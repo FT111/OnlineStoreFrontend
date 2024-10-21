@@ -13,7 +13,7 @@
 	import { page } from '$app/stores';
 	export let data;
 	
-	const listing = data.listing;
+	$: listing = data.listing;
 	console.log(listing);
 	let skus = true;
 
@@ -157,7 +157,7 @@
 		
 <!--	Detail Container	-->
 		<div class="sm:basis-1/2 basis-1 sm:w-1/2 flex flex-col gap-4 flex-shrink-0 justify-between">
-		
+			{#key listing}
 <!--		Top info	-->
 			<div class="flex flex-col gap-4 flex-shrink-0 ">
 	<!--			Quick Info Row -->
@@ -251,7 +251,7 @@
 				{/if}
 			</div>
 			
-
+			{/key}
 			
 		</div>
 	</div>
