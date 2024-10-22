@@ -1,5 +1,7 @@
 <script>
-  	export let data;
+  	import Footer from '$lib/components/Footer.svelte';
+
+		export let data;
   
 	import Listing from '$lib/components/listing.svelte';
 	import ListingCarousel from '$lib/components/listingCarousel.svelte';
@@ -126,3 +128,5 @@
 
 
 </main>
+
+<Footer />

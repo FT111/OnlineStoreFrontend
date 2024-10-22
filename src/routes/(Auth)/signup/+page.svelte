@@ -41,7 +41,7 @@
 	<!--	Form -->
 	<div class="flex flex-col grow h-full items-center justify-center">
 		
-		<Card class="flex flex-col justify-between basis-7/12 md:p-16 md:px-4 p-8 md:w-2/3 gap-8 sm:w-4/5 w-full border-slate-200/20 bg-slate-100 shadow-none rounded-2xl items-center">
+		<Card class="flex flex-col justify-between basis-7/12 md:p-16 md:px-4 p-8 md:w-2/3 gap-8 sm:w-4/5 w-full bg-slate-50 border-0 shadow-none rounded-2xl items-center">
 			<div class="flex flex-col gap-1 items-center">
 				<h1 class="text-5xl font-bold text-primary">Welcome!</h1>
 				<p class="font-medium text-slate-600">Sign up and start selling today</p>
@@ -90,6 +90,5 @@
 	
 	
 	</div>
-	
 
 </div>
