@@ -129,7 +129,7 @@
 								<DropdownMenu.Group>
 									<DropdownMenu.Label>My Sales</DropdownMenu.Label>
 									<DropdownMenu.Separator />
-									<DropdownMenu.Item>Dashboard</DropdownMenu.Item>
+									<DropdownMenu.Item href="/account">Dashboard</DropdownMenu.Item>
 								</DropdownMenu.Group>
 							</DropdownMenu.Content>
 						</DropdownMenu.Root>

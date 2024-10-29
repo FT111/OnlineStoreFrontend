@@ -12,7 +12,7 @@ import {afterNavigate} from '$app/navigation';
 import { Separator } from '$lib/components/ui/separator/index.js';
 import { Slider } from '$lib/components/ui/slider/index.js';
 
-import ListingsSidebar from '$lib/components/listingsSidebar.svelte'
+import Sidebar from '$lib/components/Sidebar.svelte'
 import Dropdown from '$lib/components/dropdown.svelte';
 import * as Resizable from "$lib/components/ui/resizable/index.js";
 
@@ -96,10 +96,10 @@ $: console.log(selectedCategory, selectedSubcategory, selectedSort, selectedOrde
 </script>
 
 <div class="w-full h-full flex flex-row">
-	<ListingsSidebar>
+	<Sidebar>
 	
 <!--		Spacer -->
-		<div class="h-20" />
+		<div class="" />
 	
 <!--	Quick filters container	-->
 		<div class="bg-slate-200 rounded-lg flex flex-col">
@@ -145,7 +145,7 @@ $: console.log(selectedCategory, selectedSubcategory, selectedSort, selectedOrde
 			<Dropdown title="Relevant filter 5" subtitle="Select a sub category" options={ subCategories }  />
 		</div>
 	
-	</ListingsSidebar>
+	</Sidebar>
 	
 
 <!--	Listings   -->
