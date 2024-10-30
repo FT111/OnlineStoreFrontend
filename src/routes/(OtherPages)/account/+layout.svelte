@@ -14,7 +14,7 @@ $: user = data.user;
 	<Sidebar>
 		<div class="flex flex-col gap-4 text-slate-800">
 <!--		User section	-->
-			<Card class="bg-slate-200 rounded-xl border-slate-300 hover:border-slate-500 transition-all cursor-pointer p-1.5 px-2.5 flex flex-row gap-2 items-center">
+			<Card class="bg-slate-50 rounded-xl border-slate-200 border-2 hover:border-slate-900 transition-all shadow-none cursor-pointer p-1.5 px-2.5 flex flex-row gap-2 items-center">
 				<Avatar.Root class="text-primary h-11 w-11">
 					<Avatar.Image src={user['profilePictureURL']} alt="Avatar" />
 					<Avatar.Fallback>EB</Avatar.Fallback>
@@ -28,11 +28,11 @@ $: user = data.user;
 			
 <!--			<Separator />-->
 			
-			<Button class="bg-white" variant="secondary">My Account</Button>
+			<Button class="bg-white hover:border-slate-900 border border-white  hover:bg-white" variant="secondary">My Account</Button>
 		</div>
 	</Sidebar>
 	
-	<div class="grow">
+	<div class="basis-5/6">
 		<slot />
 	</div>
 	

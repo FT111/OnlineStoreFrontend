@@ -75,7 +75,7 @@
 			
 		</Card.Header>
 		<div class="flex flex-col justify-end">
-			<Card.Content class="pb-2">
+			<Card.Content class="py-1">
 				<Image class="h-full rounded-md border-b" src="{listingImage}" alt="{listingDescription}" />
 			</Card.Content>
 			<Card.Footer class="gap-2 justify-end pb-3">

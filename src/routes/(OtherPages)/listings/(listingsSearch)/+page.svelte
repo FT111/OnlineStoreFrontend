@@ -96,7 +96,7 @@ $: console.log(selectedCategory, selectedSubcategory, selectedSort, selectedOrde
 </script>
 
 <div class="w-full h-full flex flex-row">
-	<Sidebar>
+	<Sidebar class="basis-1/12">
 	
 <!--		Spacer -->
 		<div class="" />
