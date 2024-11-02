@@ -114,7 +114,7 @@
 									<Avatar.Fallback>EB</Avatar.Fallback>
 								</Avatar.Root>
 							</DropdownMenu.Trigger>
-							<DropdownMenu.Content class="w-48">
+							<DropdownMenu.Content class="w-56">
 								<DropdownMenu.Label class="font-bold text-lg text-primary">Hello {user['username']}!</DropdownMenu.Label>
 								<DropdownMenu.Separator />
 								<DropdownMenu.Group>
@@ -131,6 +131,14 @@
 									<DropdownMenu.Separator />
 									<DropdownMenu.Item href="/account">Dashboard</DropdownMenu.Item>
 								</DropdownMenu.Group>
+								<DropdownMenu.Separator />
+								<DropdownMenu.Item class="bg-red-100/50">
+									<div class="flex flex-row w-full justify-between ">Sign out
+										<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-5 text-accent">
+											<path stroke-linecap="round" stroke-linejoin="round" d="M8.25 9V5.25A2.25 2.25 0 0 1 10.5 3h6a2.25 2.25 0 0 1 2.25 2.25v13.5A2.25 2.25 0 0 1 16.5 21h-6a2.25 2.25 0 0 1-2.25-2.25V15M12 9l3 3m0 0-3 3m3-3H2.25" />
+										</svg>
+									</div>
+								</DropdownMenu.Item>
 							</DropdownMenu.Content>
 						</DropdownMenu.Root>
 						{:else}
