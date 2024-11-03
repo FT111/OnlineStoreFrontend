@@ -9,6 +9,7 @@
 	import { enhance } from '$app/forms';
 	import { goto, invalidateAll } from '$app/navigation';
 		import { Label } from '$lib/components/ui/dropdown-menu/index.js';
+	import { toast } from 'svelte-sonner';
 
 	
 	let passwordInput;
@@ -30,7 +31,15 @@
 		console.log('Signing up');
 		if (confirmPassword === password) {
 			console.log('Passwords match');
-			await signUp(username, name, email, password);
+			await signUp(username, name, email, password).then((response) => {
+				if (response.status === 200) {
+					console.log('Signed up');
+					invalidateAll();
+					goto('/dashboard');
+				} else {
+					toast.error(response.message);
+				}
+			});
 		}
 	}
 

@@ -3,6 +3,7 @@
 	import { onMount } from "svelte";
 	import { checkConsent, giveConsent, revokeConsent } from '$lib/analytics/consent.js';
 	import { Button } from '$lib/components/ui/button/index.js';
+	import { Toaster } from '$lib/components/ui/sonner/index.js';
 	let consentPopup;
 	
 	onMount(() => {
@@ -15,6 +16,7 @@
 <slot />
 
 
+<Toaster />
 
 <!--Consent Popup-->
 <div bind:this={consentPopup} class="fixed bottom-10 flex-row w-full justify-center items-center transition-all duration-150 ease-in-out hidden">
