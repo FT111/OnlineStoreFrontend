@@ -1,65 +1,43 @@
-
 <script>
-	import { onMount } from 'svelte';
-	import Chart from 'svelte-frappe-charts';
-
-	import { Card } from '$lib/components/ui/card/index.js';
-
-	let data = {
-		labels: ['Sun', 'Mon', 'Tues', 'Wed', 'Thurs', 'Fri', 'Sat'],
-		datasets: [
-			{
-				values: [10, 12, 3, 9, 8, 13, 9]
-			}
-		]
-	};
-
-	let date = new Date();
-	date.setFullYear(date.getFullYear() - 1);
-	let heatData = {
-		labels: ['Sun', 'Mon', 'Tues', 'Wed', 'Thurs', 'Fri', 'Sat'],
-		discreteDomains:0,
-		dataPoints: {
-			1426744959: 20,
-			1720203082: 113,
-			1710203082: 57,
-		},
-		start: date,
-		end: new Date(),
-
-	};
-
-	let chart;
-
-	onMount(() => {
-		const dashEvents = new EventSource('http://127.0.0.1:8000/count');
-
-		dashEvents.addEventListener('count', function(event) {
-			data.datasets[0].values = [5].concat(JSON.parse(event.data));
-		});
-	});
-
-
+	import DashboardPageLayout from "$lib/components/DashboardPageLayout.svelte";
+	import * as Card from '$lib/components/ui/card/index.js';
 </script>
 
-<div class="w-full flex flex-row flex-wrap gap-6 p-6 ">
-	<Card class="w-1/2 p-3 bg">
-			<Chart animate=True data={data} type="line" bind:this={chart} lineOptions={{regionFill: 0, hideDots: 1, heatline: 1, spline: 0}} />
-	</Card>
-
-	<Card class="p-3">
-			<h1 class="text-7xl font-bold text-center">{data.datasets[0].values}</h1>
-	</Card>
-
-	<Card class="w-1/2 p-3 bg">
-		<Chart animate=True data={data} type="bar" bind:this={chart} lineOptions={{regionFill: 0, hideDots: 1, heatline: 1, spline: 0}} />
-	</Card>
-
-	<Card class="w-fit p-3 bg">
-		<Chart animate=True data={heatData} type="heatmap" bind:this={chart} lineOptions={{discreteDomains: 0}} />
-	</Card>
-
-</div>
-
-
-
+<DashboardPageLayout>
+	<h1 slot="title">Dashboard</h1>
+	
+	<div slot="page" class="grid grid-cols-4 grid-rows-3 bg-slate-100 rounded-2xl
+	 												grow h-[42rem] gap-2.5 p-1.5">
+		
+			<Card.Root class="rounded-2xl border-0 bg-white lg:col-span-3 lg:row-span-1">
+				<Card.Header>
+					<h1 class="text-2xl font-bold text-center">Card</h1>
+				</Card.Header>
+			</Card.Root>
+		
+		<Card.Root class="rounded-2xl border-0 bg-white lg:col-span-1 lg:row-span-1">
+			<Card.Header>
+				<h1 class="text-2xl font-bold text-center">Card</h1>
+			</Card.Header>
+		</Card.Root>
+		
+		<Card.Root class="rounded-2xl border-0 bg-white lg:col-span-2 lg:row-span-2">
+			<Card.Header>
+				<h1 class="text-2xl font-bold text-center">Card</h1>
+			</Card.Header>
+		</Card.Root>
+		
+		<Card.Root class="rounded-2xl border-0 bg-white lg:col-span-2 lg:row-span-1">
+			<Card.Header>
+				<h1 class="text-2xl font-bold text-center">Card</h1>
+			</Card.Header>
+		</Card.Root>
+		
+		<Card.Root class="rounded-2xl border-0 bg-white lg:col-span-2 lg:row-span-1">
+			<Card.Header>
+				<h1 class="text-2xl font-bold text-center">Card</h1>
+			</Card.Header>
+		</Card.Root>
+		
+	</div>
+</DashboardPageLayout>

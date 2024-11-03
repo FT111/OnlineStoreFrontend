@@ -17,8 +17,8 @@ $: user = data.user;
 <!--		User section	-->
 			<DropdownMenu.Root>
 				<DropdownMenu.Trigger>
-					<Card class="bg-slate-50 rounded-xl border-slate-600 border hover:border-accent
-					transition-all shadow-none cursor-pointer p-1.5 px-2.5 flex flex-row gap-2
+					<Card class="bg-slate-50 rounded-xl outline-slate-600 border-0 hover:outline-accent outline-1 hover:bg-orange-50/65
+					transition-all shadow-none cursor-pointer p-1.5 px-2.5 flex flex-row gap-2 hover:outline-2 outline !duration-75
 					items-center justify-between ">
 						<div class="flex flex-row gap-3 items-center">
 							<Avatar.Root class="text-primary h-11 w-11">
@@ -56,7 +56,7 @@ $: user = data.user;
 			<Separator />
 			
 			
-			<Button class="bg-white hover:border-slate-900 border   hover:bg-white" variant="secondary">Dashboard</Button>
+			<Button href="/account/dashboard" class="bg-white hover:border-slate-900 border   hover:bg-white" variant="secondary">Dashboard</Button>
 			<Button class="bg-white hover:border-slate-900 border   hover:bg-white" variant="secondary">Listings</Button>
 			<Button class="bg-white hover:border-slate-900 border  hover:bg-white" variant="secondary">Sales</Button>
 		
