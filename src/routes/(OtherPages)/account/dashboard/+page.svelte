@@ -3,8 +3,11 @@
 	import { ScrollArea } from "$lib/components/ui/scroll-area/index.js";
 	import ListingCarousel from "$lib/components/listingCarousel.svelte";
 	import * as Card from '$lib/components/ui/card/index.js';
-	import LatestSales from '$lib/components/dashboardCards/latestSales.svelte';
+	import LatestSalesCard from '$lib/components/dashboardCards/latestSales.svelte';
+	
 	import { fetchListings } from '$lib/api/listings.js';
+	import { fetchUserListings } from '$lib/api/listings.js';
+	export let data;
 	
 
 </script>
@@ -36,7 +39,7 @@
 			</Card.Header>
 		</Card.Root>
 		
-		<LatestSales />
+		<LatestSalesCard listings={ async () => {return await fetchUserListings(data.user.id)}} />
 		
 		
 
