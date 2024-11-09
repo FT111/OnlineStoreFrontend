@@ -7,6 +7,9 @@
 	import * as DropdownMenu from "$lib/components/ui/dropdown-menu";
 	import * as Avatar from '$lib/components/ui/avatar/index.js';
 	import Searchbar from './searchbar.svelte';
+	
+	import { basket } from '$lib/basket.js';
+
 	export let navElement;
 	export let searchElement;
 	export let hideSearch = false;
@@ -21,19 +24,7 @@
 
 
 	const productsInBasket = [
-		{'title': 'Product 1', 'imageURL': 'https://via.placeholder.com/1000', 'price': 1099, 'quantity': 1, 'SKUtitle': 'Product Type 1'},
-		{'title': 'Product 2', 'imageURL': 'https://via.placeholder.com/1000', 'price': 1099, 'quantity': 1, 'SKUtitle': 'Product Type 2'},
-		{'title': 'Product 3', 'imageURL': 'https://via.placeholder.com/1000', 'price': 1099, 'quantity': 1, 'SKUtitle': 'Product Type 3'},
-		{'title': 'Product 4', 'imageURL': 'https://via.placeholder.com/1000', 'price': 1099, 'quantity': 1, 'SKUtitle': 'Product Type 4'},
-		{'title': 'Product 5', 'imageURL': 'https://via.placeholder.com/1000', 'price': 1099, 'quantity': 1, 'SKUtitle': 'Product Type 5'},
-		{'title': 'Product 6', 'imageURL': 'https://via.placeholder.com/1000', 'price': 1099, 'quantity': 1, 'SKUtitle': 'Product Type 6'},
-		{'title': 'Product 7', 'imageURL': 'https://via.placeholder.com/1000', 'price': 1099, 'quantity': 1, 'SKUtitle': 'Product Type 7'},
-		{'title': 'Product 8', 'imageURL': 'https://via.placeholder.com/1000', 'price': 1099, 'quantity': 1, 'SKUtitle': 'Product Type 8'},
-		{'title': 'Product 9', 'imageURL': 'https://via.placeholder.com/1000', 'price': 1099, 'quantity': 1, 'SKUtitle': 'Product Type 9'},
-		{'title': 'Product 10', 'imageURL': 'https://via.placeholder.com/1000', 'price': 1099, 'quantity': 1, 'SKUtitle': 'Product Type 10'},
-		{'title': 'Product 11', 'imageURL': 'https://via.placeholder.com/1000', 'price': 1099, 'quantity': 1, 'SKUtitle': 'Product Type 11'},
-		{'title': 'Product 12', 'imageURL': 'https://via.placeholder.com/1000', 'price': 1099, 'quantity': 1, 'SKUtitle': 'Product Type 12'}
-	]
+		]
 	
 	
 </script>
@@ -69,7 +60,7 @@
 						</svg>
 					</div>
 				</Sheet.Trigger>
-				<Sheet.Content class="p-0 overflow-y-scroll ">
+				<Sheet.Content class="p-0 overflow-y-scroll">
 					<Sheet.Header class="sticky top-0 bg-white/50 backdrop-blur-2xl z-10 flex flex-row items-center pr-6 justify-between">
 						<Sheet.Title class="p-8">Your Basket</Sheet.Title>
 						<Button variant="ghost" on:click={()=>{basketOpen=!basketOpen}}>
@@ -83,7 +74,9 @@
 					<div class="grow flex flex-col gap-3 pt-1">
 						{#each productsInBasket as product}
 							<a href="/listings/1" on:click={() => {basketOpen=false}}>
-								<div class="flex flex-row justify-between h-28 mx-8 rounded-2xl gap-2 p-2.5 align-middle items-center transition-all duration-75 hover:outline-slate-300 outline-1 outline outline-slate-200 bg-slate-50 hover:bg-slate-100">
+								<div class="flex flex-row justify-between h-28 mx-8 rounded-2xl gap-2 p-2.5 align-middle
+								items-center transition-all duration-75 hover:outline-slate-300 outline-1 outline
+								outline-slate-200 bg-slate-50 hover:bg-slate-100">
 									<div class="flex flex-row gap-1 h-full w-auto">
 										<Image src={product.imageURL} alt="Product " class="w-10 h-10" />
 										<div class="flex flex-col p-2">
