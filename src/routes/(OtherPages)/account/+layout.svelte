@@ -57,8 +57,8 @@ $: user = data.user;
 			
 			
 			<Button href="/account/dashboard" class="bg-white hover:border-slate-900 border   hover:bg-white" variant="secondary">Dashboard</Button>
-			<Button class="bg-white hover:border-slate-900 border   hover:bg-white" variant="secondary">Listings</Button>
-			<Button class="bg-white hover:border-slate-900 border  hover:bg-white" variant="secondary">Sales</Button>
+			<Button href="/account/listings" class="bg-white hover:border-slate-900 border   hover:bg-white" variant="secondary">Listings</Button>
+			<Button href="/account/sales" class="bg-white hover:border-slate-900 border  hover:bg-white" variant="secondary">Sales</Button>
 		
 		</div>
 	</Sidebar>
