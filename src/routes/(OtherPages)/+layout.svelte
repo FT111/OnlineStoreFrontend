@@ -5,9 +5,8 @@
 	import Image from '$lib/components/image.svelte'
 	
 	import Navbar from '$lib/components/navbar.svelte'
-		import Footer from '$lib/components/Footer.svelte';
+	import Footer from '$lib/components/Footer.svelte';
 	export let data;
-	console.log(data)
 
 </script>
 
