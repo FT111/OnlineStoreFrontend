@@ -4,11 +4,22 @@
 	import { checkConsent, giveConsent, revokeConsent } from '$lib/analytics/consent.js';
 	import { Button } from '$lib/components/ui/button/index.js';
 	import { Toaster } from '$lib/components/ui/sonner/index.js';
+	import { basket } from '$lib/basket.js';
 	let consentPopup;
 	
 	onMount(() => {
 		checkConsent(consentPopup);
 	});
+	
+	$: basket.subscribe(value => {
+		console.log(value);
+		if (value.length > 0) {
+			localStorage.setItem('basket', JSON.stringify(value));
+		}
+		
+		
+	});
+	
 	
 </script>
 

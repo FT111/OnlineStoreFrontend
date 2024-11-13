@@ -21,11 +21,13 @@
 	if (hideSearch) {
 		hideClass = '-translate-y-32';
 	}
-
-
-	const productsInBasket = [
-		]
 	
+	let basketItems;
+	let basketSub;
+	$: basketSub = basket.subscribe(value => {
+		basketItems = Object.values(value.items);
+		console.log('items in basket:', basketItems);
+	});
 	
 </script>
 
@@ -54,13 +56,13 @@
 			<Sheet.Root bind:open={basketOpen}>
 				<Sheet.Trigger>
 					<div>
-						<span class="absolute top-3 text-xs bg-secondary rounded-3xl text-primary w-5">{productsInBasket.length}</span>
+						<span class="absolute top-3 text-xs bg-secondary rounded-3xl text-primary w-5">{basketItems.length}</span>
 						<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
 							<path stroke-linecap="round" stroke-linejoin="round" d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 0 0-3 3h15.75m-12.75-3h11.218c1.121-2.3 2.1-4.684 2.924-7.138a60.114 60.114 0 0 0-16.536-1.84M7.5 14.25 5.106 5.272M6 20.25a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Zm12.75 0a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Z" />
 						</svg>
 					</div>
 				</Sheet.Trigger>
-				<Sheet.Content class="p-0 overflow-y-scroll">
+				<Sheet.Content class="p-0 overflow-y-scroll h-screen">
 					<Sheet.Header class="sticky top-0 bg-white/50 backdrop-blur-2xl z-10 flex flex-row items-center pr-6 justify-between">
 						<Sheet.Title class="p-8">Your Basket</Sheet.Title>
 						<Button variant="ghost" on:click={()=>{basketOpen=!basketOpen}}>
@@ -72,26 +74,30 @@
 					</Sheet.Header>
 					
 					<div class="grow flex flex-col gap-3 pt-1">
-						{#each productsInBasket as product}
-							<a href="/listings/1" on:click={() => {basketOpen=false}}>
+							{#each basketItems as product}
+							<a href={`/listings/${product.id}`} on:click={() => {basketOpen=false}}>
 								<div class="flex flex-row justify-between h-28 mx-8 rounded-2xl gap-2 p-2.5 align-middle
 								items-center transition-all duration-75 hover:outline-slate-300 outline-1 outline
 								outline-slate-200 bg-slate-50 hover:bg-slate-100">
 									<div class="flex flex-row gap-1 h-full w-auto">
-										<Image src={product.imageURL} alt="Product " class="w-10 h-10" />
+										<Image src={product.id} alt="Product " class="w-10 h-10" />
 										<div class="flex flex-col p-2">
-											<p class="font-semibold text-xl">{product.title}</p>
+											<p class="font-semibold text-xl">{product.id}</p>
 										
 										</div>
 									</div>
-									<Price price={product.price} />
+									
+									<div class="flex flex-row gap-3 items-center min-w-24 justify-between">
+										<p>{product.quantity}</p>
+										<Price price={product.id} />
+									</div>
 								</div>
 							
 							</a>
 						{/each}
 						
 						<div class="h-fit bottom-0 sticky bg-muted/50 backdrop-blur-2xl w-full flex flex-row gap-8 p-5 mt-2 items-center justify-end">
-							<Price price={productsInBasket.reduce((acc, product) => acc + product.price, 0)} />
+							<Price price={1000} />
 							
 							<a href="/checkout"><Button>Checkout</Button></a>
 						</div>
