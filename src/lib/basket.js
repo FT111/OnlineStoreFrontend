@@ -1,21 +1,20 @@
 import { writable } from 'svelte/store';
+import { browser } from '$app/environment';
 
 const createBasket = () => {
 	// Creates a reactive svelte writable store - {items: {sku.id: {sku, quantity}, total: 0}}
 	const { subscribe, set, update } = writable({'items': {}, 'total': 0});
 
-	// // Load basket from local storage
-	// set(basket => {
-	// 	if (localStorage.getItem('basket')) {
-	// 		return JSON.parse(localStorage.getItem('basket'));
-	// 	}
-	// 	return basket;
-	// });
-	//
-	// // Save basket to local storage on every change
-	// subscribe(basket => {
-	// 	localStorage.setItem('basket', JSON.stringify(basket));
-	// })
+	if (browser) {
+		// Load basket from local storage
+		const basket = localStorage.getItem('basket');
+		try {
+			set(JSON.parse(basket));
+		}
+		catch (e) {
+			localStorage.removeItem('basket');
+		}
+	}
 
 	return {
 		subscribe,
