@@ -25,7 +25,7 @@
 					{:then listingsFromAPI}
 						{#each listingsFromAPI.data as listing}
 								<Card.Root class="rounded-2xl h-full aspect-square border-0 p-0 justify-between flex flex-col
-																	bg-primary/10 text-primary shadow-sm ">
+																	bg-sky-100/50 text-primary shadow-sm ">
 									<Card.Header class="p-4">
 										<p class="text-lg font-semibold text-center">{listing.title}</p>
 									</Card.Header>
