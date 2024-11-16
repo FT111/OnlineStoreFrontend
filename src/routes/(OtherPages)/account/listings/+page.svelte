@@ -5,6 +5,7 @@
 	import { fetchUserListings } from '$lib/api/listings.js';
 	import Price from '$lib/components/price.svelte';
 	import { Skeleton } from '$lib/components/ui/skeleton/index.js';
+	import { Button } from '$lib/components/ui/button/index.js';
 	
 	export let data;
 </script>
@@ -19,10 +20,11 @@
 				<Table.Row>
 					<Table.Head class="w-[100px]">Title</Table.Head>
 					<Table.Head>Status</Table.Head>
-					<Table.Head># of Variants</Table.Head>
+					<Table.Head>Variants</Table.Head>
 					<Table.Head>Views</Table.Head>
 					<Table.Head>Sales</Table.Head>
 					<Table.Head class="text-right">Revenue</Table.Head>
+					<Table.Head class="w-[100px]">Actions</Table.Head>
 				</Table.Row>
 			</Table.Header>
 			
@@ -46,6 +48,12 @@
 								<Table.Cell>{listing.views}</Table.Cell>
 								<Table.Cell>{listing.sales}</Table.Cell>
 								<Table.Cell class="text-right"><Price price={listing.basePrice} /></Table.Cell>
+								<Table.Cell class="flex flex-row gap-2 justify-end">
+									<a href={`/account/listings/${listing.id}/edit`}>
+										<Button variant="ghost">Edit</Button>
+									</a>
+									<Button variant="destructive">Delete</Button>
+								</Table.Cell>
 							</Table.Row>
 						{/each}
 					{:catch error}
@@ -53,4 +61,10 @@
 				{/await}
 			</Table.Body>
 		</Table.Root>	</div>
+	
+	<div class="fixed bottom-20 right-20">
+		<a href="/account/listings/new">
+			<Button>Create new listing</Button>
+		</a>
+	</div>
 </DashboardPageLayout>
