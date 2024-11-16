@@ -23,11 +23,15 @@
 	}
 	
 	let basketItems;
-	let basketSub;
-	$: basketSub = basket.subscribe(value => {
-		basketItems = Object.values(value.items);
-		console.log('items in basket:', basketItems);
-	});
+
+		basket.subscribe(value => {
+			if (value && value.items) {
+				basketItems = Object.values(value.items);
+				console.log('items in basket:', basketItems);
+			} else {
+				basketItems = [];
+			}
+		});
 	
 </script>
 
@@ -128,7 +132,7 @@
 								<DropdownMenu.Group>
 									<DropdownMenu.Label>My Sales</DropdownMenu.Label>
 									<DropdownMenu.Separator />
-									<DropdownMenu.Item href="/account">Dashboard</DropdownMenu.Item>
+									<DropdownMenu.Item href="/account/dashboard">Dashboard</DropdownMenu.Item>
 								</DropdownMenu.Group>
 								<DropdownMenu.Separator />
 								<DropdownMenu.Item class="bg-red-100/50">
