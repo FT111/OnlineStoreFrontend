@@ -11,15 +11,6 @@
 		checkConsent(consentPopup);
 	});
 	
-	$: basket.subscribe(value => {
-		console.log(value);
-		if (value.length > 0) {
-			localStorage.setItem('basket', JSON.stringify(value));
-		}
-		
-		
-	});
-	
 	
 </script>
 
