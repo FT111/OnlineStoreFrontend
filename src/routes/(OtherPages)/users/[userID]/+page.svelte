@@ -149,10 +149,7 @@
 		{:then data}
 			{#if 'data' in data}
 				{#each data.data as listing}
-					<Listing listingName={listing.title} listingPrice={listing.basePrice} userRating={listing.ownerUser.rating}
-							 listingRating={listing.rating} userAvatarUrl={listing.ownerUser.profilePictureURL}
-							 listingDescription={listing.description} multipleSKUs={listing.multipleSKUs} listingID={listing.id}
-							 editMode={false} hasDiscount={listing.hasDiscount} userID={listing.ownerUser.id} />
+					<Listing listing={listing} />
 				{/each}
 
 			{:else}

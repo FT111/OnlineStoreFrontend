@@ -12,34 +12,36 @@
 	let className = '';
 	export { className as class };
 
-	export let userID = 1;
-	export let listingName = "Product Name";
-	export let listingDescription = "Product Description";
-	export let listingPrice = 1.59;
-	export let hasDiscount = false;
-	export let listingImage = "https://via.placeholder.com/1000";
-	export let listingRating = 5;
-	
-	export let userAvatarUrl = "https://via.placeholder.com/800";
-	export let userRating = 5;
-	
-	export let multipleSKUs = false;
-	export let listingID= 1;
+	export let listing = {ownerUser: {
+			                      id: 1,
+	                      username: 'JD',
+	                      profilePictureURL: 'https://via.placeholder.com/150',
+	                      bannerURL: ''
+	  },
+	                      title: 'Title',
+	                      description: 'Description',
+	                      rating: 4.5,
+	                      basePrice: 100,
+	                      hasDiscount: true,
+	                      multipleSKUs: true,
+	                      id: 1
+	};
 	export let editMode = false;
 	export let isLoading = false;
 	
 	export let addToBasket = (event) => {
 		event.preventDefault();
 		console.log("Adding to basket");
-		basket.addItem({id: listingID});
+		basket.addItem({id: listing.id});
 	}
 
+	console.log(listing);
 </script>
 
-<a href="/listings/{listingID}" class="w-full h-min {className}">
+<a href="/listings/{listing.id}" class="w-full h-min {className}">
 	<Card.Root class="flex flex-col justify-start h-full w-full shadow-sm group rounded-xl bg-muted/60
 					transition-all duration-150 ease-in-out hover:scale-[1.00] hover:bg-slate-200/50 hover:border-accent/50
-					border-slate-200 gap-0" href="/listings/{listingID}">
+					border-slate-200 gap-0" href="/listings/{listing.id}">
 		
 		<Card.Header class="pb-4">
 			{#if isLoading === true}
@@ -48,16 +50,16 @@
 			
 			
 			{:else}
-				<Card.Title>{ listingName }</Card.Title>
-				<Card.Description class="truncate hover:text-wrap">{ listingDescription }</Card.Description>
+				<Card.Title>{ listing.title }</Card.Title>
+				<Card.Description class="truncate hover:text-wrap">{ listing.description }</Card.Description>
 			{/if}
 		
 			<div class="flex flex-row justify-between pt-2 items-center">
 				<div class="flex flex-row gap-2 align-middle items-center bg-slate-200 w-fit rounded-3xl p-1 pr-3">
-					<a  href={`/users/${userID}`}>
+					<a  href={`/users/${listing.ownerUser.id}`}>
 						<Avatar.Root>
-							<Avatar.Image src={userAvatarUrl} alt='Avatar' />
-							<Avatar.Fallback>EB</Avatar.Fallback>
+							<Avatar.Image src={listing.ownerUser.profilePictureURL} alt='Avatar' />
+							<Avatar.Fallback>{listing.ownerUser.username.slice(0,2).toUpperCase()}</Avatar.Fallback>
 						</Avatar.Root>
 					</a>
 
@@ -68,14 +70,14 @@
 							{#if isLoading === true}
 								<p></p>
 							{:else}
-								{userRating}
+								4.3
 							{/if}</p>
 					</div>
 				</div>
 				<p class="text-md font-light flex flex-row pr-2 align-middle items-center gap-1"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.75" stroke="currentColor" class="size-6 stroke-accent">
 					<path stroke-linecap="round" stroke-linejoin="round" d="M11.48 3.499a.562.562 0 0 1 1.04 0l2.125 5.111a.563.563 0 0 0 .475.345l5.518.442c.499.04.701.663.321.988l-4.204 3.602a.563.563 0 0 0-.182.557l1.285 5.385a.562.562 0 0 1-.84.61l-4.725-2.885a.562.562 0 0 0-.586 0L6.982 20.54a.562.562 0 0 1-.84-.61l1.285-5.386a.562.562 0 0 0-.182-.557l-4.204-3.602a.562.562 0 0 1 .321-.988l5.518-.442a.563.563 0 0 0 .475-.345L11.48 3.5Z" />
 				</svg>
-					{listingRating}
+					{listing.rating}
 				</p>
 				
 			</div>
@@ -83,7 +85,7 @@
 		</Card.Header>
 		<div class="flex flex-col justify-end">
 			<Card.Content class="py-1">
-				<Image class="h-full rounded-md border-b" src="{listingImage}" alt="{listingDescription}" />
+				<Image class="h-full rounded-md border-b" src="https://via.placeholder.com/1000" alt="{listing.description}" />
 			</Card.Content>
 			<Card.Footer class="gap-2 justify-end pb-3">
 				<div in:slide={{duration:300}} class="flex flex-row gap-1">
@@ -121,13 +123,13 @@
 						</div>
 					{:else}
 						<div class="flex flex-col gap-0 w-full justify-end text-right">
-							{#if multipleSKUs === true}
+							{#if listing.multipleSKUs === true}
 								<p class="text-sm font-bold">Starting at</p>
 							{:else}
 								<br>
 							{/if}
 							<div class="flex-row flex gap-2 items-center justify-end">
-								{#if hasDiscount === true}
+								{#if listing.hasDiscount === true}
 									<div class="items-center justify-center align-middle">
 										<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" class="absolute w-4 h-4 fill-red-500 animate-ping opacity-60">
 											<circle cx="50" cy="50" r="50" />
@@ -136,9 +138,9 @@
 											<circle cx="50" cy="50" r="50" />
 										</svg>
 									</div>
-									<Price price={listingPrice} discounted={true} />
+									<Price price={listing.basePrice} discounted={true} />
 								{:else}
-									<Price price={listingPrice} />
+									<Price price={listing.basePrice} />
 								{/if}
 							</div>
 						</div>
