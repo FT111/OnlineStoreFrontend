@@ -12,6 +12,7 @@
 	let className = '';
 	export { className as class };
 
+	// Listing object - Default values are used during skeleton loading
 	export let listing = {ownerUser: {
 			                      id: 1,
 	                      username: 'JD',
@@ -84,8 +85,8 @@
 			
 		</Card.Header>
 		<div class="flex flex-col justify-end">
-			<Card.Content class="py-1">
-				<Image class="h-full rounded-md border-b" src="https://via.placeholder.com/1000" alt="{listing.description}" />
+			<Card.Content class="py-1 ">
+				<Image class="h-full rounded-md border-b  " src="https://via.placeholder.com/1000" alt="{listing.description}" />
 			</Card.Content>
 			<Card.Footer class="gap-2 justify-end pb-3">
 				<div in:slide={{duration:300}} class="flex flex-row gap-1">

@@ -10,17 +10,9 @@
 	export let options = []
 	
 	export let clickAction = () => {};
-	$: console.log(title, value)
 
 
 	let open = false;
-	
-
-	
-	// $: value =
-	// 	options.find((f) => f === value) ??
-	// 		`${title}`;
-
 
 	function closeAndFocusTrigger(triggerId) {
 		open = false;

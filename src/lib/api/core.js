@@ -1,7 +1,7 @@
 import { browser } from '$app/environment';
 import { isConsentGiven } from '$lib/analytics/consent.js';
 
-export const baseURL = 'http://localhost:8000/'
+export const baseURL = 'http://127.0.0.1:8000/'
 
 const formHeaders = (token=null) => {
 	// Gets JWT authorisation token from session storage
