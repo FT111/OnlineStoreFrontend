@@ -1,5 +1,5 @@
 
-import {GET} from './core.js';
+import {GET, POST} from './core.js';
 
 export const fetchListings = async () => {
 	return await GET('listings/?limit=24');
@@ -7,6 +7,10 @@ export const fetchListings = async () => {
 
 export const fetchListing = async (id) => {
 	return await GET(`listings/${id}`);
+}
+
+export const newListing = async (data) => {
+	return await POST('listings/', data, 'include');
 }
 
 export const queryListings = async (query=null, category=null, subCategory=null, sort=null, order=null, username=null) => {
