@@ -10,7 +10,8 @@ export const fetchListing = async (id) => {
 }
 
 export const newListing = async (data) => {
-	return await POST('listings/', data, 'include');
+	const body = JSON.stringify(data)
+	return await POST('listings/', body, 'include');
 }
 
 export const queryListings = async (query=null, category=null, subCategory=null, sort=null, order=null, username=null) => {

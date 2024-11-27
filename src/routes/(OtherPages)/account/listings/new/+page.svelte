@@ -7,6 +7,7 @@
 		import { fetchCategories, fetchCategory } from '$lib/api/categories.js';
 		import { Button } from '$lib/components/ui/button/index.js';
 		import { newListing } from '$lib/api/listings.js';
+		import { ArrowBigRight, ArrowRight, LucidePanelRight } from 'lucide-svelte';
 
 
 		let selectedCategory;
@@ -14,7 +15,7 @@
 		let selectedTitle;
 		let selectedDesc;
 		
-		const formData = {
+		$: formData = {
 			title: selectedTitle,
 			description: selectedDesc,
 			category: selectedCategory,
@@ -68,7 +69,7 @@
 							</div>
 							
 							<button type="submit">
-								<Button variant="default" size="lg">Next</Button>
+								<Button class="text-md gap-0.5 hover:gap-2 transition-all origin-left w-32 ease-[cubic-bezier(0.64, 0.57, 0.67, 1.53)]" variant="default" size="lg">Next <ArrowRight /></Button>
 							
 							</button>
 						</div>

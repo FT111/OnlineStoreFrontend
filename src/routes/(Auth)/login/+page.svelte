@@ -39,7 +39,7 @@
 <!--	Form -->
 	<div class="flex flex-col grow h-full items-center justify-center">
 		
-		<Card class="flex flex-col justify-between basis-7/12 md:p-16 md:px-16 p-8 w-fit border-0 bg-slate-50 shadow-none rounded-2xl items-center">
+		<Card class="flex flex-col justify-between basis-7/12 md:p-16 md:px-16 p-8 w-fit border-0 bg-none shadow-none rounded-2xl items-center">
 			<div class="flex flex-col gap-1 items-center">
 				<h1 class="text-5xl font-bold text-primary">Welcome back!</h1>
 				<p class="font-medium text-slate-600">Please sign in to your account</p>

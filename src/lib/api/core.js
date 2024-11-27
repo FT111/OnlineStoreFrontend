@@ -8,9 +8,6 @@ const formHeaders = (token=null) => {
 	if (browser && !token) {
 		token = sessionStorage.getItem('token');
 	}
-	if (browser && isConsentGiven()) {
-
-	}
 
 	let headers = {'Content-Type': 'application/json',
 	'Access-Control-Allow-Origin': 'http://localhost:8000'}
@@ -18,6 +15,7 @@ const formHeaders = (token=null) => {
 	if (token) {
 		headers['Authorization'] = `Bearer ${token}`;
 	}
+	// Adds analytics consent header if user has given consent
 	if (browser && isConsentGiven()) {
 		headers['X-Analytics-Consent'] = 'true';
 	} else {
