@@ -6,9 +6,20 @@
 		import Dropdown from '$lib/components/dropdown.svelte';
 		import { fetchCategories, fetchCategory } from '$lib/api/categories.js';
 		import { Button } from '$lib/components/ui/button/index.js';
-	
+		import { newListing } from '$lib/api/listings.js';
+
+
+		let selectedCategory;
+		let selectedSubcategory;
+		let selectedTitle;
+		let selectedDesc;
 		
-	let selectedCategory;
+		const formData = {
+			title: selectedTitle,
+			description: selectedDesc,
+			category: selectedCategory,
+			subCategory: selectedSubcategory
+		}
 </script>
 
 <DashboardPageLayout>
@@ -22,10 +33,11 @@
 					<p class="font-light text-slate-600">Add some basic information about your product. Pricing and images will be added at a later stage.</p>
 				</Card.Header>
 				<Card.Content>
-					<form>
+<!--					-->
+					<form on:submit={()=>{newListing(formData)}}>
 						<div class="flex flex-col gap-3.5 items-end">
-							<Input label="Title" placeholder="Enter a title for your listing" />
-							<Input label="Description" placeholder="Enter a description for your listing" />
+							<Input bind:value={selectedTitle} label="Title" placeholder="Enter a title for your listing" />
+							<Input bind:value={selectedDesc}  label="Description" placeholder="Enter a description for your listing" />
 							
 							<div class="flex flex-row gap-3.5 w-full">
 								<div class="basis-1/2">
@@ -46,7 +58,7 @@
 											<Dropdown title="Subcategory" />
 										{:then categoryData}
 											<Dropdown options={categoryData.data.subCategories.map(subcategory => {return subcategory.title})} title="Subcategory"
-											subtitle="Search for a subcategory"/>
+											subtitle="Search for a subcategory" bind:value={selectedSubcategory}/>
 										{:catch error}
 											<p>{error.message}</p>
 										{/await}
@@ -55,7 +67,10 @@
 								</div>
 							</div>
 							
-							<Button variant="default" size="lg">Next</Button>
+							<button type="submit">
+								<Button variant="default" size="lg">Next</Button>
+							
+							</button>
 						</div>
 						
 					</form>
