@@ -9,6 +9,7 @@
 	import * as Dialog from '$lib/components/ui/dialog/index.js';
 		import { Plus } from 'lucide-svelte';
 		import NewListingDialog from '$lib/components/NewListingDialog.svelte';
+		import { Badge } from '$lib/components/ui/badge/index.js';
 	
 	export let data;
 </script>
@@ -32,21 +33,27 @@
 			</Table.Header>
 			
 			<Table.Body>
-				{#await fetchUserListings(data.user.id)}
-				
-					<Table.Row>
-						<Table.Cell class="font-medium"><Skeleton class="w-[70px]" /></Table.Cell>
-						<Table.Cell>Public</Table.Cell>
-						<Table.Cell>3</Table.Cell>
-						<Table.Cell>2437</Table.Cell>
-						<Table.Cell>32</Table.Cell>
-						<Table.Cell class="text-right">$760.00</Table.Cell>
-					</Table.Row>
+				{#await fetchUserListings(data.user.id, true)}
+					{#each Array.from({ length: 15 }) as _, i}
+						<Table.Row class="h-16">
+							
+							<Table.Cell class="font-medium"><Skeleton class="w-[70px]" /></Table.Cell>
+							<Table.Cell></Table.Cell>
+							<Table.Cell></Table.Cell>
+							<Table.Cell></Table.Cell>
+							<Table.Cell></Table.Cell>
+							<Table.Cell class="text-right"><Skeleton class="w-8" /></Table.Cell>
+							<Table.Cell class="flex flex-row gap-2 justify-end">
+								<Button variant="ghost"><Skeleton class="w-[50px]" /></Button>
+								<Button variant="destructive"><Skeleton class="w-[50px]" /></Button>
+							</Table.Cell>
+						</Table.Row>
+					{/each}
 					{:then listingsFromAPI}
 						{#each listingsFromAPI.data as listing}
-							<Table.Row>
+							<Table.Row class="h-16">
 								<Table.Cell class="font-medium">{listing.title}</Table.Cell>
-								<Table.Cell>{listing.public ? 'Public' : 'Private'}</Table.Cell>
+								<Table.Cell><Badge variant="{listing.public ? 'default' : 'outline'}">{listing.public ? 'Public' : 'Private'}</Badge></Table.Cell>
 								<Table.Cell>4</Table.Cell>
 								<Table.Cell>{listing.views}</Table.Cell>
 								<Table.Cell>{listing.sales}</Table.Cell>
