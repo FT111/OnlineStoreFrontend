@@ -11,7 +11,7 @@ export const fetchListing = async (id) => {
 
 export const newListing = async (data) => {
 	const body = JSON.stringify(data)
-	return await POST('listings/', body, 'include');
+	return await POST('listings/', body);
 }
 
 export const queryListings = async (query=null, category=null, subCategory=null, sort=null, order=null, username=null) => {
