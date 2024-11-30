@@ -5,8 +5,8 @@ export const fetchListings = async () => {
 	return await GET('listings/?limit=24');
 }
 
-export const fetchListing = async (id) => {
-	return await GET(`listings/${id}`);
+export const fetchListing = async (id, includePrivileged) => {
+	return await GET(`listings/${id}${includePrivileged ? '?includePrivileged=true' : ''}`);
 }
 
 export const newListing = async (data) => {
