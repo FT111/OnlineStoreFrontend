@@ -1,6 +1,8 @@
 <script>
 
-	export let data;
+	import { Plus } from 'lucide-svelte';
+
+		export let data;
 
 	import DashboardPageLayout from '$lib/components/DashboardPageLayout.svelte';
 		import * as Card from '$lib/components/ui/card/index.js';
@@ -48,6 +50,14 @@
 								</Card.Description>
 							</Card.Root>
 						{/each}
+						
+					<!--	Add new variant card -->
+						<Card.Root class="w-56 h-36 flex flex-col border-2 border-dashed bg-emerald-50/40 items-center justify-center
+										  hover:border-solid hover:bg-emerald-100 hover:border-emerald-500 transition-all group">
+							<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-12 opacity-30 hover:opacity-70 group-hover:opacity-70 text-emerald-700 transition-all">
+								<path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+							</svg>
+						</Card.Root>
 					</div>
 				</div>
 			</div>
