@@ -11,7 +11,7 @@
 	let btnAnimationClasses = '';
 	let state = 'default';
 
-	export const onPress = (event) => {
+	export const onPress = (event, goHome=false) => {
 		event.preventDefault();
 		btnDisabled = true;
 		state = 'processing';
@@ -20,11 +20,13 @@
 		authFunction().then(() => {
 			state = 'success';
 			btnAnimationClasses = 'bg-emerald-300 outline-emerald-700 outline-[3px] fill-primary text-primary disabled ';
-			setTimeout(async () => {
-				await invalidateAll().then(() => {
-					goto('/');
-				});
-			}, 250);
+			if (goHome) {
+				setTimeout(async () => {
+					await invalidateAll().then(() => {
+						goto('/');
+					});
+				}, 250);
+			}
 		}).catch(() => {
 			state = 'error';
 			btnAnimationClasses = 'bg-red-700 text-slate-50 ';
@@ -67,8 +69,9 @@
 		<div in:fly={{ y: 20, easing: backInOut, duration: 700 }} out:fly={{ y: 20, easing: backInOut, duration: 700 }} class="buttonState w-full justify-between flex flex-row h-full">
 			<div />
 			<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-5">
-				<path stroke-linecap="round" stroke-linejoin="round" d="M13.5 10.5V6.75a4.5 4.5 0 1 1 9 0v3.75M3.75 21.75h10.5a2.25 2.25 0 0 0 2.25-2.25v-6.75a2.25 2.25 0 0 0-2.25-2.25H3.75a2.25 2.25 0 0 0-2.25 2.25v6.75a2.25 2.25 0 0 0 2.25 2.25Z" />
+				<path stroke-linecap="round" stroke-linejoin="round" d="m4.5 12.75 6 6 9-13.5" />
 			</svg>
+			
 			<div />
 		</div>
 	
