@@ -7,10 +7,11 @@
 		import { fetchCategories, fetchCategory } from '$lib/api/categories.js';
 		import { Button } from '$lib/components/ui/button/index.js';
 		import { newListing } from '$lib/api/listings.js';
-		import { ArrowBigRight, ArrowRight, Cross, LoaderIcon, Check } from 'lucide-svelte';
+		import { ArrowBigRight, ArrowRight, Cross, LoaderIcon, Check, Loader } from 'lucide-svelte';
 		import { goto } from '$app/navigation';
 		import {fly, fade} from 'svelte/transition';
 		import { backInOut } from 'svelte/easing';
+		import AuthButton from '$lib/components/authButton.svelte';
 	
 		let formState = 'default';
 
@@ -18,6 +19,8 @@
 		let selectedSubcategory;
 		let selectedTitle;
 		let selectedDesc;
+		
+		let submitFunc;
 		
 		$: formData = {
 			title: selectedTitle,
@@ -27,15 +30,16 @@
 		}
 		
 		
-		const newListingSubmision = async () => {
+		const newListingSubmission = async () => {
 		  	formState = 'loading';
 			await newListing(formData).then((data) => {
+				console.log(data);
 				if (data.data) {
 					formState = 'success';
 
 					setTimeout(() => {
-						goto(`/account/listings/${data.id}`);
-					}, 3000);
+						goto(`/account/listings/${data.data.id}`);
+					}, 1000);
 				}
 			}).catch((error) => {
 				console.log(error);
@@ -44,6 +48,14 @@
 		}
 		
 </script>
+
+<style>
+    .buttonState {
+        grid-column: 1;
+        grid-row: 1;
+    }
+</style>
+
 
 <DashboardPageLayout>
 	<h1 slot="title">New Listing</h1>
@@ -57,7 +69,7 @@
 				</Card.Header>
 				<Card.Content>
 <!--					-->
-					<form on:submit={()=>{newListingSubmision()}}>
+					<form on:submit={(event) => {submitFunc(event)}}>
 						<div class="flex flex-col gap-3.5 items-end">
 							<Input bind:value={selectedTitle} label="Title" placeholder="Enter a title for your listing" />
 							<Input bind:value={selectedDesc}  label="Description" placeholder="Enter a description for your listing" />
@@ -90,28 +102,36 @@
 								</div>
 							</div>
 							
-							<button type="submit">
-								<Button class="text-md gap-0.5 hover:gap-2 transition-all origin-left w-32 ease-[cubic-bezier(0.64, 0.57, 0.67, 1.53)]" variant="default" size="lg">
-									{#if formState === 'default'}
-										<div in:fly={{y:-20, easing: backInOut, duration: 700}} class="flex flex-row gap-0.5 hover:gap-2 transition-all origin-left w-32 ease-[cubic-bezier(0.64, 0.57, 0.67, 1.53)]">
-											Next <ArrowRight />
-										</div>
-									{:else if formState === 'loading'}
-										<div class="flex flex-row gap-0.5" in:fade={{duration: 700}} out:fly={{y:-20, easing: backInOut, duration: 700}}>
-											Submitting <LoaderIcon class="animate-spin" />
-										</div>
-									{:else if formState === 'success'}
-										<div in:fly={{ y: 20, easing: backInOut, duration: 700 }} out:fly={{ y: 20, easing: backInOut, duration: 700 }} class="flex flex-row gap-0.5" >
-											Success <Check />
-										</div>
-									{:else if formState === 'error'}
-										<div in:fly={{ y: 20, easing: backInOut, duration: 700 }} out:fly={{ y: 20, easing: backInOut, duration: 700 }} class="flex flex-row gap-0.5">
-											Error <Cross />
-										</div>
-									{/if}
-								</Button>
+<!--							<button type="submit">-->
+<!--								<Button class="grid grid-cols-1 grid-rows-1 text-md gap-0.5 hover:gap-2 transition-all origin-left w-32 ease-[cubic-bezier(0.64, 0.57, 0.67, 1.53)]-->
+<!--												${formState==='success'? ' bg-emerald-700 ': formState==='loading' ? 'bg-slate-600':''}" variant="default" size="lg">-->
+<!--									{#if formState === 'default'}-->
+<!--										<div in:fly={{y:-20, easing: backInOut, duration: 700}} class="buttonState flex flex-row gap-0.5 hover:gap-2 transition-all origin-left w-32 ease-[cubic-bezier(0.64, 0.57, 0.67, 1.53)]">-->
+<!--											Next <ArrowRight />-->
+<!--										</div>-->
+<!--									{:else if formState === 'loading'}-->
+<!--										<div class="buttonState flex flex-row gap-0.5" in:fade={{duration: 700}} out:fly={{y:-20, easing: backInOut, duration: 700}}>-->
+<!--											Submitting <Loader class="animate-spin" />-->
+<!--										</div>-->
+<!--									{:else if formState === 'success'}-->
+<!--										<div in:fly={{ y: 20, easing: backInOut, duration: 700 }} out:fly={{ y: 20, easing: backInOut, duration: 700 }} class="buttonState flex flex-row gap-0.5" >-->
+<!--											Success <Check />-->
+<!--										</div>-->
+<!--									{:else if formState === 'error'}-->
+<!--										<div in:fly={{ y: 20, easing: backInOut, duration: 700 }} out:fly={{ y: 20, easing: backInOut, duration: 700 }} class="buttonState flex flex-row gap-0.5">-->
+<!--											Error <Cross />-->
+<!--										</div>-->
+<!--									{/if}-->
+<!--								</Button>-->
 							
-							</button>
+							<div class="w-24 text-md">
+								<AuthButton authFunction={newListingSubmission} bind:onPress={submitFunc}>
+									<div class="flex flex-row gap-0.5 hover:gap-2 transition-all origin-left ease-[cubic-bezier(0.64, 0.57, 0.67, 1.53)] flex flex-row gap-0.5 hover:gap-3 transition-all justify-between w-full">
+										<p out:fly={{y:-20, easing: backInOut, duration: 700}}>Next</p> <ArrowRight />
+									</div>
+								</AuthButton>
+							</div>
+							
 						</div>
 						
 					</form>
