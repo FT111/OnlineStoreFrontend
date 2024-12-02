@@ -6,9 +6,16 @@ import * as Avatar from '$lib/components/ui/avatar/index.js';
 import { Card } from '$lib/components/ui/card/index.js';
 import { Button } from '$lib/components/ui/button/index.js';
 import * as DropdownMenu from "$lib/components/ui/dropdown-menu";
+import { page } from '$app/stores';
+
 
 export let data;
 $: user = data.user;
+
+
+let selectedPage;
+$: selectedPage = $page.url.pathname.split('/')[2];
+
 </script>
 
 <div class="w-full h-full flex flex-row">
@@ -56,9 +63,9 @@ $: user = data.user;
 			<Separator />
 			
 			
-			<Button href="/account/dashboard" class="bg-white hover:border-slate-900 border   hover:bg-white" variant="secondary">Dashboard</Button>
-			<Button href="/account/listings" class="bg-white hover:border-slate-900 border   hover:bg-white" variant="secondary">Listings</Button>
-			<Button href="/account/sales" class="bg-white hover:border-slate-900 border  hover:bg-white" variant="secondary">Orders</Button>
+			<Button id="dashboard" href="/account/dashboard" class="{selectedPage==='dashboard' ? 'border-slate-900 ' : ''} bg-white hover:border-slate-900 border   hover:bg-white" variant="secondary">Dashboard</Button>
+			<Button id="listings" href="/account/listings" class="{selectedPage==='listings' ? 'border-slate-900 ' : ''} bg-white hover:border-slate-900 border   hover:bg-white" variant="secondary">Listings</Button>
+			<Button id="orders" href="/account/sales" class="{selectedPage==='orders' ? 'border-slate-900 ' : ''} bg-white hover:border-slate-900 border  hover:bg-white" variant="secondary">Orders</Button>
 		
 		</div>
 	</Sidebar>
