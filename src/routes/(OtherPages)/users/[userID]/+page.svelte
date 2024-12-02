@@ -13,7 +13,7 @@
 	const profileUser = {
 		username: 'johndoe',
 		profilePictureURL: 'https://via.placeholder.com/150',
-	  	bannerURL: 'https://live.staticflickr.com/65535/51155108931_45026fc05d_h.jpg',
+	  	bannerURL: 'https://static1.squarespace.com/static/5e949a92e17d55230cd1d44f/t/6667b379b716e7212d986a57/1718072191450/Seq3x2.png?format=1500w',
 		rating: 4.5,
 		description: 'I am a software engineer who sells things on this marketplace',
 
@@ -23,7 +23,7 @@
 <div class="sm:px-8 px-0">
 	
 	<div class="flex flex-col w-full p-4 h-96 mt-20 overflow-hidden">
-		<div class="grow overflow-hidden h-80">
+		<div class="grow overflow-hidden h-96">
 			<img src={profileUser.bannerURL} alt="User Profile" class="w-full h-96 object-cover rounded-t-3xl" />
 		</div>
 		

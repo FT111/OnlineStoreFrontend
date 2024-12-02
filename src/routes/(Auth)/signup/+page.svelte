@@ -57,7 +57,7 @@
 			</div>
 			
 			
-			<form bind:this={signInFormElement} on:submit={signIn} class="flex flex-col gap-4 md:w-5/6 w-full">
+			<form bind:this={signInFormElement} on:submit={(event)=>{signIn(event, true)}} class="flex flex-col gap-4 md:w-5/6 w-full">
 				<Input bind:value={name} type="text" required placeholder="Your first and last name" name="name" />
 				<Input bind:value={username} type="text" required placeholder="Username" name="username" />
 				<Input bind:value={email} type="email" required placeholder="Email" name="email" />
