@@ -10,7 +10,7 @@ import * as Dialog from '$lib/components/ui/dialog/index.js';
 		<slot />
 
 	</Dialog.Trigger>
-	<Dialog.Content class="p-0 w-11/12 sm:w-1/3 2xl:w-1/5 h-48">
+	<Dialog.Content class="p-0 w-11/12 sm:w-1/3 h-48">
 		<div class="flex flex-row h-full">
 			<!--						-->
 			<a href="/account/listings/new" class="basis-1/2 gap-2 p-5 border-r border-r-1 flex flex-col items-center justify-center hover:bg-slate-50 transition-all">

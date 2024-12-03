@@ -7,6 +7,8 @@ import { Card } from '$lib/components/ui/card/index.js';
 import { Button } from '$lib/components/ui/button/index.js';
 import * as DropdownMenu from "$lib/components/ui/dropdown-menu";
 import { page } from '$app/stores';
+import { Plus } from 'lucide-svelte';
+import NewListingDialog from '$lib/components/NewListingDialog.svelte';
 
 
 export let data;
@@ -66,6 +68,27 @@ $: selectedPage = $page.url.pathname.split('/')[2];
 			<Button id="dashboard" href="/account/dashboard" class="{selectedPage==='dashboard' ? 'border-slate-900 ' : ''} bg-white hover:border-slate-900 border   hover:bg-white" variant="secondary">Dashboard</Button>
 			<Button id="listings" href="/account/listings" class="{selectedPage==='listings' ? 'border-slate-900 ' : ''} bg-white hover:border-slate-900 border   hover:bg-white" variant="secondary">Listings</Button>
 			<Button id="orders" href="/account/sales" class="{selectedPage==='orders' ? 'border-slate-900 ' : ''} bg-white hover:border-slate-900 border  hover:bg-white" variant="secondary">Orders</Button>
+			
+			<Separator />
+			
+			<div class="flex flex-col  p-1">
+				<div class="flex flex-row justify-between w-full items-center font-semibold text-lg rounded-md p-2">
+					Your listings
+					<NewListingDialog>
+						<Button class="w-min p-2 px-3" size="sm">
+							<Plus />
+						</Button>
+					</NewListingDialog>
+				</div>
+				
+				<div class="flex flex-col gap-1 px-2">
+					{#each data.userListings as listing}
+						<Button variant="link" href={`/account/listings/${listing.id}`} class="flex flex-row px-0 p-0 py-0 h-fit justify-between">
+							<p>{listing.title}</p>
+						</Button>
+					{/each}
+				</div>
+			</div>
 		
 		</div>
 	</Sidebar>
