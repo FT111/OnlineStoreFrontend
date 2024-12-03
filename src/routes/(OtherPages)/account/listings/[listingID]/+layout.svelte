@@ -11,7 +11,7 @@
 </script>
 
 <DashboardPageLayout>
-	
+	<p slot="header">Editing</p>
 	<h1 slot="title">{data.listing.title}</h1>
 	
 	<div slot="page" class="h-full">
