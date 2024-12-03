@@ -11,7 +11,7 @@
 		import { goto } from '$app/navigation';
 		import {fly, fade} from 'svelte/transition';
 		import { backInOut } from 'svelte/easing';
-		import AuthButton from '$lib/components/authButton.svelte';
+		import StateButton from '$lib/components/StateButton.svelte';
 	
 		let formState = 'default';
 
@@ -88,7 +88,7 @@
 								
 								<div class="basis-1/2">
 								{#if selectedCategory}
-									{#key selectedCategory}
+									{#key formData.subCategory}
 										{#await fetchCategory(selectedCategory)}
 											<Dropdown title="Subcategory" />
 										{:then categoryData}
@@ -125,11 +125,15 @@
 <!--								</Button>-->
 							
 							<div class="w-24 text-md">
-								<AuthButton authFunction={newListingSubmission} bind:onPress={submitFunc}>
+								<StateButton text={false} authFunction={newListingSubmission} bind:onPress={submitFunc}>
 									<div class="flex flex-row gap-0.5 hover:gap-2 transition-all origin-left ease-[cubic-bezier(0.64, 0.57, 0.67, 1.53)] flex flex-row gap-0.5 hover:gap-3 transition-all justify-between w-full">
-										<p out:fly={{y:-20, easing: backInOut, duration: 700}}>Next</p> <ArrowRight />
+										<p out:fly={{y:-20, easing: backInOut, duration: 700}}>Next</p>
+										<svg out:fly={{y:-20, easing: backInOut, duration: 700}} xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+											<path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3" />
+										</svg>
+									
 									</div>
-								</AuthButton>
+								</StateButton>
 							</div>
 							
 						</div>

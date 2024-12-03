@@ -5,7 +5,7 @@
 	import { Card } from '$lib/components/ui/card/index.js';
 	import { Button } from '$lib/components/ui/button/index.js';
 	import { signUp } from '$lib/api/authentication.js';
-	import AuthButton from '$lib/components/authButton.svelte';
+	import StateButton from '$lib/components/StateButton.svelte';
 	import { enhance } from '$app/forms';
 	import { goto, invalidateAll } from '$app/navigation';
 		import { Label } from '$lib/components/ui/dropdown-menu/index.js';
@@ -65,13 +65,13 @@
 				<Input bind:this={passwordConfirmInput} bind:value={confirmPassword} type="password" required placeholder="Confirm Password" name="passwordConfirm" />
 				
 				
-				<AuthButton bind:this={submitBtnElement} authFunction={handleSignUp} bind:onPress={signIn} class="w-full justify-between hover:drop-shadow-xl drop-shadow-none transition-all duration-150 ">
+				<StateButton bind:this={submitBtnElement} authFunction={handleSignUp} bind:onPress={signIn} class="w-full justify-between hover:drop-shadow-xl drop-shadow-none transition-all duration-150 ">
 					Sign up
 					<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
 						<path stroke-linecap="round" stroke-linejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3" />
 					</svg>
 
-				</AuthButton>
+				</StateButton>
 			</form>
 		
 		</Card>

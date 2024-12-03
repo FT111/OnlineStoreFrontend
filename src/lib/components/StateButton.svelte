@@ -5,6 +5,7 @@
 	import { backInOut } from 'svelte/easing';
 
 	export let authFunction;
+	export let text = true;
 
 	let btnElement;
 	let btnDisabled = false;
@@ -78,7 +79,7 @@
 	{:else if state === 'error'}
 		<div in:fly={{ y: 20, easing: backInOut, duration: 700 }} out:fly={{ y: 20, easing: backInOut, duration: 700 }} class="buttonState w-full justify-between flex flex-row h-full">
 			<div />
-			Email or password incorrect
+			{#if text}Email or password incorrect{/if}
 			<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
 				<path stroke-linecap="round" stroke-linejoin="round" d="m9.75 9.75 4.5 4.5m0-4.5-4.5 4.5M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
 			</svg>
