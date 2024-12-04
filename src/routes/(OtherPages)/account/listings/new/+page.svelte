@@ -7,11 +7,12 @@
 		import { fetchCategories, fetchCategory } from '$lib/api/categories.js';
 		import { Button } from '$lib/components/ui/button/index.js';
 		import { newListing } from '$lib/api/listings.js';
-		import { ArrowBigRight, ArrowRight, Cross, LoaderIcon, Check, Loader } from 'lucide-svelte';
+		import { ArrowBigRight, ArrowRight, Cross, LoaderIcon, Check, Loader, Info } from 'lucide-svelte';
 		import { goto } from '$app/navigation';
 		import {fly, fade} from 'svelte/transition';
 		import { backInOut } from 'svelte/easing';
 		import StateButton from '$lib/components/StateButton.svelte';
+		import NewListingInfoCard from '$lib/components/dashboardCards/NewListingInfoCard.svelte';
 	
 		let formState = 'default';
 
@@ -61,7 +62,7 @@
 	<h1 slot="title">New Listing</h1>
 	
 	<div slot="page" class="h-full grow" >
-		<div class="flex flex-col flex-1 p-1 h-full w-full items-center justify-center">
+		<div class="flex flex-col gap-8 flex-1 p-1 h-full w-full items-center justify-center">
 			<Card.Root class="w-full sm:w-4/5 md:w-3/4 lg:w-1/2 ">
 				<Card.Header>
 					<h2 class="text-2xl font-semibold">Create a new listing</h2>
@@ -141,6 +142,37 @@
 					</form>
 				</Card.Content>
 			</Card.Root>
+			
+			<div class="flex md:flex-row flex-col gap-1.5 items-center">
+				<NewListingInfoCard current={true}>
+					Create a base listing
+					
+					<p class="text-sm text-slate-600 font-light text-pretty">This should summarise its product(s), giving a quick overview</p>
+				</NewListingInfoCard>
+				<ArrowRight />
+				
+				<NewListingInfoCard>
+					Add a product
+					
+					<p class="text-sm text-slate-600 font-light text-pretty">This is where you decide on a price and upload images of your product.</p>
+				</NewListingInfoCard>
+				<ArrowRight />
+				
+				<NewListingInfoCard optional={true}>
+					<div class="-mt-1.5">
+						<p class="text-xs text-emerald-600 flex flex-row gap-1 items-center"> <Info class="size-3.5" /> Optional</p>
+						Add another product
+					</div>
+					
+					<p class="text-sm text-slate-600 font-light text-pretty">You can add multiple products to a single listing</p>
+				</NewListingInfoCard>
+				<ArrowRight />
+				
+				<NewListingInfoCard >
+						Review and publish
+					<p class="text-sm text-slate-600 font-light text-pretty">Check your listing and publish it to the marketplace</p>
+				</NewListingInfoCard>
+			</div>
 		</div>
 	</div>
 </DashboardPageLayout>
