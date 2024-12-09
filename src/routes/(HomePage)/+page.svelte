@@ -12,6 +12,8 @@
 
 	import { fetchListings, queryListings } from '$lib/api/listings.js';
 	import { fetchCategories } from '$lib/api/categories.js';
+		import { Button } from '$lib/components/ui/button/index.js';
+		import { ArrowRight } from 'lucide-svelte';
 
 
 	const navHeroClasses = ['bg-primary', 'text-white', 'rounded-b-3xl'];
@@ -109,6 +111,23 @@
 		{:catch error}
 			<p>{error.message}</p>
 	{/await}
+	
+	<div class="p-7">
+		<div class="w-full  h-96 rounded-3xl flex flex-row justify-between bg-indigo-50 p-4">
+<!--			<div class="flex flex-col basis-1/2 justify-between p-4">-->
+<!--				-->
+<!--			</div>-->
+			
+			<div style="background-image:
+    linear-gradient(to bottom, rgba(37,83,151,0.82), rgba(41,91,113,0.89)),
+    url('https://images.pexels.com/photos/3184325/pexels-photo-3184325.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2');"
+				class=" grow rounded-3xl flex flex-col justify-between bg-cover bg-center">
+				<p class="text-4xl font-semibold p-6 bg-slate-800 text-slate-50 rounded-tl-3xl rounded-br-3xl w-fit">Performance Starts Here</p>
+				<div class="flex flex-row w-full justify-between items-center text-slate-50 font-normal p-9">From sleek laptops to high-performance desktops, discover what suits you best.
+					<Button href="/listings?category=Computing&showCategoryHeader=true" variant="secondary" class="min-w-32 rounded-full group transition-all gap-2 px-4">Visit our computing range <ArrowRight class="group group-hover:translate-x-2 transition-all" /></Button></div>
+			</div>
+		</div>
+	</div>
 	
 	<div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 2xl:grid-cols-5 gap-3 w-full p-2 sm:p-4 md:p-8 md:px-14 justify-left">
 		{#await fetchListings()}
