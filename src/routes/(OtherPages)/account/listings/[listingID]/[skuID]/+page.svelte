@@ -4,9 +4,10 @@
 	import SkuEditor from '$lib/components/dashboardCards/SkuEditor.svelte';
 	export let data;
 	
-	const selectedSKU = data.listing.skus.find((sku) => sku.id === $page.params.skuID);
+	$: selectedSKU = data.listing.skus.find(sku => sku.id ===  Number($page.params.skuID));
 	
 </script>
 
-{selectedSKU}
-<SkuEditor sku={selectedSKU} />
+{#key selectedSKU.id}
+	<SkuEditor sku={selectedSKU} />
+{/key}

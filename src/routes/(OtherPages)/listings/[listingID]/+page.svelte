@@ -237,7 +237,7 @@
 						</div>
 						
 						<div class="flex flex-col rounded-2xl p-2 px-4">
-							<p class="font-semibold text-lg">Size</p>
+							<p class="font-semibold text-lg">Type</p>
 							<div class="flex flex-row relative rounded-t-2xl p-2 px-1 overflow-x-scroll gap-3 w-full">
 								{#each listing.skus as sku}
 									<Badge class="bg-primary text-primary-foreground  hover:bg-accent min-w-20 p-2 px-3 rounded-3xl flex-shrink-0 transition-all duration-250 ease-in-out cursor-pointer">

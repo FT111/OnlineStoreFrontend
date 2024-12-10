@@ -2,7 +2,7 @@
 <script>
 	import { Input } from '$lib/components/ui/input/index.js';
 	import * as Card from '$lib/components/ui/card/index.js';
-		import { Button } from '$lib/components/ui/button/index.js';
+	import { Button } from '$lib/components/ui/button/index.js';
  // Defaults for creating a new SKU
  export let sku = {
 		id: null,
