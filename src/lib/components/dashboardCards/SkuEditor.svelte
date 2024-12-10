@@ -3,14 +3,14 @@
 	import { Input } from '$lib/components/ui/input/index.js';
 	import * as Card from '$lib/components/ui/card/index.js';
 	import { Button } from '$lib/components/ui/button/index.js';
+		import InputWithLabel from '$lib/components/InputWithLabel.svelte';
  // Defaults for creating a new SKU
  export let sku = {
 		id: null,
 		title: '',
 		price: '',
-		quantity: '',
+		stock: '',
 	  	images: [],
-	  	description: '',
 	};
 	$: editing = !!sku.id; // if sku id exists, edit State is true. Not needed but enhances readability
 </script>
@@ -52,10 +52,11 @@
 		<p class="p-1 ">Details</p>
 		
 		<form class="flex flex-col gap-3 items-end">
-			<Input label="Title" bind:value={sku.title} placeholder="Enter a descriptive title" />
-			<Input label="Description" bind:value={sku.description} />
-			<Input label="Price" bind:value={sku.price} />
-			<Input label="Quantity" bind:value={sku.quantity} />
+			<InputWithLabel label="Title" bind:value={sku.title} placeholder="Enter a descriptive title" >Title</InputWithLabel>
+			<div class="flex flex-row gap-3 w-full grow">
+				<InputWithLabel label="Price" bind:value={sku.price} type="number" placeholder="How much?">Price</InputWithLabel>
+				<InputWithLabel label="Quantity" bind:value={sku.stock} type="number" placeholder="How many?" >Quantity</InputWithLabel>
+			</div>
 			<Button class="w-1/3">Save</Button>
 		</form>
 	</div>
