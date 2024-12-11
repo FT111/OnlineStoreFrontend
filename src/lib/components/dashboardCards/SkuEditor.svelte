@@ -9,6 +9,7 @@
 		id: null,
 		title: '',
 		price: '',
+	  discount: '',
 		stock: '',
 	  	images: [],
 	};
@@ -43,7 +44,9 @@
 		<div class="h-full grid grid-cols-3 auto-rows-min gap-2.5 rounded-xl">
 
 			{#each sku.images as image}
-				<img class="h-24 rounded-xl w-full size-full object-cover" src={image} alt="sku" />
+				<div class="grid h-24 grid-cols-1 grid-rows-1">
+					<img style="grid-column: 0; grid-row: 0" class=" rounded-xl w-full size-full object-cover" src={image} alt="sku" />
+				</div>
 			{/each}
 			<label class="  rounded-xl h-24 w-full">
 				<Card.Root class="size-full flex flex-col border-2 border-dashed bg-emerald-50/40 items-center justify-center
@@ -61,9 +64,10 @@
 		<p class="p-1 ">Details</p>
 		
 		<form class="flex flex-col gap-3 items-end">
-			<InputWithLabel label="Title" bind:value={sku.title} placeholder="Enter a descriptive title" >Title</InputWithLabel>
+			<InputWithLabel label="Title" bind:value={sku.title} placeholder="Enter a short, descriptive title" >Title</InputWithLabel>
 			<div class="flex flex-row gap-3 w-full grow">
 				<InputWithLabel label="Price" bind:value={sku.price} type="number" placeholder="How much?">Price</InputWithLabel>
+				<InputWithLabel label="Discount" bind:value={sku.discount} placeholder="How much off?" >Discount % (Optional)</InputWithLabel>
 				<InputWithLabel label="Quantity" bind:value={sku.stock} type="number" placeholder="How many?" >Quantity</InputWithLabel>
 			</div>
 			<Button class="w-1/3">Save</Button>
