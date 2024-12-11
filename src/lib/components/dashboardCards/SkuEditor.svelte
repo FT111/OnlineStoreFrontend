@@ -3,16 +3,28 @@
 	import { Input } from '$lib/components/ui/input/index.js';
 	import * as Card from '$lib/components/ui/card/index.js';
 	import { Button } from '$lib/components/ui/button/index.js';
-		import InputWithLabel from '$lib/components/InputWithLabel.svelte';
+	import InputWithLabel from '$lib/components/InputWithLabel.svelte';
  // Defaults for creating a new SKU
- export let sku = {
+ 	export let sku = {
 		id: null,
 		title: '',
 		price: '',
 		stock: '',
 	  	images: [],
 	};
+ 
+
 	$: editing = !!sku.id; // if sku id exists, edit State is true. Not needed but enhances readability
+	
+	const selectImage = (e) => {
+		const file = e.target.files[0];
+		const reader = new FileReader();
+		reader.onload = (e) => {
+			sku.images = [...sku.images, e.target.result];
+		};
+		reader.readAsDataURL(file);
+		
+	};
 </script>
 
 <div class="flex flex-row p-2 flex-grow min-h-screen gap-1">
@@ -28,22 +40,19 @@
 			</p>
 		</div>
 		
-		<div class="h-full grid md:grid-cols-3 sm:grid-cols-2 grid-cols-1 gap-1.5 rounded-xl">
-			{#if editing}
-				{#if sku.images}
-					{#each sku.images as image}
-						<img class="h-24" src={image} alt="sku" />
-					{/each}
-				{/if}
-			{/if}
-			<label class="  rounded-xl size-full h-24">
+		<div class="h-full grid grid-cols-3 auto-rows-min gap-2.5 rounded-xl">
+
+			{#each sku.images as image}
+				<img class="h-24 rounded-xl w-full size-full object-cover" src={image} alt="sku" />
+			{/each}
+			<label class="  rounded-xl h-24 w-full">
 				<Card.Root class="size-full flex flex-col border-2 border-dashed bg-emerald-50/40 items-center justify-center
 											  hover:border-solid hover:bg-emerald-100 hover:border-emerald-500 transition-all group">
 					<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-12 opacity-30 hover:opacity-70 group-hover:opacity-70 text-emerald-700 transition-all">
 						<path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
 					</svg>
 				</Card.Root>
-				<input class="hidden w-full h-full" type="file" accept="image/*"  />
+				<input class="hidden w-full h-full" type="file" accept="image/*" on:change={(e)=>{selectImage(e)}} />
 			</label>
 		</div>
 	</div>
