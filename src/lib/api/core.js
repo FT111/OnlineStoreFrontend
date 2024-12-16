@@ -1,19 +1,23 @@
 import { browser } from '$app/environment';
 import { isConsentGiven } from '$lib/analytics/consent.js';
+import { token } from '$lib/api/authentication.js';
 
 export const baseURL = 'http://localhost:8000/'
 
-const formHeaders = (token=null) => {
-	// Gets JWT authorisation token from session storage
-	if (browser && !token) {
-		token = sessionStorage.getItem('token');
+const formHeaders = (userToken) => {
+
+	// If token is not provided, check if it exists in the browser
+	// Allows for it to be used in the server
+	if (browser && !userToken) {
+		userToken = token()
+		console.log(`UserToken: ${userToken}`);
 	}
 
 	let headers = {'Content-Type': 'application/json',
 	'Access-Control-Allow-Origin': 'http://localhost:8000'}
 	// If token exists, add it to the headers to provide credentials to the server
-	if (token) {
-		headers['Authorization'] = `Bearer ${token}`;
+	if (userToken) {
+		headers['Authorization'] = `Bearer ${userToken}`;
 	}
 	// Adds analytics consent header if user has given consent
 	if (browser && isConsentGiven()) {
@@ -30,7 +34,7 @@ export const GET = async (endpoint, token=null, credentialsOpt='omit') => {
 		{
 			method: 'GET',
 			headers: formHeaders(token),
-			credentials: credentialsOpt,
+			credentials: 'include',
 		}
 	).then((response) => response.json())
 		.then((data) => {
@@ -46,7 +50,7 @@ export const POST = async (endpoint, data, credentialsOpt='omit') => {
 		method: 'POST',
 		headers: formHeaders(),
 		body: data,
-		credentials: credentialsOpt,
+		credentials: 'include',
 
 	}).then((response) => response.json())
 		.then((data) => {
@@ -61,7 +65,7 @@ export const PUT = async (endpoint, data, token=null, credentialsOpt='omit') => 
 		method: 'PUT',
 		headers: formHeaders(token),
 		body: data,
-		credentials: credentialsOpt,
+		credentials: 'include',
 
 	}).then((response) => response.json())
 		.then((data) => {
