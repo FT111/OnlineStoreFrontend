@@ -29,18 +29,27 @@
 
 	async function handleSignUp() {
 		console.log('Signing up');
-		if (confirmPassword === password) {
-			console.log('Passwords match');
-			await signUp(username, name, email, password).then((response) => {
-				if (response.status === 200) {
-					console.log('Signed up');
-					invalidateAll();
-					goto('/dashboard');
-				} else {
-					toast.error(response.message);
-				}
-			});
+		if (confirmPassword !== password) {
+			toast.error('Passwords do not match');
+			return;
+			}
+	  
+		if (password.length < 8) {
+			toast.error('Password must be at least 8 characters long');
+			return;
 		}
+	 
+		
+		
+		await signUp(username, name, email, password).then((response) => {
+			if (response) {
+				console.log('Signed up');
+				invalidateAll();
+				goto('/dashboard');
+			} else {
+				toast.error('An error occurred. Please try again');
+			}
+		});
 	}
 
 </script>
