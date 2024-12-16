@@ -16,7 +16,7 @@
 	let signIn;
 	
 	async function handleLoginAttempt() {
-		await login(email, password)
+		return await login(email, password)
 	}
 </script>
 
