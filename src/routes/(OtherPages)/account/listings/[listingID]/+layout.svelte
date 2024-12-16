@@ -19,12 +19,9 @@
 	} else if ($page.params.skuID === undefined || !data.listing.skus) {
 		selectedVariant = 'not selected';
 	} else {
-		console.log(data.listing.skus);
-		console.log($page.params.skuID);
 		selectedVariant = data.listing.skus.find(sku => sku.id === Number($page.params.skuID));
 	}
 
-	$: console.log(selectedVariant);
 </script>
 
 <DashboardPageLayout>
@@ -46,23 +43,25 @@
 <!--				Main listing card -->
 				<div class="flex-col flex gap-2.5 w-fit h-fit p-4 rounded-l-2xl bg-amber-50">
 					<p>Listing</p>
-					<Card.Root href="/account/listings/{data.listing.id}" class="w-56 border-slate-700 h-36 border-[1.5px] hover:border-accent/60 scale-105 transition-all justify-between flex flex-col">
-						<div>
-							<Card.Header class="p-3.5">
-								<p>{data.listing.title}</p>
-							</Card.Header>
-							<Card.Description class="px-3.5">
-								<p>{data.listing.description}</p>
-							</Card.Description>
-						</div>
-						
-						<Card.Footer class="p-3.5 flex flex-row gap-1 w-full">
-							<Badge class="py-1.5 px-2.5 gap-1" variant={data.listing.public ? 'default' : 'secondary'}>
-								<Info class="size-4" />
-								<p>{data.listing.public ? 'Public' : 'Private'}</p>
-							</Badge>
-						</Card.Footer>
-					</Card.Root>
+					<a href="/account/listings/{data.listing.id}">
+						<Card.Root  class="w-56 border-slate-700 h-36 border-[1.5px] hover:border-accent/60 scale-105 transition-all justify-between flex flex-col">
+							<div>
+								<Card.Header class="p-3.5">
+									<p>{data.listing.title}</p>
+								</Card.Header>
+								<Card.Description class="px-3.5">
+									<p>{data.listing.description}</p>
+								</Card.Description>
+							</div>
+							
+							<Card.Footer class="p-3.5 flex flex-row gap-1 w-full">
+								<Badge class="py-1.5 px-2.5 gap-1" variant={data.listing.public ? 'default' : 'secondary'}>
+									<Info class="size-4" />
+									<p>{data.listing.public ? 'Public' : 'Private'}</p>
+								</Badge>
+							</Card.Footer>
+						</Card.Root>
+					</a>
 				</div>
 
 				<div class="flex-col flex gap-2.5 w-fit h-fit p-4 rounded-2xl">

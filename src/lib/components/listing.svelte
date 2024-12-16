@@ -35,8 +35,6 @@
 		console.log("Adding to basket");
 		basket.addItem({id: listing.id});
 	}
-
-	console.log(listing);
 </script>
 
 <a href="/listings/{listing.id}" class="w-full h-min {className}">

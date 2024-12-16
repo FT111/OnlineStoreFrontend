@@ -7,10 +7,12 @@
 	import * as DropdownMenu from "$lib/components/ui/dropdown-menu";
 	import * as Avatar from '$lib/components/ui/avatar/index.js';
 	import Searchbar from './searchbar.svelte';
+	import { logout } from '$lib/api/authentication.js';
 	
 	import { basket } from '$lib/basket.js';
 		import { Plus } from 'lucide-svelte';
 		import NewListingDialog from '$lib/components/NewListingDialog.svelte';
+		import { goto } from '$app/navigation';
 
 	export let navElement;
 	export let searchElement;
@@ -146,9 +148,9 @@
 									<DropdownMenu.Item href="/account/dashboard">Dashboard</DropdownMenu.Item>
 								</DropdownMenu.Group>
 								<DropdownMenu.Separator />
-								<DropdownMenu.Item class="bg-red-100/50">
+								<DropdownMenu.Item class="bg-red-100/50" on:click={async () => {logout().then(async ()=>{await goto('/')})}}>
 									<div class="flex flex-row w-full justify-between ">Sign out
-										<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-5 text-accent">
+										<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="	0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-5 text-accent">
 											<path stroke-linecap="round" stroke-linejoin="round" d="M8.25 9V5.25A2.25 2.25 0 0 1 10.5 3h6a2.25 2.25 0 0 1 2.25 2.25v13.5A2.25 2.25 0 0 1 16.5 21h-6a2.25 2.25 0 0 1-2.25-2.25V15M12 9l3 3m0 0-3 3m3-3H2.25" />
 										</svg>
 									</div>
