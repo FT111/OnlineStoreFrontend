@@ -7,12 +7,23 @@
 		import { fetchCategories, fetchCategory } from '$lib/api/categories.js';
 		import { Button } from '$lib/components/ui/button/index.js';
 		import { newListing } from '$lib/api/listings.js';
-		import { ArrowBigRight, ArrowRight, Cross, LoaderIcon, Check, Loader, Info } from 'lucide-svelte';
+		import {
+					ArrowBigRight,
+					ArrowRight,
+					Cross,
+					LoaderIcon,
+					Check,
+					Loader,
+					Info,
+					ArrowDown,
+					ArrowLeft
+				} from 'lucide-svelte';
 		import { goto } from '$app/navigation';
 		import {fly, fade} from 'svelte/transition';
 		import { backInOut } from 'svelte/easing';
 		import StateButton from '$lib/components/StateButton.svelte';
 		import NewListingInfoCard from '$lib/components/dashboardCards/NewListingInfoCard.svelte';
+		import { Textarea } from '$lib/components/ui/textarea/index.js';
 	
 		let formState = 'default';
 
@@ -62,8 +73,8 @@
 	<h1 slot="title">New Listing</h1>
 	
 	<div slot="page" class="h-full grow" >
-		<div class="flex flex-col gap-8 flex-1 p-1 h-full w-full items-center justify-center">
-			<Card.Root class="w-full sm:w-4/5 md:w-3/4 lg:w-1/2 ">
+		<div class="flex lg:flex-row flex-col px-10 flex-1 p-1 gap-4 h-full w-full items-center justify-evenly">
+			<Card.Root class="w-full sm:w-4/5 md:w-3/4 lg:w-1/2 basis-2/3 border-0 shadow-none">
 				<Card.Header>
 					<h2 class="text-2xl font-semibold">Create a new listing</h2>
 					<p class="font-light text-slate-600">Add some basic information about your product. Pricing and images will be added at a later stage.</p>
@@ -73,7 +84,7 @@
 					<form on:submit={(event) => {submitFunc(event)}}>
 						<div class="flex flex-col gap-3.5 items-end">
 							<Input bind:value={selectedTitle} label="Title" placeholder="Enter a title for your listing" />
-							<Input bind:value={selectedDesc}  label="Description" placeholder="Enter a description for your listing" />
+							<Textarea bind:value={selectedDesc} class="h-28 text-wrap"  label="Description" placeholder="Enter a description for your listing" />
 							
 							<div class="flex flex-row gap-3.5 w-full">
 								<div class="basis-1/2">
@@ -125,7 +136,7 @@
 <!--									{/if}-->
 <!--								</Button>-->
 							
-							<div class="w-24 text-md">
+							<div class="w-28 text-md">
 								<StateButton text={false} authFunction={newListingSubmission} bind:onPress={submitFunc}>
 									<div class="flex flex-row gap-0.5 hover:gap-2 transition-all origin-left ease-[cubic-bezier(0.64, 0.57, 0.67, 1.53)] flex flex-row gap-0.5 hover:gap-3 transition-all justify-between w-full">
 										<p out:fly={{y:-20, easing: backInOut, duration: 700}}>Next</p>
@@ -143,35 +154,46 @@
 				</Card.Content>
 			</Card.Root>
 			
-			<div class="flex md:flex-row flex-col gap-1.5 items-center">
-				<NewListingInfoCard current={true}>
-					Create a base listing
-					
-					<p class="text-sm text-slate-600 font-light text-pretty">This should summarise its product(s), giving a quick overview</p>
-				</NewListingInfoCard>
-				<ArrowRight />
-				
-				<NewListingInfoCard>
-					Add a product
-					
-					<p class="text-sm text-slate-600 font-light text-pretty">This is where you decide on a price and upload images of your product.</p>
-				</NewListingInfoCard>
-				<ArrowRight />
-				
-				<NewListingInfoCard optional={true}>
-					<div class="-mt-1.5">
-						<p class="text-xs text-emerald-600 flex flex-row gap-1 items-center"> <Info class="size-3.5" /> Optional</p>
-						Add another product
+			<div class="basis-1/3 flex flex-row justify-end">
+				<div class="flex flex-wrap flex-col gap-1.5 items-center justify-end bg-slate-50/50 rounded-2xl w-fit p-3.5">
+					<div class="flex flex-row gap-1.5 items-center">
+						<NewListingInfoCard current={true}>
+							Create a base listing
+							
+							<p class="text-sm text-slate-600 font-light text-pretty">This should summarise its product(s), giving a quick overview</p>
+						</NewListingInfoCard>
+						<ArrowRight />
+						
+						<NewListingInfoCard>
+							Add a product
+							
+							<p class="text-sm text-slate-600 font-light text-pretty">This is where you decide on a price and upload images of your product.</p>
+						</NewListingInfoCard>
 					</div>
 					
-					<p class="text-sm text-slate-600 font-light text-pretty">You can add multiple products to a single listing</p>
-				</NewListingInfoCard>
-				<ArrowRight />
+					<div class="flex flex-row justify-evenly w-full gap-6">
+						<div />
+						<div />
+						<ArrowDown />
+					</div>
 				
-				<NewListingInfoCard >
-						Review and publish
-					<p class="text-sm text-slate-600 font-light text-pretty">Check your listing and publish it to the marketplace</p>
-				</NewListingInfoCard>
+					<div class="flex flex-row gap-1.5 items-center">
+						<NewListingInfoCard >
+								Review and publish
+							<p class="text-sm text-slate-600 font-light text-pretty">Check your listing and publish it to the marketplace</p>
+						</NewListingInfoCard>
+						<ArrowLeft />
+						<NewListingInfoCard optional={true}>
+							<div class="-mt-1.5">
+								<p class="text-xs text-emerald-600 flex flex-row gap-1 items-center"> <Info class="size-3.5" /> Optional</p>
+								Add another product
+							</div>
+							
+							<p class="text-sm text-slate-600 font-light text-pretty">You can add multiple products to a single listing</p>
+						</NewListingInfoCard>
+						
+					</div>
+				</div>
 			</div>
 		</div>
 	</div>
