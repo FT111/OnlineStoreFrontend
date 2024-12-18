@@ -4,6 +4,7 @@
 	import * as Card from '$lib/components/ui/card/index.js';
 	import { Button } from '$lib/components/ui/button/index.js';
 	import InputWithLabel from '$lib/components/InputWithLabel.svelte';
+		import { onMount } from 'svelte';
  // Defaults for creating a new SKU
  	export let sku = {
 		id: null,
@@ -16,6 +17,7 @@
  
 
 	$: editing = !!sku.id; // if sku id exists, edit State is true. Not needed but enhances readability
+	let dropLabel;
 	
 	const selectImage = (e) => {
 		const file = e.target.files[0];
@@ -26,6 +28,46 @@
 		reader.readAsDataURL(file);
 		
 	};
+	
+	const dragEffects = ['border-dashed', 'border-emerald-500/40', 'bg-emerald-100', 'border-2', 'p-2.5', 'gap-3.5'];
+	
+	onMount(() => {
+			dropLabel.addEventListener('dragenter', (e) => {
+				e.preventDefault();
+				e.stopPropagation();
+
+			  dropLabel.classList.add(...dragEffects);
+						});
+			dropLabel.addEventListener('dragover', (e) => {
+				e.preventDefault();
+				e.stopPropagation();
+				
+			});
+			dropLabel.addEventListener('dragleave', (e) => {
+				e.preventDefault();
+				e.stopPropagation();
+				
+				dropLabel.classList.remove(...dragEffects);
+			});
+			
+			dropLabel.addEventListener('drop', (e) => {
+				e.preventDefault();
+				e.stopPropagation();
+				
+				dropLabel.classList.remove(...dragEffects);
+				
+				const file = e.dataTransfer.files[0];
+				const reader = new FileReader();
+				reader.onload = (e) => {
+					sku.images = [...sku.images, e.target.result];
+				};
+				reader.readAsDataURL(file);
+			 
+			})
+	})
+	
+	
+	
 </script>
 
 <div class="flex flex-row p-2 flex-grow min-h-screen gap-1">
@@ -41,7 +83,7 @@
 			</p>
 		</div>
 		
-		<div class="h-full grid grid-cols-3 auto-rows-min gap-2.5 rounded-xl">
+		<div bind:this={dropLabel} class="h-full grid grid-cols-3 auto-rows-min gap-2.5 rounded-xl transition-all ">
 
 			{#each sku.images as image}
 				<div class="grid h-24 grid-cols-1 grid-rows-1">
