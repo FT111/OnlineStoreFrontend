@@ -2,9 +2,14 @@
 <script>
 	import { Input } from '$lib/components/ui/input/index.js';
 	import * as Card from '$lib/components/ui/card/index.js';
+	import { page } from '$app/stores';
 	import { Button } from '$lib/components/ui/button/index.js';
 	import InputWithLabel from '$lib/components/InputWithLabel.svelte';
+	import { baseURL } from '$lib/api/core.js';
 		import { onMount } from 'svelte';
+		import { newSKU, updateSKU } from '$lib/api/listings.js';
+		import { ImagePlus, Save } from 'lucide-svelte';
+		import { invalidate, invalidateAll } from '$app/navigation';
  // Defaults for creating a new SKU
  	export let sku = {
 		id: null,
@@ -14,10 +19,35 @@
 		stock: '',
 	  	images: [],
 	};
+	 
+	 onMount(() => {
+		 // Prevents caching of edits when navigating back to the page
+		 invalidateAll();
+	 })
  
-
+	let initialSKU = JSON.parse(JSON.stringify(sku));
+	
+	
 	$: editing = !!sku.id; // if sku id exists, edit State is true. Not needed but enhances readability
+	$: edited = JSON.stringify(sku) !== JSON.stringify(initialSKU); // if sku is edited, edited state is true
 	let dropLabel;
+	let saveBtn;
+	
+	const repSert = (listingID, sku) => async (e) => {
+		e.preventDefault();
+		
+
+		if (editing) {
+			await updateSKU(listingID, sku).then(() => {
+				initialSKU = JSON.parse(JSON.stringify(sku));
+			});
+		} else {
+			await newSKU(listingID, sku).then((res) => {
+				sku.id = res.id;
+				initialSKU = JSON.parse(JSON.stringify(sku));
+			});
+		}
+	};
 	
 	const selectImage = (e) => {
 		const file = e.target.files[0];
@@ -46,9 +76,10 @@
 			dropLabel.addEventListener('dragleave', (e) => {
 				e.preventDefault();
 				e.stopPropagation();
-				
+
 				dropLabel.classList.remove(...dragEffects);
 			});
+			
 			
 			dropLabel.addEventListener('drop', (e) => {
 				e.preventDefault();
@@ -66,14 +97,16 @@
 			})
 	})
 	
+	$: console.log(sku.images);
+	
 	
 	
 </script>
 
-<div class="flex flex-row p-2 flex-grow min-h-screen gap-1">
+<div class="flex md:flex-row flex-col p-2 flex-grow min-h-screen gap-1 w-full">
 
 <!--  Image section	-->
-	<div class="basis-1/2 rounded-2xl h-full  p-5 gap-4 flex flex-col">
+	<div class="basis-1/2 rounded-2xl h-full  p-5 gap-4 flex flex-col md:order-first order-1">
 		<div class="flex flex-row justify-between w-full p-1">Images
 			
 			<p class="flex flex-row gap-1.5">{sku.images.length}
@@ -87,7 +120,7 @@
 
 			{#each sku.images as image}
 				<div class="grid h-24 grid-cols-1 grid-rows-1">
-					<img style="grid-column: 0; grid-row: 0" class=" rounded-xl w-full size-full object-cover" src={image} alt="sku" />
+					<img style="grid-column: 0; grid-row: 0" class=" rounded-xl w-full size-full object-cover" src={image.startsWith('data') ? image : `${baseURL}static/listingImages/${image}`} alt="sku" />
 				</div>
 			{/each}
 			<label class="  rounded-xl h-24 w-full">
@@ -99,21 +132,30 @@
 				</Card.Root>
 				<input class="hidden w-full h-full" type="file" accept="image/*" on:change={(e)=>{selectImage(e)}} />
 			</label>
+			
+			<p class="col-span-3 row-span-1 text-center text-sm justify-center items-center p-2 opacity-60 flex flex-row gap-1.5">Drag and drop images here <ImagePlus size={20} strokeWidth={1.25} />
+			</p>
 		</div>
 	</div>
 	
-	<div class="basis-1/2 bg-slate-50 rounded-2xl h-full p-5 space-y-1.5">
-		<p class="p-1 ">Details</p>
-		
-		<form class="flex flex-col gap-3 items-end">
-			<InputWithLabel label="Title" bind:value={sku.title} placeholder="Enter a short, descriptive title" >Title</InputWithLabel>
-			<div class="flex flex-row gap-3 w-full grow">
-				<InputWithLabel label="Price" bind:value={sku.price} type="number" placeholder="How much?">Price</InputWithLabel>
-				<InputWithLabel label="Discount" bind:value={sku.discount} placeholder="How much off?" >Discount % (Optional)</InputWithLabel>
-				<InputWithLabel label="Quantity" bind:value={sku.stock} type="number" placeholder="How many?" >Quantity</InputWithLabel>
+	<div class="basis-1/2 bg-slate-50 rounded-2xl h-full p-5 space-y-1.5 md:order-1 order-first">
+		{#key sku.id}
+		<form on:submit={repSert($page.params.listingID, sku)}>
+			<div class="p-1 flex flex-row gap-2 items-center">Details
+				<Button bind:this={saveBtn} class=" rounded-full transition-all gap-1.5 origin-left {edited ? 'scale-100': ' scale-0 '}" type="submit" size="sm">
+					<Save size={20} strokeWidth={1.25} />Save</Button>
 			</div>
-			<Button class="w-1/3">Save</Button>
+			
+			<div class="flex flex-col gap-3 items-end">
+				<InputWithLabel label="Title" bind:value={sku.title} placeholder="Enter a short, descriptive title" >Title</InputWithLabel>
+				<div class="flex flex-row gap-3 w-full grow">
+					<InputWithLabel label="Price" bind:value={sku.price} type="number" placeholder="How much?">Price</InputWithLabel>
+					<InputWithLabel label="Discount" bind:value={sku.discount} placeholder="How much off?" >Discount % (Optional)</InputWithLabel>
+					<InputWithLabel label="Quantity" bind:value={sku.stock} type="number" placeholder="How many?" >Quantity</InputWithLabel>
+				</div>
+			</div>
 		</form>
+			{/key}
 	</div>
 
 </div>
