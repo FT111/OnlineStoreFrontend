@@ -9,7 +9,7 @@
 		import { onMount } from 'svelte';
 		import { newSKU, updateSKU } from '$lib/api/listings.js';
 		import { ImagePlus, Save } from 'lucide-svelte';
-		import { invalidate, invalidateAll } from '$app/navigation';
+		import { afterNavigate, beforeNavigate, invalidate, invalidateAll, onNavigate } from '$app/navigation';
  // Defaults for creating a new SKU
  	export let sku = {
 		id: null,
@@ -19,12 +19,23 @@
 		stock: '',
 	  	images: [],
 	};
-	 
-	 onMount(() => {
-		 // Prevents caching of edits when navigating back to the page
-		 invalidateAll();
-	 })
- 
+	
+	beforeNavigate((e) => {
+		if (JSON.stringify(sku) !== JSON.stringify(initialSKU)) {
+		 if (confirm('You have unsaved changes. Are you sure you want to leave?')) {
+		 } else {
+			 e.cancel();
+		 }}});
+		 
+	
+	 // onMount(() => {
+		//  // Prevents caching of edits when navigating back to the page
+		//  invalidateAll();
+	 // })
+	
+	
+	sku.price = String(sku.price);
+	sku.stock = String(sku.stock);
 	let initialSKU = JSON.parse(JSON.stringify(sku));
 	
 	
