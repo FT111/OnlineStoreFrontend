@@ -1,10 +1,7 @@
 
 export const load = async ({ params, parent }) => {
-	const { listing } = await parent()
-	const selectedSKU = listing.skus.find(sku => sku.id === params.skuID)
-	console.log('Selected SKU:',selectedSKU)
-
+	const data = await parent()
 	return {
-			selectedSKU
+		data
 	}
 }

@@ -3,7 +3,7 @@
 	import { Info, Plus } from 'lucide-svelte';
 	import { page } from '$app/stores';
 
-	export let data;
+	export let data = { listing: { skus: []}};
 
 	import DashboardPageLayout from '$lib/components/DashboardPageLayout.svelte';
 	import * as Card from '$lib/components/ui/card/index.js';
@@ -14,12 +14,17 @@
 	let selectedVariant = 'not selected';
 	
 	
+	// Handles selecting the variant to display
 	$: if ($page.url.pathname.includes('new')) {
 		selectedVariant = 'new';
 	} else if ($page.params.skuID === undefined || !data.listing.skus) {
 		selectedVariant = 'not selected';
 	} else {
-		selectedVariant = data.listing.skus.find(sku => sku.id === Number($page.params.skuID));
+		data.listing.skus.forEach(sku => {
+		  if (sku.id === $page.params.skuID) {
+				selectedVariant = sku;
+			}
+		})
 	}
 
 </script>
@@ -35,7 +40,9 @@
 	
 	<div slot="page" class="h-full">
 		<div class="h-full flex flex-col justify-between">
-			<slot />
+			{#key selectedVariant}
+				<slot />
+			{/key}
 		
 <!--			Variant cards-->
 			<div class="flex flex-row gap-3 sticky bottom-3.5 w-full h-fit bg-slate-100 self-end rounded-2xl drop-shadow-sm">
@@ -46,10 +53,10 @@
 					<a href="/account/listings/{data.listing.id}">
 						<Card.Root  class="w-56 border-slate-700 h-36 border-[1.5px] hover:border-accent/60 scale-105 transition-all justify-between flex flex-col">
 							<div>
-								<Card.Header class="p-3.5">
+								<Card.Header class="p-3.5 pb-0.5">
 									<p>{data.listing.title}</p>
 								</Card.Header>
-								<Card.Description class="px-3.5">
+								<Card.Description class="px-3.5 text-sm line-clamp-2">
 									<p>{data.listing.description}</p>
 								</Card.Description>
 							</div>
@@ -64,31 +71,33 @@
 					</a>
 				</div>
 
-				<div class="flex-col flex gap-2.5 w-fit h-fit p-4 rounded-2xl">
+				<div class="flex-col flex gap-2.5 h-fit p-4 rounded-2xl">
 					<p>Products</p>
-					<div class="flex flex-row gap-3 h-full">
+					<div class="flex flex-row gap-3 h-36 flex-wrap overflow-y-scroll">
 						{#if !data.listing.skus}
 							<div />
 						{:else}
 						
-						{#each data.listing.skus as sku}
-							<a href={`/account/listings/${data.listing.id}/${sku.id}`}>
-								<Card.Root class="w-56 h-36 justify-between flex flex-col hover:border-accent transition-all hover:brightness-125
-													{typeof(selectedVariant)==='object' ? Number(selectedVariant.id)===Number(sku.id) ? ' border-slate-800 border-2 ' : '' : ''}">
-									<Card.Header class="p-3.5">
-										<p>{sku.title}</p>
-									</Card.Header>
-									<Card.Description class="px-3.5 p-4 self-end text-black">
-										<Price price={sku.price} />
-									</Card.Description>
-								</Card.Root>
-							</a>
-						{/each}
+							{#each data.listing.skus as sku}
+								<a href={`/account/listings/${data.listing.id}/${sku.id}`}>
+									<Card.Root class="w-48 h-36 justify-between flex flex-col hover:border-accent transition-all hover:brightness-125
+														{typeof(selectedVariant)==='object' ? selectedVariant.id===sku.id ? ' border-slate-800 border-2 ' : '' : ''}">
+										<Card.Header class="p-3.5 line-clamp-3">
+											<p>{sku.title}</p>
+										</Card.Header>
+										<Card.Description class="px-3.5 p-4 self-end text-black">
+											{#key sku.price}
+												<Price price={sku.price} />
+											{/key}
+										</Card.Description>
+									</Card.Root>
+								</a>
+							{/each}
 						{/if}
 						
 					<!--	Add new variant card -->
 						<a href={`/account/listings/${data.listing.id}/new`}>
-							<Card.Root class="w-56 h-36 flex flex-col border-2 border-dashed bg-emerald-50/40 items-center justify-center
+							<Card.Root class="w-48 h-36 flex flex-col border-2 border-dashed bg-emerald-50/40 items-center justify-center
 											  hover:border-solid hover:bg-emerald-100 hover:border-emerald-500 transition-all group
 											{selectedVariant==='new' ? 'border-emerald-500 border-solid' : ''}">
 								<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
