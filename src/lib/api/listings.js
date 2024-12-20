@@ -1,5 +1,5 @@
 
-import {GET, POST} from './core.js';
+import { GET, POST, PUT } from './core.js';
 
 export const fetchListings = async () => {
 	return await GET('listings/?limit=24');
@@ -13,6 +13,27 @@ export const newListing = async (data) => {
 	const body = JSON.stringify(data)
 	return await POST('listings/', body);
 }
+
+export const newSKU = async (listingId, data) => {
+	if (data.discount === '' || data.discount === '0') {
+		data.discount = null;
+	} else {
+		data.discount = Number(data.discount);
+	}
+	const body = JSON.stringify(data)
+	return await POST(`listings/${listingId}/sku`, body);
+}
+
+export const updateListing = async (id, data) => {
+	const body = JSON.stringify(data)
+	return await PUT(`listings/${id}`, body);
+}
+
+export const updateSKU = async (id, data) => {
+	const body = JSON.stringify(data)
+	return await PUT(`listings/${id}/${data.id}`, body);
+}
+
 
 export const queryListings = async (query=null, category=null, subCategory=null, sort=null, order=null, username=null) => {
 
