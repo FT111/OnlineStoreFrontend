@@ -1,7 +1,7 @@
 
 <script>
   	import { page } from '$app/stores';
-	import SkuEditor from '$lib/components/dashboardCards/SkuEditor.svelte';
+	import SkuEditor from '$lib/components/sellerDashboard/SkuEditor.svelte';
 	export let data;
 	
 	let selectedSKU;

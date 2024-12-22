@@ -22,7 +22,7 @@
 		import {fly, fade} from 'svelte/transition';
 		import { backInOut } from 'svelte/easing';
 		import StateButton from '$lib/components/StateButton.svelte';
-		import NewListingInfoCard from '$lib/components/dashboardCards/NewListingInfoCard.svelte';
+		import NewListingInfoCard from '$lib/components/sellerDashboard/NewListingInfoCard.svelte';
 		import { Textarea } from '$lib/components/ui/textarea/index.js';
 	
 		let formState = 'default';
