@@ -1,6 +1,6 @@
 <script>
 
-	import { Info, Plus } from 'lucide-svelte';
+	import { Box, Info, Plus, Truck } from 'lucide-svelte';
 	import { page } from '$app/stores';
 
 	export let data = { listing: { skus: []}};
@@ -10,6 +10,7 @@
 	import Price from '$lib/components/price.svelte';
 	import { Badge } from '$lib/components/ui/badge/index.js';
 		import { onMount } from 'svelte';
+		import * as Tooltip from "$lib/components/ui/tooltip";
 	
 	let selectedVariant = 'not selected';
 	
@@ -82,13 +83,43 @@
 								<a href={`/account/listings/${data.listing.id}/${sku.id}`}>
 									<Card.Root class="w-48 h-36 justify-between flex flex-col hover:border-accent transition-all hover:brightness-125
 														{typeof(selectedVariant)==='object' ? selectedVariant.id===sku.id ? ' border-slate-800 border-2 ' : '' : ''}">
-										<Card.Header class="p-3.5 line-clamp-3">
+										<Card.Header class="p-3.5 line-clamp-2">
 											<p>{sku.title}</p>
 										</Card.Header>
-										<Card.Description class="px-3.5 p-4 self-end text-black">
-											{#key sku.price}
-												<Price price={sku.price} />
-											{/key}
+										<Card.Description class="px-3.5 p-4 self-end text-black bg-none pt-0 pb-2">
+											<div class="flex flex-col items-end justify-end">
+												{#key sku.price}
+													<Price price={sku.price} />
+												{/key}
+												
+												<div class="flex flex-row gap-2">
+													<Tooltip.Root>
+														<Tooltip.Trigger>
+															<div class="flex flex-row gap-1 items-center">
+																{Number(Math.random() * 6).toFixed(0)}
+																<Truck size={18} strokeWidth={1.25} />
+															</div>
+														</Tooltip.Trigger>
+														<Tooltip.Content>
+															<p>Number of orders</p>
+														</Tooltip.Content>
+													</Tooltip.Root>
+													
+													<Tooltip.Root>
+														<Tooltip.Trigger>
+															{#key sku.stock}
+																<div class="flex flex-row gap-1 items-center rounded-full
+																	{sku.stock=== 0 ? 'bg-red-700 text-white px-2 ': 'bg-none'}">
+																	{sku.stock}
+																	<Box size={18} strokeWidth={1.25} /></div>
+															{/key}
+														</Tooltip.Trigger>
+														<Tooltip.Content>
+															<p>In Stock</p>
+														</Tooltip.Content>
+													</Tooltip.Root>
+												</div>
+											</div>
 										</Card.Description>
 									</Card.Root>
 								</a>
