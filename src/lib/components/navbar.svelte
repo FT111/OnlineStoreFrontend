@@ -138,7 +138,6 @@
 									<DropdownMenu.Separator />
 									<DropdownMenu.Item href="/users/{user['id']}">Profile</DropdownMenu.Item>
 									<DropdownMenu.Item>My orders</DropdownMenu.Item>
-									<DropdownMenu.Item>My watchlist</DropdownMenu.Item>
 									<DropdownMenu.Item>Settings</DropdownMenu.Item>
 								</DropdownMenu.Group>
 								<DropdownMenu.Separator />
@@ -146,6 +145,8 @@
 									<DropdownMenu.Label>My Sales</DropdownMenu.Label>
 									<DropdownMenu.Separator />
 									<DropdownMenu.Item href="/account/dashboard">Dashboard</DropdownMenu.Item>
+									<DropdownMenu.Item href="/account/listings">Listings</DropdownMenu.Item>
+									<DropdownMenu.Item href="/account/transactions">Transactions</DropdownMenu.Item>
 								</DropdownMenu.Group>
 								<DropdownMenu.Separator />
 								<DropdownMenu.Item class="bg-red-100/50" on:click={async () => {logout().then(async ()=>{await goto('/')})}}>
