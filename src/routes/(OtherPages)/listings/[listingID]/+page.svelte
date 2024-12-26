@@ -11,6 +11,7 @@
 	
 	import { queryListings } from '$lib/api/listings.js';
 	import { page } from '$app/stores';
+		import VariantConfigurator from '$lib/components/sellerDashboard/VariantConfigurator.svelte';
 	export let data;
 	
 	$: listing = data.listing;
@@ -212,42 +213,10 @@
 				</div>
 				
 	<!--				SKU Details -->
-				{#if skus}
-					<div class="flex flex-col bg-muted rounded-2xl overflow-x-scroll w-full border-4 border-slate-200">
-						<div class="flex flex-col p-2 px-4">
-							<p class="font-semibold text-lg">Colour</p>
-							<div class="flex flex-row relative rounded-t-2xl p-2 px-1 overflow-x-scroll gap-3 w-full">
-								{#each colours as sku}
-									<Badge style={`background-color: ${sku.rgb}`} class={`text-primary  hover:bg-accent w-20 p-2 px-3 rounded-3xl flex-shrink-0 transition-all duration-250 ease-in-out cursor-pointer`}>
-										{sku.title}
-									</Badge>
-								{/each}
-							</div>
-						</div>
-						
-						<div class="flex flex-col bg-slate-50 p-2 px-4">
-							<p class="font-semibold text-lg">Size</p>
-							<div class="flex flex-row relative rounded-t-2xl p-2 px-1 overflow-x-scroll gap-3 w-full">
-								{#each sizes as sku}
-									<Badge class="bg-primary text-primary-foreground  hover:bg-accent w-20 p-2 px-3 rounded-3xl flex-shrink-0 transition-all duration-250 ease-in-out cursor-pointer">
-										{sku.title}
-									</Badge>
-								{/each}
-							</div>
-						</div>
-						
-						<div class="flex flex-col rounded-2xl p-2 px-4">
-							<p class="font-semibold text-lg">Type</p>
-							<div class="flex flex-row relative rounded-t-2xl p-2 px-1 overflow-x-scroll gap-3 w-full">
-								{#each listing.skus as sku}
-									<Badge class="bg-primary text-primary-foreground  hover:bg-accent min-w-20 p-2 px-3 rounded-3xl flex-shrink-0 transition-all duration-250 ease-in-out cursor-pointer">
-										{sku.title}
-									</Badge>
-								{/each}
-							</div>
-						</div>
-	
-					</div>
+				{#if listing.skuOptions}
+					<VariantConfigurator variantOptions={listing.skuOptions}  />
+				{:else}
+					<VariantConfigurator variantOptions={skuList}  />
 				{/if}
 			</div>
 			

@@ -11,6 +11,7 @@
 		import { ImagePlus, Save, Text } from 'lucide-svelte';
 	import { afterNavigate, beforeNavigate, invalidate, invalidateAll, onNavigate } from '$app/navigation';
 		import { Textarea } from '$lib/components/ui/textarea/index.js';
+		import VariantConfigurator from '$lib/components/sellerDashboard/VariantConfigurator.svelte';
 	// Defaults for creating a new listing
 	export let listing = {
 		id: null,
@@ -19,6 +20,7 @@
 		public: false,
 		category: '',
 		subCategory: '',
+	  	skuOptions: {},
 	};
 
 	beforeNavigate((e) => {
@@ -68,6 +70,8 @@
 	<!--  Attribute Config Section	-->
 	<div class="basis-1/2 rounded-2xl h-full  p-5 gap-4 flex flex-col order-1">
 		<p>Variant Configuration</p>
+		
+		<VariantConfigurator variantOptions={listing.skuOptions} configuring={true} />
 	</div>
 	
 	<div class="basis-1/2 bg-neutral-50 rounded-2xl h-full p-5 space-y-1.5 order-first">

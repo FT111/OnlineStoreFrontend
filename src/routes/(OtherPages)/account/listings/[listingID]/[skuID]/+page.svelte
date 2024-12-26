@@ -16,5 +16,5 @@
 </script>
 
 {#key selectedSKU.id}
-	<SkuEditor sku={selectedSKU}  />
+	<SkuEditor sku={selectedSKU} listingVariantOptions={data.listing.skuOptions}  />
 {/key}

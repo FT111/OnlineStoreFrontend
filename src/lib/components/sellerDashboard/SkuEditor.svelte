@@ -10,6 +10,7 @@
 		import { newSKU, updateSKU } from '$lib/api/listings.js';
 		import { ImagePlus, Save } from 'lucide-svelte';
 		import { afterNavigate, beforeNavigate, invalidate, invalidateAll, onNavigate } from '$app/navigation';
+		import VariantConfigurator from '$lib/components/sellerDashboard/VariantConfigurator.svelte';
  // Defaults for creating a new SKU
  	export let sku = {
 		id: null,
@@ -37,6 +38,7 @@
 	sku.price = String(sku.price);
 	sku.stock = String(sku.stock);
 	let initialSKU = JSON.parse(JSON.stringify(sku));
+	export let listingVariantOptions = {};
 	
 	
 	$: editing = !!sku.id; // if sku id exists, edit State is true. Not needed but enhances readability
@@ -108,7 +110,7 @@
 			})
 	})
 	
-	$: console.log(sku.images);
+	$: console.log(sku);
 	
 	
 	
@@ -164,7 +166,10 @@
 					<InputWithLabel label="Discount" bind:value={sku.discount} placeholder="How much off?" >Discount % (Optional)</InputWithLabel>
 					<InputWithLabel label="Quantity" bind:value={sku.stock} type="number" placeholder="How many?" >Quantity</InputWithLabel>
 				</div>
+				
+				<VariantConfigurator variantOptions={listingVariantOptions} bind:selectedOptions={sku.options} />
 			</div>
+			
 		</form>
 			{/key}
 	</div>
