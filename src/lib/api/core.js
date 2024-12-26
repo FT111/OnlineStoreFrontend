@@ -14,7 +14,7 @@ const formHeaders = (userToken) => {
 	}
 
 	let headers = {'Content-Type': 'application/json',
-	'Access-Control-Allow-Origin': 'http://localhost:8000'}
+	'Access-Control-Allow-Origin': '*',}
 	// If token exists, add it to the headers to provide credentials to the server
 	if (userToken) {
 		headers['Authorization'] = `Bearer ${userToken}`;

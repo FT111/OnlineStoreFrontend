@@ -3,6 +3,9 @@ import { GET, POST, PUT } from './core.js';
 
 
 export const token = () => {
+	if (!document.cookie) {
+		return null;
+	}
 	return document.cookie.split('; ').find(row => row.startsWith('token=')).split('=')[1];
 }
 

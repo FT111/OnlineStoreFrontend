@@ -8,6 +8,7 @@
 	import Price from "$lib/components/price.svelte";
 	import * as Avatar from "$lib/components/ui/avatar";
 	import { basket } from "$lib/basket.js";
+		import { baseURL } from '$lib/api/core.js';
 	
 	let className = '';
 	export { className as class };
@@ -84,7 +85,7 @@
 		</Card.Header>
 		<div class="flex flex-col justify-end">
 			<Card.Content class="py-1 ">
-				<Image class="h-full rounded-md border-b  " src="https://via.placeholder.com/1000" alt="{listing.description}" />
+				<Image class="h-full rounded-md border-b aspect-square  " src={listing.images ? `${baseURL}static/listingImages/${listing.images[0]}` : 'https://placehold.co/1000'} alt="{listing.description}" />
 			</Card.Content>
 			<Card.Footer class="gap-2 justify-end pb-3">
 				<div in:slide={{duration:300}} class="flex flex-row gap-1">
