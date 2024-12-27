@@ -155,7 +155,7 @@
 			</Card.Root>
 			
 			<div class="basis-1/3 flex flex-row justify-end">
-				<div class="flex flex-wrap flex-col gap-1.5 items-center justify-end bg-slate-50/50 rounded-2xl w-fit p-3.5">
+				<div class="flex flex-wrap flex-col gap-1.5 items-center justify-end bg-neutral-50 rounded-2xl w-fit p-3.5">
 					<div class="flex flex-row gap-1.5 items-center">
 						<NewListingInfoCard current={true}>
 							Create a base listing
@@ -165,7 +165,7 @@
 						<ArrowRight />
 						
 						<NewListingInfoCard>
-							Add a product
+							Add a variation
 							
 							<p class="text-sm text-slate-600 font-light text-pretty">This is where you decide on a price and upload images of your product.</p>
 						</NewListingInfoCard>
@@ -186,7 +186,7 @@
 						<NewListingInfoCard optional={true}>
 							<div class="-mt-1.5">
 								<p class="text-xs text-emerald-600 flex flex-row gap-1 items-center"> <Info class="size-3.5" /> Optional</p>
-								Add another product
+								Add another variation
 							</div>
 							
 							<p class="text-sm text-slate-600 font-light text-pretty">You can add multiple products to a single listing</p>
