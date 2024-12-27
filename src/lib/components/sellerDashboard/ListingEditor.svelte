@@ -12,6 +12,7 @@
 	import { afterNavigate, beforeNavigate, invalidate, invalidateAll, onNavigate } from '$app/navigation';
 		import { Textarea } from '$lib/components/ui/textarea/index.js';
 		import VariantConfigurator from '$lib/components/sellerDashboard/VariantConfigurator.svelte';
+		import HelpTooltip from '$lib/components/HelpTooltip.svelte';
 	// Defaults for creating a new listing
 	export let listing = {
 		id: null,
@@ -47,19 +48,17 @@
 	let saveBtn;
 
 	// Replaces or inserts the listing into the database
-	const repSert = (listingID, listing) => async (e) => {
-		e.preventDefault();
-
-
-		if (editing) {
-			await updateListing(listingID, listing).then(() => {
-				initiallisting = JSON.parse(JSON.stringify(listing));
-			});
-		} else {
-			await newListing(listingID, listing).then((res) => {
+	const repSert = async (listingID, listing) => {
+		try {
+			if (editing) {
+				await updateListing(listingID, listing);
+			} else {
+				const res = await newListing(listingID, listing);
 				listing.id = res.data.id;
-				initiallisting = JSON.parse(JSON.stringify(listing));
-			});
+			}
+			initiallisting = JSON.parse(JSON.stringify(listing));
+		} catch (error) {
+			console.error('Error saving listing:', error);
 		}
 	};
 	
@@ -69,7 +68,12 @@
 	
 	<!--  Attribute Config Section	-->
 	<div class="basis-1/2 rounded-2xl h-full  p-5 gap-4 flex flex-col order-1">
-		<p>Variant Configuration</p>
+		<p class="items-center flex flex-row gap-1">Variant Configuration
+			<HelpTooltip>
+				This lets you configure the different options available to users. For example, if you are selling a T-shirt, you can configure the colour, size, and material option types. <br /> <br />
+				You can then define the choices available for each of these types. For example, for the colour option, you can define the choices as red, blue, and green.
+			</HelpTooltip>
+		</p>
 		
 		<VariantConfigurator variantOptions={listing.skuOptions} configuring={true} />
 	</div>

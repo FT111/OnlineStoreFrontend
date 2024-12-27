@@ -8,9 +8,12 @@
 	import { baseURL } from '$lib/api/core.js';
 		import { onMount } from 'svelte';
 		import { newSKU, updateSKU } from '$lib/api/listings.js';
-		import { ImagePlus, Save } from 'lucide-svelte';
+		import { Box, HelpCircle, ImagePlus, Save } from 'lucide-svelte';
 		import { afterNavigate, beforeNavigate, invalidate, invalidateAll, onNavigate } from '$app/navigation';
 		import VariantConfigurator from '$lib/components/sellerDashboard/VariantConfigurator.svelte';
+		import * as Tooltip from "$lib/components/ui/tooltip";
+		import HelpTooltip from '$lib/components/HelpTooltip.svelte';
+		
  // Defaults for creating a new SKU
  	export let sku = {
 		id: null,
@@ -167,7 +170,10 @@
 					<InputWithLabel label="Quantity" bind:value={sku.stock} type="number" placeholder="How many?" >Quantity</InputWithLabel>
 				</div>
 				
-				<VariantConfigurator variantOptions={listingVariantOptions} bind:selectedOptions={sku.options} />
+				<div class="p-1 flex flex-row gap-1 items-center self-start">Option Selection
+					<HelpTooltip>Select the combination of options needed to pick this product variation</HelpTooltip>
+				</div>
+					<VariantConfigurator variantOptions={listingVariantOptions} bind:selectedOptions={sku.options} />
 			</div>
 			
 		</form>

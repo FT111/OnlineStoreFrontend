@@ -11,6 +11,7 @@
 	import { Badge } from '$lib/components/ui/badge/index.js';
 		import { onMount } from 'svelte';
 		import * as Tooltip from "$lib/components/ui/tooltip";
+		import HelpTooltip from '$lib/components/HelpTooltip.svelte';
 	
 	let selectedVariant = 'not selected';
 	
@@ -73,7 +74,11 @@
 				</div>
 
 				<div class="flex-col flex gap-2.5 h-fit p-4 rounded-2xl">
-					<p>Products</p>
+					<p class="flex flex-row items-center gap-1">Product Variations
+						<HelpTooltip>
+							Variations are what users pick from and purchase.<br />
+							You may need to scroll to see all variations.
+						</HelpTooltip></p>
 					<div class="flex flex-row gap-3 h-36 flex-wrap overflow-y-scroll">
 						{#if !data.listing.skus}
 							<div />
