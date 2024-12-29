@@ -1,4 +1,5 @@
 import { me } from '$lib/api/user.js';
+import { redirect } from '@sveltejs/kit';
 
 export const handle = async ({ event, request, resolve }) => {
 
@@ -15,6 +16,15 @@ export const handle = async ({ event, request, resolve }) => {
 
 		});
 	}
+
+	// Protect routes that require authentication
+	if (event.locals.user) {
+		return resolve(event);
+	}
+	if (event.url.pathname.startsWith('/account')) {
+		return redirect(302,'/login');
+	}
+
 
 	return resolve(event);
 
