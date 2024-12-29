@@ -10,7 +10,7 @@
 
 
 <div class="flex flex-col gap-0.5 w-full h-full">
-	<label class="text-xs px-2 font-normal text-slate-600">
+	<label class="text-xs px-2 font-normal text-slate-600" for={label}>
 		<slot />
 	</label>
 	
