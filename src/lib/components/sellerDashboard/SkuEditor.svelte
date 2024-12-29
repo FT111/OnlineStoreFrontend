@@ -22,7 +22,12 @@
 	  discount: '',
 		stock: '',
 	  	images: [],
+	  options: {},
+	  
 	};
+	
+	//  Types of options available for the listing
+	export let listingVariantOptions = {};
 	
 	beforeNavigate((e) => {
 		if (JSON.stringify(sku) !== JSON.stringify(initialSKU)) {
@@ -41,7 +46,6 @@
 	sku.price = String(sku.price);
 	sku.stock = String(sku.stock);
 	let initialSKU = JSON.parse(JSON.stringify(sku));
-	export let listingVariantOptions = {};
 	
 	
 	$: editing = !!sku.id; // if sku id exists, edit State is true. Not needed but enhances readability
@@ -51,8 +55,9 @@
 	
 	const repSert = (listingID, sku) => async (e) => {
 		e.preventDefault();
+		console.log('Saving SKU');
 		
-
+		// If the sku is being edited, update it. Otherwise, create a new one
 		if (editing) {
 			await updateSKU(listingID, sku).then(() => {
 				initialSKU = JSON.parse(JSON.stringify(sku));
@@ -173,10 +178,10 @@
 				<div class="p-1 flex flex-row gap-1 items-center self-start">Option Selection
 					<HelpTooltip>Select the combination of options needed to pick this product variation</HelpTooltip>
 				</div>
-					<VariantConfigurator variantOptions={listingVariantOptions} bind:selectedOptions={sku.options} />
 			</div>
 			
 		</form>
+			<VariantConfigurator variantOptions={listingVariantOptions} bind:selectedOptions={sku.options} />
 			{/key}
 	</div>
 
