@@ -2,8 +2,8 @@
 	import emblaCarouselSvelte from "embla-carousel-svelte";
 	import { getEmblaContext } from "./context.js";
 	import { cn } from "$lib/utils.js";
-	let className = undefined;
-	export { className as class };
+	let { class: className = undefined, children, ...rest } = $props();
+	
 	const { orientation, options, plugins, onInit } = getEmblaContext("<Carousel.Content/>");
 </script>
 
@@ -18,13 +18,13 @@
 		},
 		plugins: $plugins,
 	}}
-	on:emblaInit={onInit}
+	onemblaInit={onInit}
 >
 	<div
 		class={cn("flex", $orientation === "horizontal" ? "-ml-4" : "-mt-4 flex-col", className)}
 		data-embla-container=""
-		{...$$restProps}
+		{...rest}
 	>
-		<slot />
+		{@render children?.()}
 	</div>
 </div>

@@ -1,8 +1,8 @@
 <script>
 	import { getEmblaContext } from "./context.js";
 	import { cn } from "$lib/utils.js";
-	let className = undefined;
-	export { className as class };
+	let { class: className = undefined, children, ...rest } = $props();
+	
 	const { orientation } = getEmblaContext("<Carousel.Item/>");
 </script>
 
@@ -15,7 +15,7 @@
 		className
 	)}
 	data-embla-slide=""
-	{...$$restProps}
+	{...rest}
 >
-	<slot />
+	{@render children?.()}
 </div>

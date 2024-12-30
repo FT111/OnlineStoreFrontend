@@ -1,10 +1,8 @@
 
 <script>
-	let className = undefined;
-	export {className as class};
+	
 
-	export let price;
-	export let discounted;
+	let { class: className = undefined, price = $bindable(), discounted } = $props();
 	price = price / 100;
 	
 	let priceInteger = Math.floor(price);

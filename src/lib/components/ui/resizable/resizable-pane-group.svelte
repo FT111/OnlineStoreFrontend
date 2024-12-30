@@ -1,11 +1,15 @@
 <script>
 	import * as ResizablePrimitive from "paneforge";
 	import { cn } from "$lib/utils.js";
-	let className = undefined;
-	export let direction;
-	export let paneGroup = undefined;
-	export let el = undefined;
-	export { className as class };
+	let {
+		class: className = undefined,
+		direction,
+		paneGroup = $bindable(undefined),
+		el = $bindable(undefined),
+		children,
+		...rest
+	} = $props();
+	
 </script>
 
 <ResizablePrimitive.PaneGroup
@@ -13,7 +17,7 @@
 	bind:paneGroup
 	{direction}
 	class={cn("flex h-full w-full data-[direction=vertical]:flex-col", className)}
-	{...$$restProps}
+	{...rest}
 >
-	<slot />
+	{@render children?.()}
 </ResizablePrimitive.PaneGroup>

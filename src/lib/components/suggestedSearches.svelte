@@ -4,9 +4,15 @@
 	//
 	// const colours = ['bg-slate-300', 'bg-neutral-300', 'bg-stone-200', 'bg-orange-200', 'bg-lime-200', 'bg-emerald-300', 'bg-sky-300', 'bg-rose-100', 'bg-purple-200', 'bg-fuchsia-200','bg-indigo-100','bg-blue-200']
 	//
-	// const getRandomColour = () => colours[Math.floor(Math.random() * colours.length)]
 	
-	export let suggestions;
+	
+	/**
+	 * @typedef {Object} Props
+	 * @property {any} suggestions - const getRandomColour = () => colours[Math.floor(Math.random() * colours.length)]
+	 */
+
+	/** @type {Props} */
+	let { suggestions } = $props();
 </script>
 
 <div class="flex flex-row flex-wrap justify-center w-full sm:w-4/5 md:w-2/3  gap-4">

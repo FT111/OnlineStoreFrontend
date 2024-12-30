@@ -12,20 +12,20 @@
 	import { toast } from 'svelte-sonner';
 
 	
-	let passwordInput;
-	let passwordConfirmInput;
+	let passwordInput = $state();
+	let passwordConfirmInput = $state();
 	
 	// Passwords matching?
 
 
-	let email;
-	let password;
-	let username;
-	let confirmPassword;
-	let name;
-	let signInFormElement;
-	let submitBtnElement;
-	let signIn;
+	let email = $state();
+	let password = $state();
+	let username = $state();
+	let confirmPassword = $state();
+	let name = $state();
+	let signInFormElement = $state();
+	let submitBtnElement = $state();
+	let signIn = $state();
 
 	async function handleSignUp() {
 		console.log('Signing up');
@@ -66,7 +66,7 @@
 			</div>
 			
 			
-			<form bind:this={signInFormElement} on:submit={(event)=>{signIn(event, true)}} class="flex flex-col gap-4 md:w-5/6 w-full">
+			<form bind:this={signInFormElement} onsubmit={(event)=>{signIn(event, true)}} class="flex flex-col gap-4 md:w-5/6 w-full">
 				<Input bind:value={name} type="text" required placeholder="Your first and last name" name="name" />
 				<Input bind:value={username} type="text" required placeholder="Username" name="username" />
 				<Input bind:value={email} type="email" required placeholder="Email" name="email" />

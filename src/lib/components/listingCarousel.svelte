@@ -2,14 +2,26 @@
 import Listing from '$lib/components/listing.svelte';
 import * as Carousel from "$lib/components/ui/carousel/index.js";
 
-export let listings; // Function to fetch listings from the API
-export let title = 'Listings';
-export let isLoading = false;
 
-export let compactLayout = false;
 
-let className = '';
-export { className as class };
+	/**
+	 * @typedef {Object} Props
+	 * @property {any} listings - Function to fetch listings from the API
+	 * @property {string} [title]
+	 * @property {boolean} [isLoading]
+	 * @property {boolean} [compactLayout]
+	 * @property {string} [class]
+	 */
+
+	/** @type {Props} */
+	let {
+		listings,
+		title = 'Listings',
+		isLoading = false,
+		compactLayout = false,
+		class: className = ''
+	} = $props();
+
 
 let paddingClasses = compactLayout ? 'lg:px-14 lg:py-4 sm:p-4 ' : 'lg:p-20 lg:py-10 sm:p-6'
 </script>

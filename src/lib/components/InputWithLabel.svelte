@@ -1,9 +1,8 @@
 
 <script>
-  export let label;
-	  export let value;
 
 	import { Input } from '$lib/components/ui/input/index.js';
+	let { label, value = $bindable(), children, ...rest } = $props();
 	
 	let readonly = false;
 </script>
@@ -11,12 +10,12 @@
 
 <div class="flex flex-col gap-0.5 w-full h-full">
 	<label class="text-xs px-2 font-normal text-slate-600" for={label}>
-		<slot />
+		{@render children?.()}
 	</label>
 	
 	<Input
 		id={label}
-		{...$$restProps}
+		{...rest}
 		
 		bind:value
 		{readonly}

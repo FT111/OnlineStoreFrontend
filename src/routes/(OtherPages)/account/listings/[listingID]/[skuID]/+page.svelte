@@ -2,9 +2,9 @@
 <script>
   	import { page } from '$app/stores';
 	import SkuEditor from '$lib/components/sellerDashboard/SkuEditor.svelte';
-	export let data;
+	let { data } = $props();
 	
-	let selectedSKU;
+	let selectedSKU = $state();
 	data.listing.skus.forEach(sku => {
 		if (sku.id === $page.params.skuID) {
 			selectedSKU = sku;

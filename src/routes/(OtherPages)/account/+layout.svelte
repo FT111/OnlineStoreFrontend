@@ -11,12 +11,12 @@ import { Plus } from 'lucide-svelte';
 import NewListingDialog from '$lib/components/NewListingDialog.svelte';
 
 
-export let data;
-$: user = data.user;
+	let { data, children } = $props();
+let user = $derived(data.user);
 
 
-let selectedPage;
-$: selectedPage = $page.url.pathname.split('/')[2];
+let selectedPage = $derived($page.url.pathname.split('/')[2]);
+
 
 </script>
 
@@ -94,7 +94,7 @@ $: selectedPage = $page.url.pathname.split('/')[2];
 	</Sidebar>
 	
 	<div class="basis-5/6">
-		<slot />
+		{@render children?.()}
 	</div>
 	
 </div>

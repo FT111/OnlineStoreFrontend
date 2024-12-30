@@ -6,9 +6,8 @@
 	import SuggestedSearches from '$lib/components/suggestedSearches.svelte';
 	import SearchGradient from '$lib/assets/searchGradient1.png';
 	
-	export let searchSuggestions;
-	export let searchElement;
-//bg-gradient-to-br from-indigo-500 to-fuchsia-800
+	let { searchSuggestions, searchElement = $bindable() } = $props();
+
 </script>
 <!--bg-[url('/src/lib/assets/searchGradient1.png')]-->
 <div class="flex flex-col items-center justify-between w-full min-h-[50vh] h-fit bg-primary rounded-b-3xl">

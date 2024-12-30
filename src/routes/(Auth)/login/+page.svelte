@@ -9,11 +9,11 @@
 	import { backInOut } from 'svelte/easing';
 	
 		
-	let email;
-	let password;
-	let signInFormElement;
-	let submitBtnElement;
-	let signIn;
+	let email = $state();
+	let password = $state();
+	let signInFormElement = $state();
+	let submitBtnElement = $state();
+	let signIn = $state();
 	
 	async function handleLoginAttempt() {
 		return await login(email, password)
@@ -46,7 +46,7 @@
 			</div>
 
 			
-			<form bind:this={signInFormElement} on:submit={(event) => {signIn(event, true)}} class="flex flex-col gap-4 md:w-5/6 w-full">
+			<form bind:this={signInFormElement} onsubmit={(event) => {signIn(event, true)}} class="flex flex-col gap-4 md:w-5/6 w-full">
 				<Input bind:value={email} type="email" required placeholder="Email" name="username" />
 				<Input bind:value={password} type="password" required placeholder="Password" name="password"  />
 				

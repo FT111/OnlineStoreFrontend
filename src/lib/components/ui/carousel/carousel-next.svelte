@@ -3,10 +3,16 @@
 	import { getEmblaContext } from "./context.js";
 	import { cn } from "$lib/utils.js";
 	import { Button } from "$lib/components/ui/button/index.js";
-	let className = undefined;
-	export { className as class };
-	export let variant = "outline";
-	export let size = "icon";
+	
+	/**
+	 * @typedef {Object} Props
+	 * @property {any} [class]
+	 * @property {string} [variant]
+	 * @property {string} [size]
+	 */
+
+	/** @type {Props & { [key: string]: any }} */
+	let { class: className = undefined, variant = "outline", size = "icon", ...rest } = $props();
 	const { orientation, canScrollNext, scrollNext, handleKeyDown } =
 		getEmblaContext("<Carousel.Next/>");
 </script>
@@ -24,7 +30,7 @@
 	disabled={!$canScrollNext}
 	on:click={scrollNext}
 	on:keydown={handleKeyDown}
-	{...$$restProps}
+	{...rest}
 >
 	<ArrowRight class="h-4 w-4" />
 	<span class="sr-only">Next slide</span>

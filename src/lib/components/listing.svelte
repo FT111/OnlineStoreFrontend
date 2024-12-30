@@ -10,11 +10,23 @@
 	import { basket } from "$lib/basket.js";
 		import { baseURL } from '$lib/api/core.js';
 	
-	let className = '';
-	export { className as class };
+	
 
-	// Listing object - Default values are used during skeleton loading
-	export let listing = {ownerUser: {
+	
+	
+	/**
+	 * @typedef {Object} Props
+	 * @property {string} [class]
+	 * @property {any} [listing] - Listing object - Default values are used during skeleton loading
+	 * @property {boolean} [editMode]
+	 * @property {boolean} [isLoading]
+	 * @property {any} [addToBasket]
+	 */
+
+	/** @type {Props} */
+	let {
+		class: className = '',
+		listing = {ownerUser: {
 			                      id: 1,
 	                      username: 'JD',
 	                      profilePictureURL: 'https://via.placeholder.com/150',
@@ -27,15 +39,15 @@
 	                      hasDiscount: true,
 	                      multipleSKUs: true,
 	                      id: 1
-	};
-	export let editMode = false;
-	export let isLoading = false;
-	
-	export let addToBasket = (event) => {
+	},
+		editMode = false,
+		isLoading = false,
+		addToBasket = (event) => {
 		event.preventDefault();
 		console.log("Adding to basket");
 		basket.addItem({id: listing.id});
 	}
+	} = $props();
 </script>
 
 <a href="/listings/{listing.id}" class="w-full h-min {className}">

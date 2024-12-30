@@ -1,9 +1,9 @@
 <script>
 	import { cn } from "$lib/utils.js";
-	let className = undefined;
-	export { className as class };
+	let { class: className = undefined, children, ...rest } = $props();
+	
 </script>
 
-<caption class={cn("text-muted-foreground mt-4 text-sm", className)} {...$$restProps}>
-	<slot />
+<caption class={cn("text-muted-foreground mt-4 text-sm", className)} {...rest}>
+	{@render children?.()}
 </caption>

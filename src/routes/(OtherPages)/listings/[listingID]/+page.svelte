@@ -12,9 +12,9 @@
 	import { queryListings } from '$lib/api/listings.js';
 	import { page } from '$app/stores';
 		import VariantConfigurator from '$lib/components/sellerDashboard/VariantConfigurator.svelte';
-	export let data;
+	let { data } = $props();
 	
-	$: listing = data.listing;
+	let listing = $derived(data.listing);
 	console.log(listing);
 	let skus = true;
 
@@ -225,7 +225,7 @@
 		</div>
 	</div>
 	
-	<div class="h-20" />
+	<div class="h-20"></div>
 	<!-- Reviews	-->
 	<ReviewGrid  />
 </div>
@@ -234,7 +234,7 @@
 <div class="fixed w-full sm:w-1/2 justify-self-end bottom-4 min-h-24 p-3 z-20 right-3 min-w-fit">
 	<div class=" bg-slate-100 rounded-xl p-3 flex flex-row align-middle items-center justify-between border-2 border-slate-200 shadow-md">
 		
-		<div />
+		<div></div>
 		
 		<div class="flex flex-row items-center h-full gap-4">
 			<Price price={listing.basePrice} />
@@ -242,7 +242,7 @@
 		</div>
 	</div>
 </div>
-<div class="h-20" />
+<div class="h-20"></div>
 <div class="bg-slate-50 ">
 	<div class="h-10"></div>
 	{#await queryListings(null, listing.category, null, null)}
@@ -252,6 +252,6 @@
 	{:catch error}
 		<p>{error.message}</p>
 	{/await}
-	<div class="h-32" />
+	<div class="h-32"></div>
 
 </div>

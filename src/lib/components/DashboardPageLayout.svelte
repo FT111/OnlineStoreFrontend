@@ -2,15 +2,24 @@
 <script>
 
 import { Separator } from '$lib/components/ui/separator/index.js';
+	/**
+	 * @typedef {Object} Props
+	 * @property {import('svelte').Snippet} [header]
+	 * @property {import('svelte').Snippet} [title]
+	 * @property {import('svelte').Snippet} [page]
+	 */
+
+	/** @type {Props} */
+	let { header, title, page } = $props();
 </script>
 
 <div class="pt-16 flex flex-col grow h-full">
 	<div class="w-full p-4 flex flex-col gap-0 justify-center basis-1/12">
-		<p class="text-sm font-semibold"><slot name="header" /></p>
-		<h1 class="font-bold text-5xl text-primary"><slot name="title" /></h1>
+		<p class="text-sm font-semibold">{@render header?.()}</p>
+		<h1 class="font-bold text-5xl text-primary">{@render title?.()}</h1>
 	</div>
 	
 	<div class="p-3.5 pt-0  w-full basis-11/12">
-		<slot name="page" />
+		{@render page?.()}
 	</div>
 </div>

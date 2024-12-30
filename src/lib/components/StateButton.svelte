@@ -1,3 +1,4 @@
+<!-- @migration-task Error while migrating Svelte code: $$props is used together with named props in a way that cannot be automatically migrated. -->
 <script>
 	import { Button } from '$lib/components/ui/button/index.js';
 	import { goto, invalidateAll } from '$app/navigation';

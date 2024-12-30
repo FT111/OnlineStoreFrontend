@@ -1,7 +1,7 @@
 <script>
 	import ListingEditor from '$lib/components/sellerDashboard/ListingEditor.svelte';
 	
-	export let data;
+	let { data } = $props();
 </script>
 
 {#key data.listing.id}

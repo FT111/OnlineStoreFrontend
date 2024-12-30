@@ -13,8 +13,14 @@
 		import { Textarea } from '$lib/components/ui/textarea/index.js';
 		import VariantConfigurator from '$lib/components/sellerDashboard/VariantConfigurator.svelte';
 		import HelpTooltip from '$lib/components/HelpTooltip.svelte';
-	// Defaults for creating a new listing
-	export let listing = {
+	
+	/**
+	 * @typedef {Object} Props
+	 * @property {any} [listing] - Defaults for creating a new listing
+	 */
+
+	/** @type {Props} */
+	let { listing = $bindable({
 		id: null,
 		title: '',
 		description: '',
@@ -22,7 +28,7 @@
 		category: '',
 		subCategory: '',
 	  	skuOptions: {},
-	};
+	}) } = $props();
 
 	beforeNavigate((e) => {
 		if (JSON.stringify(listing) !== JSON.stringify(initiallisting)) {
@@ -40,12 +46,12 @@
 
 	listing.price = String(listing.price);
 	listing.stock = String(listing.stock);
-	let initiallisting = JSON.parse(JSON.stringify(listing));
+	let initiallisting = $state(JSON.parse(JSON.stringify(listing)));
 
 
-	$: editing = !!listing.id; // if listing id exists, edit State is true. Not needed but enhances readability
-	$: edited = JSON.stringify(listing) !== JSON.stringify(initiallisting); // if listing is edited, edited state is true
-	let saveBtn;
+	let editing = $derived(!!listing.id); // if listing id exists, edit State is true. Not needed but enhances readability
+	let edited = $derived(JSON.stringify(listing) !== JSON.stringify(initiallisting)); // if listing is edited, edited state is true
+	let saveBtn = $state();
 
 	// Replaces or inserts the listing into the database
 	const repSert = async (listingID, listing) => {
@@ -80,7 +86,7 @@
 	
 	<div class="basis-1/2 bg-neutral-50 rounded-2xl h-full p-5 space-y-1.5 order-first">
 		{#key listing.id}
-			<form on:submit={repSert($page.params.listingID, listing)}>
+			<form onsubmit={repSert($page.params.listingID, listing)}>
 				<div class="p-1 flex flex-row gap-2 items-center">Details
 					<Button bind:this={saveBtn} class=" rounded-full transition-all gap-1.5 origin-left {edited ? 'scale-100': ' scale-0 '}" type="submit" size="sm">
 						<Save size={20} strokeWidth={1.25} />Save</Button>

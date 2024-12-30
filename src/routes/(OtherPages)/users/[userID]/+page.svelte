@@ -7,7 +7,7 @@
 	import { fetchListings, queryListings, fetchUserListings } from '$lib/api/listings.js';
 	import Listing from '$lib/components/listing.svelte';
 	
-	export let data;
+	let { data } = $props();
 	const userID = data.profileUser.id;
 	
 	const profileUser = {
@@ -102,7 +102,7 @@
 				{data.profileUser.username}'s Categories
 			</div>
 			{#await fetchUserListings(data.profileUser.id)}
-				<div class="rounded-3xl flex items-center p-2 px-4 min-w-24 text-center bg-primary text-white animate-pulse" />
+				<div class="rounded-3xl flex items-center p-2 px-4 min-w-24 text-center bg-primary text-white animate-pulse"></div>
 			{:then data}
 				{#if 'meta' in data}
 					{#each data.meta.topCategories as category}

@@ -5,7 +5,14 @@
 	import { Button } from '$lib/components/ui/button/index.js';
 	import { Toaster } from '$lib/components/ui/sonner/index.js';
 	import { basket } from '$lib/basket.js';
-	let consentPopup;
+	/**
+	 * @typedef {Object} Props
+	 * @property {import('svelte').Snippet} [children]
+	 */
+
+	/** @type {Props} */
+	let { children } = $props();
+	let consentPopup = $state();
 	
 	onMount(() => {
 		checkConsent(consentPopup);
@@ -15,7 +22,7 @@
 </script>
 
 
-<slot />
+{@render children?.()}
 
 
 <Toaster />

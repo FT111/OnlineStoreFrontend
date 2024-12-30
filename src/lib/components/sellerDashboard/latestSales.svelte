@@ -5,7 +5,7 @@
 	import * as Avatar from '$lib/components/ui/avatar/index.js';
 	import { Skeleton } from '$lib/components/ui/skeleton/index.js';
 	
-	export let listings = fetchListings;
+	let { listings = fetchListings } = $props();
 	
 </script>
 

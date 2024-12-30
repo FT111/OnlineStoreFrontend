@@ -14,19 +14,30 @@
 		import NewListingDialog from '$lib/components/NewListingDialog.svelte';
 		import { goto } from '$app/navigation';
 
-	export let navElement;
-	export let searchElement;
-	export let hideSearch = false;
-	export let user;
+	/**
+	 * @typedef {Object} Props
+	 * @property {any} navElement
+	 * @property {any} searchElement
+	 * @property {boolean} [hideSearch]
+	 * @property {any} user
+	 */
+
+	/** @type {Props} */
+	let {
+		navElement = $bindable(),
+		searchElement = $bindable(),
+		hideSearch = false,
+		user
+	} = $props();
 	
-	let basketOpen = false;
+	let basketOpen = $state(false);
 	
-	let hideClass = '';
+	let hideClass = $state('');
 	if (hideSearch) {
 		hideClass = '-translate-y-32';
 	}
 	
-	let basketItems;
+	let basketItems = $state();
 
 		basket.subscribe(value => {
 			if (value && value.items) {
@@ -91,7 +102,7 @@
 					
 					<div class="grow flex flex-col gap-3 pt-1">
 							{#each basketItems as product}
-							<a href={`/listings/${product.id}`} on:click={() => {basketOpen=false}}>
+							<a href={`/listings/${product.id}`} onclick={() => {basketOpen=false}}>
 								<div class="flex flex-row justify-between h-28 mx-8 rounded-2xl gap-2 p-2.5 align-middle
 								items-center transition-all duration-75 hover:outline-slate-300 outline-1 outline
 								outline-slate-200 bg-slate-50 hover:bg-slate-100">

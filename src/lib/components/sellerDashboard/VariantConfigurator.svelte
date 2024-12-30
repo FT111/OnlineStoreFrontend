@@ -1,21 +1,31 @@
 
 <script>
+	import { run } from 'svelte/legacy';
+
 	
 	import { Badge } from '$lib/components/ui/badge/index.js';
 		import { Input } from '$lib/components/ui/input/index.js';
 		import { Cross, Plus, Trash2, X } from 'lucide-svelte';
 		import { Button } from '$lib/components/ui/button/index.js';
 
-		export let variantOptions = {
+	
+	/**
+	 * @typedef {Object} Props
+	 * @property {any} [variantOptions]
+	 * @property {any} [selectedOptions]
+	 * @property {boolean} [configuring]
+	 */
+
+	/** @type {Props} */
+	let { variantOptions = {
 		"Color": ["Red", "Blue", "Green"],
 		"Size": ["Small", "Medium", "Large"],
 		"Material": ["Cotton", "Polyester", "Wool"]
-	}
+	}, selectedOptions = $bindable({}), configuring = false } = $props();
 	
-	export let selectedOptions = {};
-	export let configuring = false;
-	
-	$: console.log(selectedOptions);
+	run(() => {
+		console.log(selectedOptions);
+	});
 	
 </script>
 
@@ -37,7 +47,7 @@
 			</div>
 			<div class="flex flex-row relative rounded-t-2xl p-2 px-1 overflow-x-scroll gap-3 w-full">
 				{#each variantOptions[category] as option}
-					<button on:click={()=>{selectedOptions[category] = option}} class="{selectedOptions[category]===option ? 'brightness-150' : '' }   bg-primary flex flex-row gap-1 items-center font-semibold text-xs text-primary-foreground  hover:bg-destructive justify-center min-w-16 w-fit p-2 px-3 rounded-3xl flex-shrink-0 transition-all duration-250 ease-in-out cursor-pointer">
+					<button onclick={()=>{selectedOptions[category] = option}} class="{selectedOptions[category]===option ? 'brightness-150' : '' }   bg-primary flex flex-row gap-1 items-center font-semibold text-xs text-primary-foreground  hover:bg-destructive justify-center min-w-16 w-fit p-2 px-3 rounded-3xl flex-shrink-0 transition-all duration-250 ease-in-out cursor-pointer">
 						{option}
 						{#if configuring}
 							<X class="w-4 h-4 ml-1" />

@@ -1,7 +1,6 @@
 <script>
   	import Footer from '$lib/components/Footer.svelte';
 
-		export let data;
   
 	import Listing from '$lib/components/listing.svelte';
 	import ListingCarousel from '$lib/components/listingCarousel.svelte';
@@ -15,6 +14,7 @@
 		import { Button } from '$lib/components/ui/button/index.js';
 		import { ArrowRight } from 'lucide-svelte';
 		import ComputingBanner from '$lib/components/banners/Computing.svelte';
+	let { data } = $props();
 
 
 	const navHeroClasses = ['bg-primary', 'text-white', 'rounded-b-3xl'];
@@ -22,10 +22,10 @@
 
 	const heroSearchClasses = ['-translate-y-32']
 
-	let navElement;
-	let navSearch;
-	let searchHero;
-	let heroSearchBar;
+	let navElement = $state();
+	let navSearch = $state();
+	let searchHero = $state();
+	let heroSearchBar = $state();
 
 	onMount(async () => {
 		const navObserver = new IntersectionObserver(

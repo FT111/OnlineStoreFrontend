@@ -1,6 +1,7 @@
 <script>
+	import { run } from 'svelte/legacy';
+
 import { page } from '$app/stores';
-export let data;
 
 import { queryListings } from '$lib/api/listings.js';
 import Listing from '$lib/components/listing.svelte';
@@ -23,24 +24,25 @@ import { browser } from '$app/environment';
 import { formQueryURL } from '$lib/utils.js';
 import { Skeleton } from '$lib/components/ui/skeleton/index.js';
 import { Badge } from '$lib/components/ui/badge/index.js';
+	let { data } = $props();
 
 let categories = [];
-let subCategories = [];
+let subCategories = $state([]);
 const sorts = ['None', 'Price', 'Rating', 'Views'];
 const orders = ['Asc.', 'Desc.'];
 
 
 let query = $page.url.searchParams.get('query') || '';
-let selectedCategory = $page.url.searchParams.get('category') || undefined;
-let selectedSubcategory = $page.url.searchParams.get('subCategory') || undefined;
-let selectedSort = $page.url.searchParams.get('sort');
-let selectedOrder = $page.url.searchParams.get('order') || 'asc';
+let selectedCategory = $state($page.url.searchParams.get('category') || undefined);
+let selectedSubcategory = $state($page.url.searchParams.get('subCategory') || undefined);
+let selectedSort = $state($page.url.searchParams.get('sort'));
+let selectedOrder = $state($page.url.searchParams.get('order') || 'asc');
 
 const filterTitles = ['Categories', 'Sub Categories', 'Sort', 'Order'];
-$: filters = [query, selectedCategory, selectedSubcategory, selectedSort, selectedOrder];
-$: selectedFilters = filters.filter((filter) => filter !== undefined);
+let filters = $derived([query, selectedCategory, selectedSubcategory, selectedSort, selectedOrder]);
+let selectedFilters = $derived(filters.filter((filter) => filter !== undefined));
 
-let showCategoryHeader = false;
+let showCategoryHeader = $state(false);
 switch (selectedOrder) {
 	case 'asc': {
 		selectedOrder = 'Asc.'
@@ -64,19 +66,23 @@ onMount(() => {
 
 })
 // Resets subcategories when category is changed
-$: if (selectedCategory) {
-	subCategories = []
-  	selectedSubcategory = 'All Sub Categories'
-}
+run(() => {
+		if (selectedCategory) {
+		subCategories = []
+	  	selectedSubcategory = 'All Sub Categories'
+	}
+	});
 
 // Fetches subcategories based on selected category
-$: if (selectedCategory !== 'All Categories' && selectedCategory !== 'Categories' && selectedCategory !== undefined) {
-	fetchCategory(selectedCategory).then((data) => {
-		subCategories.push('All Sub Categories')
-		for (let i = 0; i < data.data['subCategories'].length; i++) {
-			subCategories.push(data.data['subCategories'][i].title)}
-	})
-}
+run(() => {
+		if (selectedCategory !== 'All Categories' && selectedCategory !== 'Categories' && selectedCategory !== undefined) {
+		fetchCategory(selectedCategory).then((data) => {
+			subCategories.push('All Sub Categories')
+			for (let i = 0; i < data.data['subCategories'].length; i++) {
+				subCategories.push(data.data['subCategories'][i].title)}
+		})
+	}
+	});
 
 // Navigates to the listings page with the selected category, subcategory, and sort whenever the params are changed
 
@@ -88,18 +94,20 @@ const refineListings = () => {
 
 
 // TESTING
-let slider1Value = [10];
+let slider1Value = $state([10]);
 let slider2Value = 10;
 
 
-$: console.log(selectedCategory, selectedSubcategory, selectedSort, selectedOrder)
+run(() => {
+		console.log(selectedCategory, selectedSubcategory, selectedSort, selectedOrder)
+	});
 </script>
 
 <div class="w-full h-full flex flex-row">
 	<Sidebar class="basis-1/12">
 	
 <!--		Spacer -->
-		<div class="" />
+		<div class=""></div>
 	
 <!--	Quick filters container	-->
 		<div class="bg-slate-200 rounded-lg flex flex-col">

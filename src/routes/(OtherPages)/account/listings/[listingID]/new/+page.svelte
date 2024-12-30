@@ -1,7 +1,7 @@
 
 <script>
 	import SkuEditor from '$lib/components/sellerDashboard/SkuEditor.svelte';
-	export let data;
+	let { data } = $props();
 	
 </script>
 

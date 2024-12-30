@@ -5,14 +5,14 @@
 
 	import { Card } from '$lib/components/ui/card/index.js';
 
-	let data = {
+	let data = $state({
 		labels: ['Sun', 'Mon', 'Tues', 'Wed', 'Thurs', 'Fri', 'Sat'],
 		datasets: [
 			{
 				values: [10, 12, 3, 9, 8, 13, 9]
 			}
 		]
-	};
+	});
 
 	let date = new Date();
 	date.setFullYear(date.getFullYear() - 1);
@@ -29,7 +29,7 @@
 
 	};
 
-	let chart;
+	let chart = $state();
 
 	onMount(() => {
 		const dashEvents = new EventSource('http://127.0.0.1:8000/count');

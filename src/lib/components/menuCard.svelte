@@ -1,10 +1,22 @@
 
 <script>
-	let className;
-	export let href;
-	export { className as class };
 	
-	export let altArrow = false;
+	
+	/**
+	 * @typedef {Object} Props
+	 * @property {any} class
+	 * @property {any} href
+	 * @property {boolean} [altArrow]
+	 * @property {import('svelte').Snippet} [children]
+	 */
+
+	/** @type {Props} */
+	let {
+		class: className,
+		href,
+		altArrow = false,
+		children
+	} = $props();
 	
 </script>
 
@@ -31,6 +43,6 @@
 
 		
 		<div class="w-min flex justify-end align-bottom flex-col h-full" style="grid-column: 1;grid-row: 1">
-			<slot />
+			{@render children?.()}
 		</div>
 </a>

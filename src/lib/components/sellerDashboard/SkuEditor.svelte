@@ -1,5 +1,7 @@
 
 <script>
+	import { run } from 'svelte/legacy';
+
 	import { Input } from '$lib/components/ui/input/index.js';
 	import * as Card from '$lib/components/ui/card/index.js';
 	import { page } from '$app/stores';
@@ -14,8 +16,17 @@
 		import * as Tooltip from "$lib/components/ui/tooltip";
 		import HelpTooltip from '$lib/components/HelpTooltip.svelte';
 		
- // Defaults for creating a new SKU
- 	export let sku = {
+ 
+	
+	
+	/**
+	 * @typedef {Object} Props
+	 * @property {any} [sku] - Defaults for creating a new SKU
+	 * @property {any} [listingVariantOptions] - Types of options available for the listing
+	 */
+
+	/** @type {Props} */
+	let { sku = $bindable({
 		id: null,
 		title: '',
 		price: '',
@@ -24,10 +35,7 @@
 	  	images: [],
 	  options: {},
 	  
-	};
-	
-	//  Types of options available for the listing
-	export let listingVariantOptions = {};
+	}), listingVariantOptions = {} } = $props();
 	
 	beforeNavigate((e) => {
 		if (JSON.stringify(sku) !== JSON.stringify(initialSKU)) {
@@ -45,13 +53,13 @@
 	
 	sku.price = String(sku.price);
 	sku.stock = String(sku.stock);
-	let initialSKU = JSON.parse(JSON.stringify(sku));
+	let initialSKU = $state(JSON.parse(JSON.stringify(sku)));
 	
 	
-	$: editing = !!sku.id; // if sku id exists, edit State is true. Not needed but enhances readability
-	$: edited = JSON.stringify(sku) !== JSON.stringify(initialSKU); // if sku is edited, edited state is true
-	let dropLabel;
-	let saveBtn;
+	let editing = $derived(!!sku.id); // if sku id exists, edit State is true. Not needed but enhances readability
+	let edited = $derived(JSON.stringify(sku) !== JSON.stringify(initialSKU)); // if sku is edited, edited state is true
+	let dropLabel = $state();
+	let saveBtn = $state();
 	
 	const repSert = (listingID, sku) => async (e) => {
 		e.preventDefault();
@@ -118,7 +126,9 @@
 			})
 	})
 	
-	$: console.log(sku);
+	run(() => {
+		console.log(sku);
+	});
 	
 	
 	
@@ -151,7 +161,7 @@
 						<path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
 					</svg>
 				</Card.Root>
-				<input class="hidden w-full h-full" type="file" accept="image/*" on:change={(e)=>{selectImage(e)}} />
+				<input class="hidden w-full h-full" type="file" accept="image/*" onchange={(e)=>{selectImage(e)}} />
 			</label>
 			
 			<p class="col-span-3 row-span-1 text-center text-sm justify-center items-center p-2 opacity-60 flex flex-row gap-1.5">Drag and drop images here <ImagePlus size={20} strokeWidth={1.25} />
@@ -161,7 +171,7 @@
 	
 	<div class="basis-1/2 bg-slate-50 rounded-2xl h-full p-5 space-y-1.5 md:order-1 order-first">
 		{#key sku.id}
-		<form on:submit={repSert($page.params.listingID, sku)}>
+		<form onsubmit={repSert($page.params.listingID, sku)}>
 			<div class="p-1 flex flex-row gap-2 items-center">Details
 				<Button bind:this={saveBtn} class=" rounded-full transition-all gap-1.5 origin-left {edited ? 'scale-100': ' scale-0 '}" type="submit" size="sm">
 					<Save size={20} strokeWidth={1.25} />Save</Button>

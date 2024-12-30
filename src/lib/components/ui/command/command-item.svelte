@@ -1,9 +1,18 @@
 <script>
 	import { Command as CommandPrimitive } from "cmdk-sv";
 	import { cn } from "$lib/utils.js";
-	export let asChild = false;
-	let className = undefined;
-	export { className as class };
+	/**
+	 * @typedef {Object} Props
+	 * @property {boolean} [asChild]
+	 * @property {any} [class]
+	 * @property {import('svelte').Snippet<[any]>} [children]
+	 */
+
+	/** @type {Props & { [key: string]: any }} */
+	let { asChild = false, class: className = undefined, children, ...rest } = $props();
+	
+
+	const children_render = $derived(children);
 </script>
 
 <CommandPrimitive.Item
@@ -12,9 +21,11 @@
 		"aria-selected:bg-accent aria-selected:text-accent-foreground relative flex cursor-default select-none items-center rounded-sm px-2 py-1.5 text-sm outline-none data-[disabled]:pointer-events-none data-[disabled]:opacity-50",
 		className
 	)}
-	{...$$restProps}
-	let:action
-	let:attrs
+	{...rest}
+	
+	
 >
-	<slot {action} {attrs} />
+	{#snippet children({ action, attrs })}
+		{@render children_render?.({ action, attrs, })}
+	{/snippet}
 </CommandPrimitive.Item>

@@ -2,11 +2,24 @@
 <script>
   import { Skeleton } from '$lib/components/ui/skeleton/index.js';
 
-  export let title = undefined;
-  export let description = undefined;
-  export let categoryColour;
 	
-  export let isLoading = false;
+	/**
+	 * @typedef {Object} Props
+	 * @property {any} [title]
+	 * @property {any} [description]
+	 * @property {any} categoryColour
+	 * @property {boolean} [isLoading]
+	 * @property {import('svelte').Snippet} [children]
+	 */
+
+	/** @type {Props} */
+	let {
+		title = undefined,
+		description = undefined,
+		categoryColour,
+		isLoading = false,
+		children
+	} = $props();
 </script>
 
 <div class="w-full flex flex-col gap-2 min-h-32 h-fit bg-slate-50 mb-10 p-2 col-span-full rounded-2xl">
@@ -24,6 +37,6 @@
 	</div>
 	<!--				Content	-->
 	<div class="rounded-b-xl bg-neutral-50">
-		<slot />
+		{@render children?.()}
 	</div>
 </div>

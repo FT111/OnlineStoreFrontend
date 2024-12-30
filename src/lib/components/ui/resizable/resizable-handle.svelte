@@ -2,10 +2,16 @@
 	import GripVertical from "lucide-svelte/icons/grip-vertical";
 	import * as ResizablePrimitive from "paneforge";
 	import { cn } from "$lib/utils.js";
-	export let withHandle = false;
-	export let el = undefined;
-	let className = undefined;
-	export { className as class };
+	/**
+	 * @typedef {Object} Props
+	 * @property {boolean} [withHandle]
+	 * @property {any} [el]
+	 * @property {any} [class]
+	 */
+
+	/** @type {Props} */
+	let { withHandle = false, el = $bindable(undefined), class: className = undefined } = $props();
+	
 </script>
 
 <ResizablePrimitive.PaneResizer

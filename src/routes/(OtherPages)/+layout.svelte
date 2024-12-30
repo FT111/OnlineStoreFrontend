@@ -6,12 +6,12 @@
 	
 	import Navbar from '$lib/components/navbar.svelte'
 	import Footer from '$lib/components/Footer.svelte';
-	export let data;
+	let { data, children } = $props();
 
 </script>
 
 <Navbar user={data.user} />
 
-<slot />
+{@render children?.()}
 
 <Footer />
