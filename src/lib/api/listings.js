@@ -1,8 +1,9 @@
 
 import { GET, POST, PUT } from './core.js';
+const offset = 25;
 
 export const fetchListings = async () => {
-	return await GET('listings/?limit=24');
+	return await GET('listings/?limit=35');
 }
 
 export const fetchListing = async (id, includePrivileged) => {
@@ -35,7 +36,7 @@ export const updateSKU = async (id, data) => {
 }
 
 
-export const queryListings = async (query=null, category=null, subCategory=null, sort=null, order=null, username=null) => {
+export const queryListings = async (query=null, category=null, subCategory=null, sort=null, order=null, username=null, page=1) => {
 
 	let requestString = `listings/?`
 	if (query) {
@@ -57,7 +58,7 @@ export const queryListings = async (query=null, category=null, subCategory=null,
 		requestString += `&username=${username}`
 	}
 
-	requestString += `&limit=36`
+	requestString += `&limit=36&offset=${page*offset-offset}`
 
 	console.log('REQUEST STRING: ',requestString)
 	return await GET(requestString)

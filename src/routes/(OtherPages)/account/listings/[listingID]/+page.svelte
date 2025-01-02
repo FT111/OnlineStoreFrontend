@@ -2,8 +2,9 @@
 	import ListingEditor from '$lib/components/sellerDashboard/ListingEditor.svelte';
 	
 	let { data } = $props();
+	let listing = $state(data.listing);
 </script>
 
-{#key data.listing.id}
-	<ListingEditor listing={data.listing} />
+{#key listing.id}
+	<ListingEditor listing={listing} />
 {/key}

@@ -4,8 +4,8 @@
 import { page } from '$app/stores';
 
 import { queryListings } from '$lib/api/listings.js';
-import Listing from '$lib/components/listing.svelte';
-import ListingCarousel from '$lib/components/listingCarousel.svelte';
+	import Listing from '$lib/components/Listing.svelte';
+	import ListingCarousel from '$lib/components/listingCarousel.svelte';
 import CategoryHeader from '$lib/components/categoryHeader.svelte';
 import { elasticIn } from 'svelte/easing';
 import { getContext } from 'svelte';
@@ -24,6 +24,7 @@ import { browser } from '$app/environment';
 import { formQueryURL } from '$lib/utils.js';
 import { Skeleton } from '$lib/components/ui/skeleton/index.js';
 import { Badge } from '$lib/components/ui/badge/index.js';
+	import ListingGrid from '$lib/components/ListingGrid.svelte';
 	let { data } = $props();
 
 let categories = [];
@@ -37,6 +38,7 @@ let selectedCategory = $state($page.url.searchParams.get('category') || undefine
 let selectedSubcategory = $state($page.url.searchParams.get('subCategory') || undefined);
 let selectedSort = $state($page.url.searchParams.get('sort'));
 let selectedOrder = $state($page.url.searchParams.get('order') || 'asc');
+let selectedPage = $state(1);
 
 const filterTitles = ['Categories', 'Sub Categories', 'Sort', 'Order'];
 let filters = $derived([query, selectedCategory, selectedSubcategory, selectedSort, selectedOrder]);
@@ -91,6 +93,9 @@ const refineListings = () => {
 }
 
 
+const fetchListings = async () => {
+	return queryListings(query, selectedCategory, selectedSubcategory, selectedSort, selectedOrder, null, selectedPage);
+}
 
 
 // TESTING
@@ -196,26 +201,7 @@ run(() => {
 		
 		<!-- Listings -->
 		{#key [query, selectedCategory, selectedSubcategory, selectedSort, selectedOrder]}
-			{#await queryListings(query, selectedCategory, selectedSubcategory, selectedSort, selectedOrder)}
-				{#each Array.from({ length: 40 }) as _, i}
-					<Listing isLoading={true} />
-				{/each}
-
-			{:then data}
-				{#if data.data.length === 0}
-					<div class="col-span-full p-16 flex flex-row gap-4 justify-center">
-						<p class="text-5xl text-center"> No listings found
-						</p>
-					
-					</div>
-				{:else}
-					{#each data.data as listing}
-						<Listing listing={listing} editMode={false} />
-					{/each}
-				{/if}
-			{:catch error}
-				<p>{error.message}</p>
-			{/await}
+			<ListingGrid listingSource={fetchListings} bind:page={selectedPage} />
 		{/key}
 	
 	</div>
