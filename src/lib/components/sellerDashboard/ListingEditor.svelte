@@ -2,7 +2,7 @@
 <script>
 	import { Input } from '$lib/components/ui/input/index.js';
 	import * as Card from '$lib/components/ui/card/index.js';
-	import { page } from '$app/stores';
+	import { page } from '$app/state';
 	import { Button } from '$lib/components/ui/button/index.js';
 	import InputWithLabel from '$lib/components/InputWithLabel.svelte';
 	import { baseURL } from '$lib/api/core.js';
@@ -73,7 +73,8 @@
 <div class="flex md:flex-row flex-col p-2 flex-grow min-h-screen gap-1 w-full">
 	
 	<!--  Attribute Config Section	-->
-	<div class="basis-1/2 rounded-2xl h-full  p-5 gap-4 flex flex-col order-1">
+	{#key listing.id}
+	<div class="basis-1/2 max-w-1/2 rounded-2xl h-full  p-5 gap-4 flex flex-col order-1">
 		<p class="items-center flex flex-row gap-1">Variant Configuration
 			<HelpTooltip>
 				This lets you configure the different options available to users. For example, if you are selling a T-shirt, you can configure the colour, size, and material option types. <br /> <br />
@@ -81,12 +82,11 @@
 			</HelpTooltip>
 		</p>
 		
-		<VariantConfigurator variantOptions={listing.skuOptions} configuring={true} />
+		<VariantConfigurator bind:variantOptions={listing.skuOptions} configuring={true} />
 	</div>
 	
 	<div class="basis-1/2 bg-neutral-50 rounded-2xl h-full p-5 space-y-1.5 order-first">
-		{#key listing.id}
-			<form onsubmit={repSert($page.params.listingID, listing)}>
+			<form onsubmit={repSert(page.params.listingID, listing)}>
 				<div class="p-1 flex flex-row gap-2 items-center">Details
 					<Button bind:this={saveBtn} class=" rounded-full transition-all gap-1.5 origin-left {edited ? 'scale-100': ' scale-0 '}" type="submit" size="sm">
 						<Save size={20} strokeWidth={1.25} />Save</Button>
@@ -102,7 +102,7 @@
 					</div>
 				</div>
 			</form>
-		{/key}
 	</div>
+		{/key}
 
 </div>
