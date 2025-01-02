@@ -61,13 +61,6 @@
 		
 </script>
 
-<style>
-    .buttonState {
-        grid-column: 1;
-        grid-row: 1;
-    }
-</style>
-
 
 <DashboardPageLayout>
 	{#snippet title()}

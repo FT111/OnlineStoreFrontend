@@ -9,19 +9,12 @@
 		import { Button } from '$lib/components/ui/button/index.js';
 
 	
-	/**
-	 * @typedef {Object} Props
-	 * @property {any} [variantOptions]
-	 * @property {any} [selectedOptions]
-	 * @property {boolean} [configuring]
-	 */
-
-	/** @type {Props} */
 	let { variantOptions = {
 		"Color": ["Red", "Blue", "Green"],
 		"Size": ["Small", "Medium", "Large"],
 		"Material": ["Cotton", "Polyester", "Wool"]
-	}, selectedOptions = $bindable({}), configuring = false } = $props();
+	}, selectedOptions = $bindable({}),
+		configuring = false } = $props();
 	
 	run(() => {
 		console.log(selectedOptions);

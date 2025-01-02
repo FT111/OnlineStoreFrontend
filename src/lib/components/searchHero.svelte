@@ -12,7 +12,7 @@
 <!--bg-[url('/src/lib/assets/searchGradient1.png')]-->
 <div class="flex flex-col items-center justify-between w-full min-h-[50vh] h-fit bg-primary rounded-b-3xl">
 	<div class="flex flex-col items-center w-full md:p-32 md:pb-10 p-8 py-32 gap-3">
-		<h1 class="text-7xl text-white font-bold">What are you looking for?</h1>
+		<h1 class="text-6xl text-white font-semibold tracking-tight">What are you looking for?</h1>
 
 		<div bind:this={searchElement} class="flex flex-row sm:w-11/12 md:w-4/5 lg:w-3/5 w-full p-5 gap-5">
 			<Searchbar class="w-full" />

@@ -13,7 +13,9 @@
 		import { onMount } from 'svelte';
 		import * as Tooltip from "$lib/components/ui/tooltip";
 		import HelpTooltip from '$lib/components/HelpTooltip.svelte';
-	let { data = { listing: { skus: []}}, children } = $props();
+	let { data = {
+		listing: { skus: []}},
+							children } = $props();
 	
 	let selectedVariant = $state('not selected');
 	

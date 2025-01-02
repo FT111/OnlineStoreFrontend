@@ -8,142 +8,14 @@
 	import { Badge } from '$lib/components/ui/badge/index.js';
 	import * as Avatar from '$lib/components/ui/avatar/index.js';
 	import { Skeleton } from '$lib/components/ui/skeleton/index.js';
-	
 	import { queryListings } from '$lib/api/listings.js';
-	import { page } from '$app/stores';
-		import VariantConfigurator from '$lib/components/sellerDashboard/VariantConfigurator.svelte';
+	import VariantConfigurator from '$lib/components/sellerDashboard/VariantConfigurator.svelte';
+	
 	let { data } = $props();
 	
 	let listing = $derived(data.listing);
 	console.log(listing);
 	let skus = true;
-
-	const skuList = [{
-		'type': 'Colour',
-	  'skus': [
-				{
-					'title': 'Red',
-					'price': 1099,
-					'stock': 6,
-					'rgb': 'rgb(255, 182, 193)' // Light Pink
-				},
-				{
-					'title': 'Blue',
-					'price': 1200,
-					'stock': 9,
-					'rgb': 'rgb(173, 216, 230)' // Light Blue
-				},
-				{
-					'title': 'Green',
-					'price': 1300,
-					'stock': 3,
-					'rgb': 'rgb(144, 238, 144)' // Light Green
-				},
-				{
-					'title': 'Yellow',
-					'price': 1400,
-					'stock': 6,
-					'rgb': 'rgb(255, 255, 224)' // Light Yellow
-				},
-				{
-					'title': 'Black',
-					'price': 1500,
-					'stock': 6,
-					'rgb': 'rgb(211, 211, 211)' // Light Gray
-				}
-	  ]
-	},
-	{
-		'type': 'Size',
-		'skus': [
-			{'title': 'Small',
-				'price': 1099,
-				'stock': 6
-			},
-			{'title': 'Medium',
-				'price': 1200,
-				'stock': 9
-			},
-			{'title': 'Large',
-				'price': 1300,
-				'stock': 3
-			},
-			{'title': 'XL',
-				'price': 1400,
-				'stock': 6
-			},
-			{'title': 'XXL',
-				'price': 1500,
-				'stock': 6
-			}
-		]
-	}]
-	
-		const colours = [
-			{
-				'title': 'Red',
-				'price': 1099,
-				'stock': 6,
-				'rgb': 'rgb(255, 182, 193)' // Light Pink
-			},
-			{
-				'title': 'Blue',
-				'price': 1200,
-				'stock': 9,
-				'rgb': 'rgb(173, 216, 230)' // Light Blue
-			},
-			{
-				'title': 'Green',
-				'price': 1300,
-				'stock': 3,
-				'rgb': 'rgb(144, 238, 144)' // Light Green
-			},
-			{
-				'title': 'Yellow',
-				'price': 1400,
-				'stock': 6,
-				'rgb': 'rgb(255, 255, 224)' // Light Yellow
-			},
-			{
-				'title': 'Black',
-				'price': 1500,
-				'stock': 6,
-				'rgb': 'rgb(211, 211, 211)' // Light Gray
-			}
-		]
-
-		const sizes = [
-			{'title': 'Small',
-				'price': 1099,
-				'stock': 6
-			},
-			{'title': 'Medium',
-				'price': 1200,
-				'stock': 9
-			},
-			{'title': 'Large',
-				'price': 1300,
-				'stock': 3
-			},
-			{'title': 'XL',
-				'price': 1400,
-				'stock': 6
-			},
-			{'title': 'XXL',
-				'price': 1500,
-				'stock': 6
-			}
-		]
-	// let listingLoading = true;
-	// const listingPromise = fetchListing(listingID).then(
-	// 	(data) => {
-	// 		console.log(data.data);
-	// 		listingLoading = false;
-	// 		listing = data.data;
-	// 		return data.data;
-	// 	}
-	// );
-	
 </script>
 
 <!--Page Container-->
@@ -213,10 +85,12 @@
 				</div>
 				
 	<!--				SKU Details -->
-				{#if listing.skuOptions}
+				{#if Object.keys(listing.skuOptions).length !== 0}
 					<VariantConfigurator variantOptions={listing.skuOptions}  />
 				{:else}
-					<VariantConfigurator variantOptions={skuList}  />
+					<VariantConfigurator variantOptions={{
+						'Styles': listing.skus.map(sku => sku.title)
+					}}  />
 				{/if}
 			</div>
 			
