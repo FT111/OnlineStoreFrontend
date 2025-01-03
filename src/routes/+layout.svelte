@@ -4,7 +4,7 @@
 	import { checkConsent, giveConsent, revokeConsent } from '$lib/analytics/consent.js';
 	import { Button } from '$lib/components/ui/button/index.js';
 	import { Toaster } from '$lib/components/ui/sonner/index.js';
-	import { basket } from '$lib/basket.js';
+	import { basketSvelte } from '$lib/basket.svelte.js';
 	/**
 	 * @typedef {Object} Props
 	 * @property {import('svelte').Snippet} [children]

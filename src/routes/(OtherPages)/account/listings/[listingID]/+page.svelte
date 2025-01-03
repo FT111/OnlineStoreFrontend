@@ -1,10 +1,14 @@
 <script>
 	import ListingEditor from '$lib/components/sellerDashboard/ListingEditor.svelte';
+	import {selectedListing} from '$lib/account.svelte.js';
+	import { onMount } from 'svelte';
 	
 	let { data } = $props();
-	let listing = $derived(data.listing);
+	let listing = selectedListing.listing
+
+	
 </script>
 
 {#key listing.id}
-	<ListingEditor listing={listing} />
+	<ListingEditor />
 {/key}

@@ -13,22 +13,18 @@
 		import { Textarea } from '$lib/components/ui/textarea/index.js';
 		import VariantConfigurator from '$lib/components/sellerDashboard/VariantConfigurator.svelte';
 		import HelpTooltip from '$lib/components/HelpTooltip.svelte';
+	import { selectedListing } from '$lib/account.svelte.js';
+	import { browser } from '$app/environment';
 	
-	/**
-	 * @typedef {Object} Props
-	 * @property {any} [listing] - Defaults for creating a new listing
-	 */
-
-	/** @type {Props} */
-	let { listing = $bindable({
-		id: null,
-		title: '',
-		description: '',
-		public: false,
-		category: '',
-		subCategory: '',
-	  	skuOptions: {},
-	}) } = $props();
+	
+	let initiallisting = selectedListing.listing;
+	let listing = $state(JSON.parse(JSON.stringify(initiallisting)));
+	
+	if (browser){
+		addEventListener('skuSaved', () => {
+			listing = selectedListing;
+		});
+	}
 
 	beforeNavigate((e) => {
 		if (JSON.stringify(listing) !== JSON.stringify(initiallisting)) {
@@ -36,6 +32,11 @@
 			} else {
 				e.cancel();
 			}}});
+	
+	afterNavigate(() => {
+		listing = selectedListing.listing;
+		initiallisting = JSON.parse(JSON.stringify(listing));
+	});
 
 
 	// onMount(() => {
@@ -46,7 +47,7 @@
 
 	listing.price = String(listing.price);
 	listing.stock = String(listing.stock);
-	let initiallisting = $state(JSON.parse(JSON.stringify(listing)));
+	// let initiallisting = $state(JSON.parse(JSON.stringify(listing)));
 
 
 	let editing = $derived(!!listing.id); // if listing id exists, edit State is true. Not needed but enhances readability

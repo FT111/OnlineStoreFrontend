@@ -5,7 +5,6 @@
 	import { Box, Info, Plus, Truck } from 'lucide-svelte';
 	import { page } from '$app/state';
 
-
 	import DashboardPageLayout from '$lib/components/DashboardPageLayout.svelte';
 	import * as Card from '$lib/components/ui/card/index.js';
 	import Price from '$lib/components/price.svelte';
@@ -13,21 +12,34 @@
 		import { onMount } from 'svelte';
 		import * as Tooltip from "$lib/components/ui/tooltip";
 		import HelpTooltip from '$lib/components/HelpTooltip.svelte';
+	import { selectedListing } from '$lib/account.svelte.js';
+	import { afterNavigate } from '$app/navigation';
+	import { browser } from '$app/environment';
+
 	let { data = {
 		listing: { skus: []}},
 							children } = $props();
 	
 	let selectedVariant = $state('not selected');
+	let currentListing = selectedListing.listing
+	//
+	// afterNavigate(() => {
+	// });
 	
+	if (browser){
+		addEventListener('skuSaved', () => {
+			currentListing = selectedListing.listing;
+		});
+	}
 	
 	// Handles selecting the variant to display
 	run(() => {
 		if (page.url.pathname.includes('new')) {
 			selectedVariant = 'new';
-		} else if (page.params.skuID === undefined || !data.listing.skus) {
+		} else if (page.params.skuID === undefined || !currentListing.skus) {
 			selectedVariant = 'not selected';
 		} else {
-			data.listing.skus.forEach(sku => {
+			currentListing.skus.forEach(sku => {
 			  if (sku.id === page.params.skuID) {
 					selectedVariant = sku;
 				}
@@ -40,13 +52,13 @@
 <DashboardPageLayout>
 <!-- Title section - Changes to SKU title if one is selected	-->
 	{#snippet header()}
-		<p >Editing {selectedVariant!== 'not selected' ? data.listing.title : ''}</p>
+		<p >Editing {selectedVariant!== 'not selected' ? currentListing.title : ''}</p>
 	{/snippet}
 	{#snippet title()}
 		<h1 >
 			{selectedVariant==='new' ? 'New Product' :
-			(selectedVariant=== 'not selected') ? data.listing.title :
-			selectedVariant ? selectedVariant.title : data.listing.title}
+			(selectedVariant=== 'not selected') ? currentListing.title :
+			selectedVariant ? selectedVariant.title : currentListing.title}
 		</h1>
 	{/snippet}
 	
@@ -54,7 +66,7 @@
 		<div  class="h-full">
 			<div class="h-full flex flex-col justify-between">
 				{#key selectedVariant}
-					{@render children?.()}
+					{@render children?.(currentListing)}
 				{/key}
 			
 	<!--			Variant cards-->
@@ -63,21 +75,21 @@
 	<!--				Main listing card -->
 					<div class="flex-col flex gap-2.5 w-fit h-fit p-4 rounded-l-2xl bg-amber-50">
 						<p>Listing</p>
-						<a href="/account/listings/{data.listing.id}">
+						<a href="/account/listings/{currentListing.id}">
 							<Card.Root  class="w-56 border-slate-700 h-36 border-[1.5px] hover:border-accent/60 scale-105 transition-all justify-between flex flex-col">
 								<div>
 									<Card.Header class="p-3.5 pb-0.5">
-										<p>{data.listing.title}</p>
+										<p>{currentListing.title}</p>
 									</Card.Header>
 									<Card.Description class="px-3.5 text-sm line-clamp-2">
-										<p>{data.listing.description}</p>
+										<p>{currentListing.description}</p>
 									</Card.Description>
 								</div>
 								
 								<Card.Footer class="p-3.5 flex flex-row gap-1 w-full">
-									<Badge class="py-1.5 px-2.5 gap-1" variant={data.listing.public ? 'default' : 'secondary'}>
+									<Badge class="py-1.5 px-2.5 gap-1" variant={currentListing.public ? 'default' : 'secondary'}>
 										<Info class="size-4" />
-										<p>{data.listing.public ? 'Public' : 'Private'}</p>
+										<p>{currentListing.public ? 'Public' : 'Private'}</p>
 									</Badge>
 								</Card.Footer>
 							</Card.Root>
@@ -91,12 +103,12 @@
 								You may need to scroll to see all variations.
 							</HelpTooltip></p>
 						<div class="flex flex-row gap-3 h-36 flex-wrap overflow-y-scroll">
-							{#if !data.listing.skus}
+							{#if !currentListing.skus}
 								<div></div>
 							{:else}
 							
-								{#each data.listing.skus as sku}
-									<a href={`/account/listings/${data.listing.id}/${sku.id}`}>
+								{#each currentListing.skus as sku}
+									<a href={`/account/listings/${currentListing.id}/${sku.id}`}>
 										<Card.Root class="w-48 h-36 justify-between flex flex-col hover:border-accent transition-all hover:brightness-125
 															{typeof(selectedVariant)==='object' ? selectedVariant.id===sku.id ? ' border-slate-800 border-2 ' : '' : ''}">
 											<Card.Header class="p-3.5 line-clamp-2">
@@ -143,7 +155,7 @@
 							{/if}
 							
 						<!--	Add new variant card -->
-							<a href={`/account/listings/${data.listing.id}/new`}>
+							<a href={`/account/listings/${currentListing.id}/new`}>
 								<Card.Root class="w-48 h-36 flex flex-col border-2 border-dashed bg-emerald-50/40 items-center justify-center
 												  hover:border-solid hover:bg-emerald-100 hover:border-emerald-500 transition-all group
 												{selectedVariant==='new' ? 'border-emerald-500 border-solid' : ''}">

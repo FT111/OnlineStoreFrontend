@@ -9,16 +9,31 @@
 		import { Button } from '$lib/components/ui/button/index.js';
 
 	
-	let { variantOptions = {
+	let { variantOptions = $bindable({
 		"Color": ["Red", "Blue", "Green"],
 		"Size": ["Small", "Medium", "Large"],
 		"Material": ["Cotton", "Polyester", "Wool"]
-	}, selectedOptions = $bindable({}),
+	}), selectedOptions = $bindable({}),
 		configuring = false } = $props();
 	
-	run(() => {
-		console.log(selectedOptions);
-	});
+	const addOption = (form, category) => {
+		form.preventDefault();
+		const formData = new FormData(form.target);
+		variantOptions[category].push(formData.get('optionValue'));
+		form.target.reset();
+	};
+	
+	const removeOption = (category, option) => {
+		variantOptions[category] = variantOptions[category].filter((opt) => opt !== option);
+	};
+	
+	const addCategory = (category) => {
+		variantOptions[category] = [];
+	};
+	
+	const removeCategory = (category) => {
+		delete variantOptions[category];
+	};
 	
 </script>
 
@@ -48,7 +63,12 @@
 					</button>
 				{/each}
 				{#if configuring}
-					<Input class="min-w-20 w-fit p-2 px-3 rounded-3xl border-emerald-200 bg-emerald-50 flex-shrink-0 transition-all duration-250 ease-in-out " placeholder="+ Add an option" />
+					<form class="flex flex-row gap-1" onsubmit={(form)=>{addOption(form, category)}}>
+						<Input name="optionValue" class="min-w-20 w-fit p-2 px-3 rounded-3xl border-emerald-200 bg-emerald-50 flex-shrink-0 transition-all duration-250 ease-in-out " placeholder="+ Add an option" />
+						<Button class="px-2" variant={"ghost"} type="button" submit>
+							<Plus size={20} strokeWidth={1.25} />
+						</Button>
+					</form>
 				{/if}
 			</div>
 		</div>

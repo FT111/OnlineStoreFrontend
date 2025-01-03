@@ -15,17 +15,8 @@
 		import VariantConfigurator from '$lib/components/sellerDashboard/VariantConfigurator.svelte';
 		import * as Tooltip from "$lib/components/ui/tooltip";
 		import HelpTooltip from '$lib/components/HelpTooltip.svelte';
-		
- 
+	import { selectedListing } from '$lib/account.svelte.js';
 	
-	
-	/**
-	 * @typedef {Object} Props
-	 * @property {any} [sku] - Defaults for creating a new SKU
-	 * @property {any} [listingVariantOptions] - Types of options available for the listing
-	 */
-
-	/** @type {Props} */
 	let { sku = $bindable({
 		id: null,
 		title: '',
@@ -36,6 +27,7 @@
 	  options: {},
 	  
 	}), listingVariantOptions = {} } = $props();
+	$inspect(sku);
 	
 	beforeNavigate((e) => {
 		if (JSON.stringify(sku) !== JSON.stringify(initialSKU)) {
@@ -68,14 +60,19 @@
 		// If the sku is being edited, update it. Otherwise, create a new one
 		if (editing) {
 			await updateSKU(listingID, sku).then(() => {
-				initialSKU = JSON.parse(JSON.stringify(sku));
+				initialSKU = sku
 			});
 		} else {
 			await newSKU(listingID, sku).then((res) => {
 				sku.id = res.id;
-				initialSKU = JSON.parse(JSON.stringify(sku));
+				initialSKU = sku
 			});
 		}
+		
+		selectedListing.listing.skus = selectedListing.listing.skus.map((s) => s.id === sku.id ? sku : s);
+		sku = initialSKU
+		
+		dispatchEvent(new CustomEvent('skuSaved'));
 	};
 	
 	const selectImage = (e) => {
@@ -125,13 +122,6 @@
 			 
 			})
 	})
-	
-	run(() => {
-		console.log(sku);
-	});
-	
-	
-	
 </script>
 
 <div class="flex md:flex-row flex-col p-2 flex-grow min-h-screen gap-1 w-full">

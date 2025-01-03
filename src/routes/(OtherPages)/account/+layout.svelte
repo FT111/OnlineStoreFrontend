@@ -6,7 +6,7 @@ import * as Avatar from '$lib/components/ui/avatar/index.js';
 import { Card } from '$lib/components/ui/card/index.js';
 import { Button } from '$lib/components/ui/button/index.js';
 import * as DropdownMenu from "$lib/components/ui/dropdown-menu";
-import { page } from '$app/stores';
+import { page } from '$app/state';
 import { Plus } from 'lucide-svelte';
 import NewListingDialog from '$lib/components/NewListingDialog.svelte';
 
@@ -15,7 +15,7 @@ import NewListingDialog from '$lib/components/NewListingDialog.svelte';
 let user = $derived(data.user);
 
 
-let selectedPage = $derived($page.url.pathname.split('/')[2]);
+let selectedPage = $derived(page.url.pathname.split('/')[2]);
 
 
 </script>
@@ -83,7 +83,7 @@ let selectedPage = $derived($page.url.pathname.split('/')[2]);
 				
 				<div class="flex flex-col gap-1 px-2">
 					{#each data.userListings as listing}
-						<Button variant="link" href={`/account/listings/${listing.id}`} class="flex flex-row px-0 p-0 py-0 h-fit justify-between">
+						<Button data-sveltekit-preload-data="tap" variant="link" href={`/account/listings/${listing.id}`} class="flex flex-row px-0 p-0 py-0 h-fit justify-between">
 							<p>{listing.title}</p>
 						</Button>
 					{/each}
