@@ -70,7 +70,7 @@
 		}
 		
 		selectedListing.listing.skus = selectedListing.listing.skus.map((s) => s.id === sku.id ? sku : s);
-		sku = initialSKU
+		initialSKU = JSON.parse(JSON.stringify(sku));
 		
 		dispatchEvent(new CustomEvent('skuSaved'));
 	};
