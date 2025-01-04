@@ -12,7 +12,6 @@
 	import VariantConfigurator from '$lib/components/sellerDashboard/VariantConfigurator.svelte';
 	
 	let { data } = $props();
-	
 	let listing = $derived(data.listing);
 	let skus = true;
 </script>

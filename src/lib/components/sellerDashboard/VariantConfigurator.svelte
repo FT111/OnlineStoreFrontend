@@ -9,13 +9,14 @@
 		import { Button } from '$lib/components/ui/button/index.js';
 
 	
-	let { variantOptions = $bindable(), selectedOptions = $bindable({}),
+	let { variantOptions = $bindable({}), selectedOptions = $bindable({}),
 		skus = {},
 		selectedProduct = $bindable({}),
-		validation = false,
+		validation,
 		defaultOptions = false,
 		configuring = false } = $props();
 	
+	let lastSelectedCategory = $state(Object.keys(variantOptions)[0]);
 	let currentAvailableOptions = $state(variantOptions);
 	// Select the first option in each category by default
 	if (!configuring && validation) {
@@ -29,18 +30,20 @@
 	const determineSelectableOptions = () => {
 		currentAvailableOptions = {};
 		for (let category in variantOptions) {
-			currentAvailableOptions[category] = variantOptions[category].filter((option) => {
-				let match = false;
-				for (let selectedCategory in selectedOptions) {
-					if (selectedOptions[selectedCategory] === option || selectedOptions[selectedCategory] === variantOptions[selectedCategory]) {
-						match = true;
-					}
-				}
-				return !match;
+			if (category === lastSelectedCategory) {
+				currentAvailableOptions[category] = variantOptions[category];
+				continue;
+			}
+			currentAvailableOptions[category] = variantOptions[category].filter((opt) => {
+				let newOptions = {...selectedOptions};
+				newOptions[category] = opt;
+				return selectSKUFromSelectedOptions(newOptions).title !== 'None';
 			});
+			
 		}}
 	
 	const selectSKUFromSelectedOptions = (selectedOptions) => {
+		let matchedProduct = {title: 'None'};
 		skus.forEach((sku) => {
 			let match = true;
 			
@@ -48,10 +51,7 @@
 			if (defaultOptions) {
 				if (sku.title !== selectedOptions['Styles']) {
 					match = false;
-				} else {
-					selectedProduct = sku;
 				}
-				
 			} else {
 				// Check for selected options, matching by category and value
 				for (let category in selectedOptions) {
@@ -61,22 +61,44 @@
 				}
 			}
 			if (match) {
-				selectedProduct = sku;
+				matchedProduct = sku;
 			}
 		});
+		
+		return matchedProduct;
 	};
 	
-	const selected = (category, option) => {
+	const findSelectableOptions = (category, option) => {
+		"Return the first options that return a valid SKU, containing this category option"
+		let sku = skus.reduce((acc, sku) => {
+			if (sku.options[category] === option) {
+				acc.push(sku);
+			}
+			return acc;
+		}, []);
+		
+		if (sku[0]) {
+			selectedOptions = sku[0].options;
+		}
+	};
+	
+	
+	const onSelect = (category, option) => {
 		selectedOptions[category] = option;
 		
 		if (!configuring && validation) {
-			selectSKUFromSelectedOptions(selectedOptions);
+			lastSelectedCategory = category;
+			selectedProduct = selectSKUFromSelectedOptions(selectedOptions);
 			determineSelectableOptions();
+			if (selectedProduct.title === 'None') {
+				findSelectableOptions(category, option);
+				onSelect(category, option);
+			}
 		}
 	}
 
 	if (!configuring && validation) {
-		selectSKUFromSelectedOptions(selectedOptions);
+		selectedProduct = selectSKUFromSelectedOptions(selectedOptions);
 		determineSelectableOptions();
 	}
 	
@@ -121,9 +143,9 @@
 			</div>
 			<div class="flex flex-row flex-wrap relative rounded-t-2xl p-2 px-1 gap-3 w-full">
 				{#each variantOptions[category] as option}
-					<button onclick={()=>{selected(category, option)}} class="{selectedOptions[category]===option ? 'brightness-150' : '' }
-					{currentAvailableOptions[category].includes(option)&&validation ? ' bg-primary/60 ' : ''}
-					 bg-primary flex flex-row gap-1 h-8 items-center font-semibold text-xs text-primary-foreground  hover:bg-destructive justify-center min-w-16 w-fit p-2 px-3 rounded-3xl flex-shrink-0 transition-all duration-250 ease-in-out cursor-pointer">
+					<button onclick={()=>{onSelect(category, option)}} class="{selectedOptions[category]===option ? ' !bg-accent border-amber-900 ' : '' }
+					{currentAvailableOptions[category].includes(option)&&validation ? '' : ' disabled !hover:bg-primary/60 !bg-primary/60 !cursor-default  '}
+					 bg-primary flex flex-row gap-1 h-8 items-center font-semibold text-xs text-primary-foreground border-2 border-transparent outline-none hover:bg-destructive justify-center min-w-16 w-fit p-2 px-3 rounded-3xl flex-shrink-0 transition-all duration-250 ease-in-out cursor-pointer">
 						{option}
 						{#if configuring}
 							<X class="w-4 h-4 ml-1" />
@@ -142,7 +164,7 @@
 		</div>
 	{/each}
 	{#if !configuring && validation}
-		<p class="py-1 px-3.5">Selected style: {selectedProduct.title}</p>
+		<p class="py-1 px-3.5"><span class="font-medium">Selected style</span>: {selectedProduct.title}</p>
 		{/if}
 </div>
 {#if configuring}
