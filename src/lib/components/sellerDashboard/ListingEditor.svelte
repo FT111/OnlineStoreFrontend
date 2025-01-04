@@ -8,17 +8,18 @@
 	import { baseURL } from '$lib/api/core.js';
 	import { onMount } from 'svelte';
 	import { newListing, updateListing } from '$lib/api/listings.js';
-		import { ImagePlus, Save, Text } from 'lucide-svelte';
+	import { ImagePlus, Save, Text, X } from 'lucide-svelte';
 	import { afterNavigate, beforeNavigate, invalidate, invalidateAll, onNavigate } from '$app/navigation';
 		import { Textarea } from '$lib/components/ui/textarea/index.js';
 		import VariantConfigurator from '$lib/components/sellerDashboard/VariantConfigurator.svelte';
 		import HelpTooltip from '$lib/components/HelpTooltip.svelte';
 	import { selectedListing } from '$lib/account.svelte.js';
 	import { browser } from '$app/environment';
+	import { Check } from 'lucide-svelte';
 	
-	
-	let initiallisting = selectedListing.listing;
-	let listing = $state(JSON.parse(JSON.stringify(initiallisting)));
+	let initiallisting = $state(JSON.parse(JSON.stringify(selectedListing.listing)));
+	let listing = $state(selectedListing.listing);
+	$inspect(listing, initiallisting);
 	
 	if (browser){
 		addEventListener('skuSaved', () => {
@@ -43,25 +44,48 @@
 	//  // Prevents caching of edits when navigating back to the page
 	//  invalidateAll();
 	// })
-
-
-	listing.price = String(listing.price);
-	listing.stock = String(listing.stock);
+	
 	// let initiallisting = $state(JSON.parse(JSON.stringify(listing)));
 
 
 	let editing = $derived(!!listing.id); // if listing id exists, edit State is true. Not needed but enhances readability
 	let edited = $derived(JSON.stringify(listing) !== JSON.stringify(initiallisting)); // if listing is edited, edited state is true
 	let saveBtn = $state();
+	let saveBtnState = $state();
 
 	// Replaces or inserts the listing into the database
-	const repSert = async (listingID, listing) => {
+	const repSert = async (form, listingID, listing) => {
+		form.preventDefault();
 		try {
 			if (editing) {
-				await updateListing(listingID, listing);
+				 await updateListing(listingID, listing).then((res) => {
+					if (res.data) {
+						initiallisting = JSON.parse(JSON.stringify(res.data));
+						saveBtnState = 'success';
+						setInterval(() => {
+							saveBtnState = '';
+						}, 500);
+					} else {
+						saveBtnState = 'failed';
+						setInterval(() => {
+							saveBtnState = '';
+						}, 2000);
+					}
+				});
 			} else {
 				const res = await newListing(listingID, listing);
-				listing.id = res.data.id;
+				if (res.data) {
+					saveBtnState = 'success';
+					listing.id = res.data.id;
+					setInterval(() => {
+						saveBtnState = '';
+					}, 500);
+				} else {
+					saveBtnState = 'failed';
+					setInterval(() => {
+						saveBtnState = '';
+					}, 2000);
+				}
 			}
 			initiallisting = JSON.parse(JSON.stringify(listing));
 		} catch (error) {
@@ -70,6 +94,7 @@
 	};
 	
 </script>
+
 
 <div class="flex md:flex-row flex-col p-2 flex-grow min-h-screen gap-1 w-full">
 	
@@ -87,10 +112,17 @@
 	</div>
 	
 	<div class="basis-1/2 bg-neutral-50 rounded-2xl h-full p-5 space-y-1.5 order-first">
-			<form onsubmit={repSert(page.params.listingID, listing)}>
+			<form onsubmit={(self) => {repSert(self, page.params.listingID, listing)}}>
 				<div class="p-1 flex flex-row gap-2 items-center">Details
 					<Button bind:this={saveBtn} class=" rounded-full transition-all gap-1.5 origin-left {edited ? 'scale-100': ' scale-0 '}" type="submit" size="sm">
-						<Save size={20} strokeWidth={1.25} />Save</Button>
+						{#if saveBtnState === 'success'}
+							<Check size={20} strokeWidth={1.25} />
+						{:else if saveBtnState === 'failed'}
+							<X size={20} strokeWidth={1.25} />
+						{:else}
+							<Save size={20} strokeWidth={1.25} />Save
+						{/if}
+					</Button>
 				</div>
 				
 				<div class="flex flex-col gap-3 items-end">

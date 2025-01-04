@@ -27,32 +27,28 @@
 	  options: {},
 	  
 	}), listingVariantOptions = {} } = $props();
+	sku.price = String(sku.price);
+	sku.stock = String(sku.stock);
+	let initialSKU = $state(JSON.parse(JSON.stringify(sku)));
 	$inspect(sku);
 	
 	beforeNavigate((e) => {
 		if (JSON.stringify(sku) !== JSON.stringify(initialSKU)) {
-		 if (confirm('You have unsaved changes. Are you sure you want to leave?')) {
-		 } else {
-			 e.cancel();
-		 }}});
-		 
-	
-	 // onMount(() => {
-		//  // Prevents caching of edits when navigating back to the page
-		//  invalidateAll();
-	 // })
-	
-	
-	sku.price = String(sku.price);
-	sku.stock = String(sku.stock);
-	let initialSKU = $state(JSON.parse(JSON.stringify(sku)));
-	
-	
+			if (confirm('You have unsaved changes. Are you sure you want to leave?')) {
+				// If the user confirms, reset the shared listing object to the initial state
+				sku = initialSKU;
+				selectedListing.listing.skus = selectedListing.listing.skus.map((s) => s.id === sku.id ? sku : s);
+			} else {
+				e.cancel();
+			}}});
+
 	let editing = $derived(!!sku.id); // if sku id exists, edit State is true. Not needed but enhances readability
+
+
 	let edited = $derived(JSON.stringify(sku) !== JSON.stringify(initialSKU)); // if sku is edited, edited state is true
 	let dropLabel = $state();
 	let saveBtn = $state();
-	
+
 	const repSert = (listingID, sku) => async (e) => {
 		e.preventDefault();
 		console.log('Saving SKU');
@@ -74,7 +70,7 @@
 		
 		dispatchEvent(new CustomEvent('skuSaved'));
 	};
-	
+
 	const selectImage = (e) => {
 		const file = e.target.files[0];
 		const reader = new FileReader();
