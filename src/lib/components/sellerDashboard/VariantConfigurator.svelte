@@ -38,7 +38,7 @@
 </script>
 
 
-<div class="flex flex-col bg-muted rounded-2xl overflow-x-scroll w-full border-4 border-slate-200">
+<div class="flex flex-col bg-muted rounded-2xl  w-full border-4 border-slate-200 overflow-clip">
 	
 	{#each Object.keys(variantOptions) as category}
 		<div class="flex flex-col bg-slate-50 p-2 px-4 border-b-2 border-slate-200">
@@ -53,9 +53,9 @@
 				{/if}
 				
 			</div>
-			<div class="flex flex-row relative rounded-t-2xl p-2 px-1 overflow-x-scroll gap-3 w-full">
+			<div class="flex flex-row flex-wrap relative rounded-t-2xl p-2 px-1 gap-3 w-full">
 				{#each variantOptions[category] as option}
-					<button onclick={()=>{selectedOptions[category] = option}} class="{selectedOptions[category]===option ? 'brightness-150' : '' }   bg-primary flex flex-row gap-1 items-center font-semibold text-xs text-primary-foreground  hover:bg-destructive justify-center min-w-16 w-fit p-2 px-3 rounded-3xl flex-shrink-0 transition-all duration-250 ease-in-out cursor-pointer">
+					<button onclick={()=>{selectedOptions[category] = option}} class="{selectedOptions[category]===option ? 'brightness-150' : '' }   bg-primary flex flex-row gap-1 h-8 items-center font-semibold text-xs text-primary-foreground  hover:bg-destructive justify-center min-w-16 w-fit p-2 px-3 rounded-3xl flex-shrink-0 transition-all duration-250 ease-in-out cursor-pointer">
 						{option}
 						{#if configuring}
 							<X class="w-4 h-4 ml-1" />
@@ -63,11 +63,11 @@
 					</button>
 				{/each}
 				{#if configuring}
-					<form class="flex flex-row gap-1" onsubmit={(form)=>{addOption(form, category)}}>
-						<Input name="optionValue" class="min-w-20 w-fit p-2 px-3 rounded-3xl border-emerald-200 bg-emerald-50 flex-shrink-0 transition-all duration-250 ease-in-out " placeholder="+ Add an option" />
-						<Button class="px-2" variant={"ghost"} type="button" submit>
+					<form class="flex flex-row gap-1 bg-emerald-100/60 rounded-3xl" onsubmit={(form)=>{addOption(form, category)}}>
+						<Input name="optionValue" class="min-w-20 w-fit h-8 p-2 px-3 rounded-3xl border-emerald-200 bg-emerald-50 flex-shrink-0 transition-all duration-250 ease-in-out " placeholder="Add an option" />
+						<button class="px-2 rounded-3xl bg-emerald-200 text-black hover:brightness-75 transition-all" type="submit">
 							<Plus size={20} strokeWidth={1.25} />
-						</Button>
+						</button>
 					</form>
 				{/if}
 			</div>
