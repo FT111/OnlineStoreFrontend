@@ -177,7 +177,7 @@
 			</div>
 			
 		</form>
-			<VariantConfigurator variantOptions={listingVariantOptions} bind:selectedOptions={sku.options} />
+			<VariantConfigurator variantOptions={listingVariantOptions} bind:selectedOptions={sku.options}  validation={false}/>
 			{/key}
 	</div>
 

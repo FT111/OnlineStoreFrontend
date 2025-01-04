@@ -9,12 +9,78 @@
 		import { Button } from '$lib/components/ui/button/index.js';
 
 	
-	let { variantOptions = $bindable({
-		"Color": ["Red", "Blue", "Green"],
-		"Size": ["Small", "Medium", "Large"],
-		"Material": ["Cotton", "Polyester", "Wool"]
-	}), selectedOptions = $bindable({}),
+	let { variantOptions = $bindable(), selectedOptions = $bindable({}),
+		skus = {},
+		selectedProduct = $bindable({}),
+		validation = false,
+		defaultOptions = false,
 		configuring = false } = $props();
+	
+	let currentAvailableOptions = $state(variantOptions);
+	// Select the first option in each category by default
+	if (!configuring && validation) {
+		if (variantOptions) {
+			for (let category in variantOptions) {
+				selectedOptions[category] = variantOptions[category][0];
+			}
+		}
+	}
+	
+	const determineSelectableOptions = () => {
+		currentAvailableOptions = {};
+		for (let category in variantOptions) {
+			currentAvailableOptions[category] = variantOptions[category].filter((option) => {
+				let match = false;
+				for (let selectedCategory in selectedOptions) {
+					if (selectedOptions[selectedCategory] === option || selectedOptions[selectedCategory] === variantOptions[selectedCategory]) {
+						match = true;
+					}
+				}
+				return !match;
+			});
+		}}
+	
+	const selectSKUFromSelectedOptions = (selectedOptions) => {
+		skus.forEach((sku) => {
+			let match = true;
+			
+			// Check for default options, where custom options have not been set. it matches by SKU title
+			if (defaultOptions) {
+				if (sku.title !== selectedOptions['Styles']) {
+					match = false;
+				} else {
+					selectedProduct = sku;
+				}
+				
+			} else {
+				// Check for selected options, matching by category and value
+				for (let category in selectedOptions) {
+					if (sku.options[category] !== selectedOptions[category] ) {
+						match = false;
+					}
+				}
+			}
+			if (match) {
+				selectedProduct = sku;
+			}
+		});
+	};
+	
+	const selected = (category, option) => {
+		selectedOptions[category] = option;
+		
+		if (!configuring && validation) {
+			selectSKUFromSelectedOptions(selectedOptions);
+			determineSelectableOptions();
+		}
+	}
+
+	if (!configuring && validation) {
+		selectSKUFromSelectedOptions(selectedOptions);
+		determineSelectableOptions();
+	}
+	
+	$inspect(selectedProduct, selectedOptions, defaultOptions, variantOptions, currentAvailableOptions);
 	
 	const addOption = (form, category) => {
 		form.preventDefault();
@@ -55,7 +121,9 @@
 			</div>
 			<div class="flex flex-row flex-wrap relative rounded-t-2xl p-2 px-1 gap-3 w-full">
 				{#each variantOptions[category] as option}
-					<button onclick={()=>{selectedOptions[category] = option}} class="{selectedOptions[category]===option ? 'brightness-150' : '' }   bg-primary flex flex-row gap-1 h-8 items-center font-semibold text-xs text-primary-foreground  hover:bg-destructive justify-center min-w-16 w-fit p-2 px-3 rounded-3xl flex-shrink-0 transition-all duration-250 ease-in-out cursor-pointer">
+					<button onclick={()=>{selected(category, option)}} class="{selectedOptions[category]===option ? 'brightness-150' : '' }
+					{currentAvailableOptions[category].includes(option)&&validation ? ' bg-primary/60 ' : ''}
+					 bg-primary flex flex-row gap-1 h-8 items-center font-semibold text-xs text-primary-foreground  hover:bg-destructive justify-center min-w-16 w-fit p-2 px-3 rounded-3xl flex-shrink-0 transition-all duration-250 ease-in-out cursor-pointer">
 						{option}
 						{#if configuring}
 							<X class="w-4 h-4 ml-1" />
@@ -73,6 +141,9 @@
 			</div>
 		</div>
 	{/each}
+	{#if !configuring && validation}
+		<p class="py-1 px-3.5">Selected style: {selectedProduct.title}</p>
+		{/if}
 </div>
 {#if configuring}
 	<Input class="min-w-20 w-fit p-2 px-3 rounded-3xl border-emerald-200 bg-emerald-50 flex-shrink-0 transition-all duration-250 ease-in-out" placeholder="+ Add a category" />

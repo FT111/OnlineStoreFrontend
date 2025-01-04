@@ -14,7 +14,6 @@
 	let { data } = $props();
 	
 	let listing = $derived(data.listing);
-	console.log(listing);
 	let skus = true;
 </script>
 
@@ -85,13 +84,15 @@
 				</div>
 				
 	<!--				SKU Details -->
-				{#if Object.keys(listing.skuOptions).length !== 0}
-					<VariantConfigurator variantOptions={listing.skuOptions}  />
-				{:else}
-					<VariantConfigurator variantOptions={{
-						'Styles': listing.skus.map(sku => sku.title)
-					}}  />
-				{/if}
+					<VariantConfigurator
+						variantOptions={Object.keys(listing.skuOptions).length !== 0 ? listing.skuOptions : {
+						'Styles'
+						: listing.skus.map(sku => sku.title)
+					}}
+						skus={listing.skus}
+						validation={true}
+						defaultOptions={Object.keys(listing.skuOptions).length===0}
+					/>
 			</div>
 			
 			{/key}

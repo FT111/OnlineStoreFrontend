@@ -111,7 +111,7 @@
 			</HelpTooltip>
 		</p>
 		
-		<VariantConfigurator bind:variantOptions={listing.skuOptions} configuring={true} />
+		<VariantConfigurator bind:variantOptions={listing.skuOptions} configuring={true} validation={false} />
 	</div>
 	
 	<div class="basis-1/2 bg-neutral-50 rounded-2xl h-full p-5 space-y-1.5 order-first">
