@@ -21,10 +21,12 @@
 							children } = $props();
 	
 	let selectedVariant = $state('not selected');
-	let currentListing = selectedListing.listing
-	//
-	// afterNavigate(() => {
-	// });
+	let currentListing = $state(selectedListing.listing)
+
+	
+	afterNavigate(() => {
+		currentListing = selectedListing.listing;
+	});
 	
 	if (browser){
 		addEventListener('skuSaved', () => {

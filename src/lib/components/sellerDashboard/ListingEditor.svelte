@@ -30,6 +30,9 @@
 	beforeNavigate((e) => {
 		if (JSON.stringify(listing) !== JSON.stringify(initiallisting)) {
 			if (confirm('You have unsaved changes. Are you sure you want to leave?')) {
+				// If the user confirms, reset the shared listing object to the initial state
+				listing = initiallisting;
+				selectedListing.listing = initiallisting;
 			} else {
 				e.cancel();
 			}}});
