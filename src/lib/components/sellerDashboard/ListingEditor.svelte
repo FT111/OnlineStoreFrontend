@@ -8,7 +8,7 @@
 	import { baseURL } from '$lib/api/core.js';
 	import { onMount } from 'svelte';
 	import { newListing, updateListing } from '$lib/api/listings.js';
-	import { ImagePlus, Save, Text, X } from 'lucide-svelte';
+	import { FileWarning, ImagePlus, MailWarning, Save, Text, TriangleAlert, X } from 'lucide-svelte';
 	import { afterNavigate, beforeNavigate, invalidate, invalidateAll, onNavigate } from '$app/navigation';
 		import { Textarea } from '$lib/components/ui/textarea/index.js';
 		import VariantConfigurator from '$lib/components/sellerDashboard/VariantConfigurator.svelte';
@@ -104,13 +104,15 @@
 	<!--  Attribute Config Section	-->
 	{#key listing.id}
 	<div class="basis-1/2 max-w-1/2 rounded-2xl h-full  p-5 gap-4 flex flex-col order-1">
-		<p class="items-center flex flex-row gap-1">Variant Configuration
+		<div class="items-center flex flex-row gap-1 text-black">Variant Configuration
 			<HelpTooltip>
 				This lets you configure the different options available to users. For example, if you are selling a T-shirt, you can configure the colour, size, and material option types. <br /> <br />
 				You can then define the choices available for each of these types. For example, for the colour option, you can define the choices as red, blue, and green.
 			</HelpTooltip>
-		</p>
-		
+		</div>
+		{#if Object.keys(listing.skuOptions).length === 0 && listing.skus.length > 1}
+			<div class="text-sm text-muted-foreground pl-2 flex flex-row gap-1"><TriangleAlert size={20} strokeWidth={1.25} />No options configured, defaulting to variation titles</div>
+		{/if}
 		<VariantConfigurator bind:variantOptions={listing.skuOptions} configuring={true} validation={false} />
 	</div>
 	

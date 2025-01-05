@@ -125,7 +125,7 @@
 	
 </script>
 
-
+{#if (!configuring || Object.keys(variantOptions).length > 0)}
 <div class="flex flex-col bg-muted rounded-2xl  w-full border-4 border-slate-200 overflow-clip">
 	
 	{#each Object.keys(variantOptions) as category}
@@ -167,6 +167,7 @@
 		<p class="py-1 px-3.5"><span class="font-medium">Selected style</span>: {selectedProduct.title}</p>
 		{/if}
 </div>
+	{/if}
 {#if configuring}
 	<Input class="min-w-20 w-fit p-2 px-3 rounded-3xl border-emerald-200 bg-emerald-50 flex-shrink-0 transition-all duration-250 ease-in-out" placeholder="+ Add a category" />
 {/if}
