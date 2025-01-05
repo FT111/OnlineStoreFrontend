@@ -10,9 +10,20 @@
 	import { Skeleton } from '$lib/components/ui/skeleton/index.js';
 	import { queryListings } from '$lib/api/listings.js';
 	import VariantConfigurator from '$lib/components/sellerDashboard/VariantConfigurator.svelte';
+	import { redirect } from '@sveltejs/kit';
 	
 	let { data } = $props();
-	let listing = $derived(data.listing);
+	let listing = $derived(data.listing)
+
+	let variantOptions = $derived(
+		listing && listing.skuOptions && Object.keys(listing.skuOptions).length !== 0
+			? listing.skuOptions
+			: { 'Styles': listing?.skus?.map(sku => sku.title) }
+	);
+	let defaultOptions = $derived(
+		listing && listing.skuOptions && Object.keys(listing.skuOptions).length === 0
+	);
+	
 	let skus = true;
 </script>
 
@@ -28,7 +39,6 @@
 		
 <!--	Detail Container	-->
 		<div class="sm:basis-1/2 basis-1 sm:w-1/2 flex flex-col gap-4 flex-shrink-0 justify-between">
-			{#key listing}
 <!--		Top info	-->
 			<div class="flex flex-col gap-4 flex-shrink-0 ">
 	<!--			Quick Info Row -->
@@ -83,19 +93,15 @@
 				</div>
 				
 	<!--				SKU Details -->
+				{#key listing.id}
 					<VariantConfigurator
-						variantOptions={Object.keys(listing.skuOptions).length !== 0 ? listing.skuOptions : {
-						'Styles'
-						: listing.skus.map(sku => sku.title)
-					}}
+						variantOptions={variantOptions}
 						skus={listing.skus}
 						validation={true}
-						defaultOptions={Object.keys(listing.skuOptions).length===0}
+						defaultOptions={defaultOptions}
 					/>
+					{/key}
 			</div>
-			
-			{/key}
-			
 		</div>
 	</div>
 	

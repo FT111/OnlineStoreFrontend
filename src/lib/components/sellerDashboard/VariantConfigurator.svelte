@@ -12,10 +12,10 @@
 	let { variantOptions = $bindable({}), selectedOptions = $bindable({}),
 		skus = {},
 		selectedProduct = $bindable({}),
-		validation,
+		validation = true,
 		defaultOptions = false,
 		configuring = false } = $props();
-	
+	$inspect(validation)
 	let lastSelectedCategory = $state(Object.keys(variantOptions)[0]);
 	let currentAvailableOptions = $state(variantOptions);
 	// Select the first option in each category by default
@@ -144,7 +144,7 @@
 			<div class="flex flex-row flex-wrap relative rounded-t-2xl p-2 px-1 gap-3 w-full">
 				{#each variantOptions[category] as option}
 					<button onclick={()=>{onSelect(category, option)}} class="{selectedOptions[category]===option ? ' !bg-accent border-amber-900 ' : '' }
-					{currentAvailableOptions[category].includes(option)&&validation ? '' : ' disabled !hover:bg-primary/60 !bg-primary/60 !cursor-default  '}
+					{currentAvailableOptions[category].includes(option)||!validation ? '' : ' disabled !hover:bg-primary/60 !bg-primary/60 !cursor-default  '}
 					 bg-primary flex flex-row gap-1 h-8 items-center font-semibold text-xs text-primary-foreground border-2 border-transparent outline-none hover:bg-destructive justify-center min-w-16 w-fit p-2 px-3 rounded-3xl flex-shrink-0 transition-all duration-250 ease-in-out cursor-pointer">
 						{option}
 						{#if configuring}
