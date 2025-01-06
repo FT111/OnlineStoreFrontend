@@ -9,7 +9,7 @@
 	import Searchbar from './searchbar.svelte';
 	import { logout } from '$lib/api/authentication.js';
 	
-	import { basket } from '$lib/basket.js';
+	import { basketSvelte } from '$lib/basket.svelte.js';
 		import { Plus } from 'lucide-svelte';
 		import NewListingDialog from '$lib/components/NewListingDialog.svelte';
 		import { goto } from '$app/navigation';
@@ -39,10 +39,10 @@
 	
 	let basketItems = $state();
 
-		basket.subscribe(value => {
+		basketSvelte.subscribe(value => {
 			if (value && value.items) {
 				basketItems = Object.values(value.items);
-				console.log('items in basket:', basketItems);
+				console.log('items in basketSvelte:', basketItems);
 			} else {
 				basketItems = [];
 			}
@@ -156,7 +156,7 @@
 									<DropdownMenu.Label>My Sales</DropdownMenu.Label>
 									<DropdownMenu.Separator />
 									<DropdownMenu.Item href="/account/dashboard">Dashboard</DropdownMenu.Item>
-									<DropdownMenu.Item href="/account/listings">Listings</DropdownMenu.Item>
+									<DropdownMenu.Item href="/account/listings" sveltekit-data->Listings</DropdownMenu.Item>
 									<DropdownMenu.Item href="/account/transactions">Transactions</DropdownMenu.Item>
 								</DropdownMenu.Group>
 								<DropdownMenu.Separator />

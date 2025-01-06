@@ -6,20 +6,20 @@ const createBasket = () => {
 	const { subscribe, set, update } = writable({items: {}, total: 0});
 
 	if (browser) {
-		// Load basket from local storage
-		const basket = localStorage.getItem('basket');
+		// Load basketSvelte from local storage
+		const basket = localStorage.getItem('basketSvelte');
 		try {
-			// set(JSON.parse(basket));
+			// set(JSON.parse(basketSvelte));
 		}
 		catch (e) {
-			localStorage.removeItem('basket');
+			localStorage.removeItem('basketSvelte');
 			set({items: {}, total: 0});
 		}
 
 
-		// Save basket to local storage
+		// Save basketSvelte to local storage
 		subscribe(value => {
-			localStorage.setItem('basket', JSON.stringify(value));
+			localStorage.setItem('basketSvelte', JSON.stringify(value));
 		});
 	}
 
@@ -54,4 +54,4 @@ const createBasket = () => {
 
 }
 
-export const basket = createBasket();
+export const basketSvelte = createBasket();

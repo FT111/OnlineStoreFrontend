@@ -5,7 +5,7 @@
 	let { listingSource,
 				page = $bindable()
 	} = $props();
-	let perPage = $state(30);
+	let perPage = $state(36);
 	let count = $state(0);
 	
 	const fetchPageListings = async () => {

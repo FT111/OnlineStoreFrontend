@@ -4,12 +4,10 @@
 	import { Input } from '$lib/components/ui/input/index.js';
 	import Searchbar from '$lib/components/searchbar.svelte';
 	import SuggestedSearches from '$lib/components/suggestedSearches.svelte';
-	import SearchGradient from '$lib/assets/searchGradient1.png';
 	
 	let { searchSuggestions, searchElement = $bindable() } = $props();
 
 </script>
-<!--bg-[url('/src/lib/assets/searchGradient1.png')]-->
 <div class="flex flex-col items-center justify-between w-full min-h-[50vh] h-fit bg-primary rounded-b-3xl">
 	<div class="flex flex-col items-center w-full md:p-32 md:pb-10 p-8 py-32 gap-3">
 		<h1 class="text-6xl text-white font-semibold tracking-tight">What are you looking for?</h1>
