@@ -8,7 +8,7 @@
 <AvatarPrimitive.Root
 	{delayMs}
 	class={cn("relative flex h-10 w-10 shrink-0 overflow-hidden rounded-full " +
-	 "outline outline-0 hover:outline-2 outline-accent transition-all duration-100 ", className)}
+	 "outline outline-0 hover:outline-[1.5px] outline-accent transition-all duration-75 ", className)}
 	{...rest}
 >
 	{@render children?.()}

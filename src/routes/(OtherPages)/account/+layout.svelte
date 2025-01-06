@@ -81,9 +81,9 @@ let selectedPage = $derived(page.url.pathname.split('/')[2]);
 					</NewListingDialog>
 				</div>
 				
-				<div class="flex flex-col gap-1 px-2">
+				<div class="flex flex-col gap-1 px-2 w-full">
 					{#each data.userListings as listing}
-						<Button data-sveltekit-preload-data="tap" variant="link" href={`/account/listings/${listing.id}`} class="flex flex-row px-0 p-0 py-0 h-fit justify-between">
+						<Button data-sveltekit-preload-data="tap" variant="link" href={`/account/listings/${listing.id}`} class="flex flex-row overflow-hidden px-0 p-0 py-0 h-fit justify-between">
 							<p>{listing.title}</p>
 						</Button>
 					{/each}

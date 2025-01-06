@@ -80,8 +80,8 @@
 						<a href="/account/listings/{currentListing.id}">
 							<Card.Root  class="w-56 border-slate-700 h-36 border-[1.5px] hover:border-accent/60 scale-105 transition-all justify-between flex flex-col">
 								<div>
-									<Card.Header class="p-3.5 pb-0.5">
-										<p>{currentListing.title}</p>
+									<Card.Header class="p-3.5 pb-0.5 w-full">
+										<p class="overflow-hidden text-wrap">{currentListing.title}</p>
 									</Card.Header>
 									<Card.Description class="px-3.5 text-sm line-clamp-2">
 										<p>{currentListing.description}</p>
