@@ -7,7 +7,7 @@
 	import Image from "$lib/components/image.svelte";
 	import Price from "$lib/components/price.svelte";
 	import * as Avatar from "$lib/components/ui/avatar";
-	import { basket } from "$lib/basket.js";
+	import { basketSvelte } from "$lib/basket.svelte.js";
 		import { baseURL } from '$lib/api/core.js';
 	
 	
@@ -44,8 +44,8 @@
 		isLoading = false,
 		addToBasket = (event) => {
 		event.preventDefault();
-		console.log("Adding to basket");
-		basket.addItem({id: listing.id});
+		console.log("Adding to basketSvelte");
+		basketSvelte.addItem({id: listing.id});
 	}
 	} = $props();
 </script>
@@ -71,7 +71,7 @@
 					<a  href={`/users/${listing.ownerUser.id}`}>
 						<Avatar.Root>
 							<Avatar.Image src={listing.ownerUser.profilePictureURL} alt='Avatar' />
-							<Avatar.Fallback>{listing.ownerUser.username.slice(0,2).toUpperCase()}</Avatar.Fallback>
+<!--							<Avatar.Fallback>{listing.ownerUser.username.slice(0,2).toUpperCase()}</Avatar.Fallback>-->
 						</Avatar.Root>
 					</a>
 

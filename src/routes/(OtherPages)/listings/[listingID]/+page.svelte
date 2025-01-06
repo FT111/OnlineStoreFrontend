@@ -14,6 +14,10 @@
 	
 	let { data } = $props();
 	let listing = $derived(data.listing)
+	let selectedSKU = $state({
+		price: 0,
+		id: 0
+	});
 
 	let variantOptions = $derived(
 		listing && listing.skuOptions && Object.keys(listing.skuOptions).length !== 0
@@ -77,7 +81,7 @@
 						<a href={`/users/${listing.ownerUser.id}`}>
 							<Avatar.Root>
 								<Avatar.Image src={listing.ownerUser.profilePictureURL} alt="Avatar" />
-								<Avatar.Fallback>{listing.ownerUser.username.slice(0, 2)}</Avatar.Fallback>
+<!--								<Avatar.Fallback>{listing.ownerUser.username.slice(0, 2)}</Avatar.Fallback>-->
 							</Avatar.Root>
 						</a>
 						
@@ -99,6 +103,7 @@
 						skus={listing.skus}
 						validation={true}
 						defaultOptions={defaultOptions}
+						bind:selectedProduct={selectedSKU}
 					/>
 					{/key}
 			</div>
@@ -117,7 +122,9 @@
 		<div></div>
 		
 		<div class="flex flex-row items-center h-full gap-4">
-			<Price price={listing.basePrice} />
+			{#key selectedSKU.price}
+			<Price price={selectedSKU.price} />
+				{/key}
 			<Button class="w-full h-full text-2xl basis-1/2 font-bold border-[1.5px] border-accent p-3 px-5 bg-accent hover:bg-accent hover:brightness-125 hover:border-amber-900 transition-all shadow-md rounded-xl" variant="default">Add to Basket</Button>
 		</div>
 	</div>

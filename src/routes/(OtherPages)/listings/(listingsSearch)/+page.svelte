@@ -1,7 +1,7 @@
 <script>
 	import { run } from 'svelte/legacy';
 
-import { page } from '$app/stores';
+import { page } from '$app/state';
 
 import { queryListings } from '$lib/api/listings.js';
 	import Listing from '$lib/components/Listing.svelte';
@@ -32,12 +32,22 @@ let subCategories = $state([]);
 const sorts = ['None', 'Price', 'Rating', 'Views'];
 const orders = ['Asc.', 'Desc.'];
 
+// let paramsDict = $state({});
+// $effect(() => {
+// 	paramsDict = {};
+// 	page.url.search.split('&').forEach((param) => {
+// 		let [key, value] = param.split('=');
+// 		paramsDict[key] = value;
+// 	});
+// })
+//
 
-let query = $page.url.searchParams.get('query') || '';
-let selectedCategory = $state($page.url.searchParams.get('category') || undefined);
-let selectedSubcategory = $state($page.url.searchParams.get('subCategory') || undefined);
-let selectedSort = $state($page.url.searchParams.get('sort'));
-let selectedOrder = $state($page.url.searchParams.get('order') || 'asc');
+
+let query = page.url.searchParams.get('query') || '';
+let selectedCategory = $state(page.url.searchParams.get('category') || undefined);
+let selectedSubcategory = $state(page.url.searchParams.get('subCategory') || undefined);
+let selectedSort = $state(page.url.searchParams.get('sort'));
+let selectedOrder = $state(page.url.searchParams.get('order') || 'asc');
 let selectedPage = $state(1);
 
 const filterTitles = ['Categories', 'Sub Categories', 'Sort', 'Order'];
@@ -77,7 +87,7 @@ run(() => {
 
 // Fetches subcategories based on selected category
 run(() => {
-		if (selectedCategory !== 'All Categories' && selectedCategory !== 'Categories' && selectedCategory !== undefined) {
+		if (browser && selectedCategory !== 'All Categories' && selectedCategory !== 'Categories' && selectedCategory !== undefined) {
 		fetchCategory(selectedCategory).then((data) => {
 			subCategories.push('All Sub Categories')
 			for (let i = 0; i < data.data['subCategories'].length; i++) {
@@ -101,11 +111,6 @@ const fetchListings = async () => {
 // TESTING
 let slider1Value = $state([10]);
 let slider2Value = 10;
-
-
-run(() => {
-		console.log(selectedCategory, selectedSubcategory, selectedSort, selectedOrder)
-	});
 </script>
 
 <div class="w-full h-full flex flex-row">
@@ -168,6 +173,7 @@ run(() => {
 		{#key selectedCategory}
 			{#if showCategoryHeader && selectedCategory !== 'All Categories' && selectedCategory !== 'Categories' && selectedCategory !== undefined}
 				<!--Header Container-->
+				{#if (browser)}
 				{#await fetchCategory(selectedCategory)}
 					<CategoryHeader isLoading={true} categoryColour='#0f172a'>
 
@@ -196,6 +202,7 @@ run(() => {
 				{:catch error}
 					<p>{error.message}</p>
 				{/await}
+				{/if}
 			{/if}
 		{/key}
 		
