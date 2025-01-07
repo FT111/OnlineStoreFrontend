@@ -61,19 +61,19 @@
 		form.preventDefault();
 		try {
 			if (editing) {
-				 await updateListing(listingID, listing).then((res) => {
-					if (res.data) {
+				 await updateListing(listingID, listing).then((res, req) => {
+					 console.log(res)
 						initiallisting = JSON.parse(JSON.stringify(res.data));
 						saveBtnState = 'success';
 						setInterval(() => {
 							saveBtnState = '';
 						}, 500);
-					} else {
-						saveBtnState = 'failed';
-						setInterval(() => {
-							saveBtnState = '';
-						}, 2000);
-					}
+				}).catch((error) => {
+					console.error('Error saving listing:', error);
+					saveBtnState = 'failed';
+					setInterval(() => {
+						saveBtnState = '';
+					}, 2000);
 				});
 			} else {
 				const res = await newListing(listingID, listing);
@@ -131,13 +131,14 @@
 				</div>
 				
 				<div class="flex flex-col gap-3 items-end">
-					<InputWithLabel label="Title" bind:value={listing.title} placeholder="Enter a short, descriptive title" >Title</InputWithLabel>
-					<Textarea label="Description" bind:value={listing.description} placeholder="Enter a detailed description" >Description</Textarea>
+					<InputWithLabel maxlength="40" min="1" label="Title" bind:value={listing.title} placeholder="Enter a short, descriptive title" required >Title</InputWithLabel>
+					<Textarea maxlength="100" label="Description" bind:value={listing.description} placeholder="Enter a detailed description">Description</Textarea>
 					<div class="flex flex-row gap-3 w-full grow">
-						<InputWithLabel label="Category" bind:value={listing.category}  placeholder="How much?">Category</InputWithLabel>
-						<InputWithLabel label="Subcategory" bind:value={listing.subCategory} placeholder="How much off?" >Subcategory</InputWithLabel>
-						<InputWithLabel label="Visibility" bind:value={listing.public} placeholder="How many?" >Visibility</InputWithLabel>
+						<InputWithLabel label="Category" bind:value={listing.category}  placeholder="How much?" required>Category</InputWithLabel>
+						<InputWithLabel label="Subcategory" bind:value={listing.subCategory} placeholder="How much off?" required>Subcategory</InputWithLabel>
+						<InputWithLabel label="Visibility" bind:value={listing.public} placeholder="How many?" required>Visibility</InputWithLabel>
 					</div>
+					<p class="text-sm font-light text-muted-foreground self-start">If variants, the listing's least expensive variation will be shown as the base price</p>
 				</div>
 			</form>
 	</div>

@@ -164,11 +164,11 @@
 			</div>
 			
 			<div class="flex flex-col gap-3 items-end">
-				<InputWithLabel label="Title" bind:value={sku.title} placeholder="Enter a short, descriptive title" >Title</InputWithLabel>
+				<InputWithLabel maxlength="30" min="1" label="Title" bind:value={sku.title} placeholder="Enter a short, descriptive title" >Title</InputWithLabel>
 				<div class="flex flex-row gap-3 w-full grow">
-					<InputWithLabel label="Price" bind:value={sku.price} type="number" placeholder="How much?">Price</InputWithLabel>
-					<InputWithLabel label="Discount" bind:value={sku.discount} placeholder="How much off?" >Discount % (Optional)</InputWithLabel>
-					<InputWithLabel label="Quantity" bind:value={sku.stock} type="number" placeholder="How many?" >Quantity</InputWithLabel>
+					<InputWithLabel min="1" required label="Price" bind:value={sku.price} type="number" placeholder="How much?">Price</InputWithLabel>
+					<InputWithLabel max="99" min="0" label="Discount" bind:value={sku.discount} type="number" placeholder="How much off?" >Discount % (Optional)</InputWithLabel>
+					<InputWithLabel min="0" required label="Quantity" bind:value={sku.stock} type="number" placeholder="How many?" >Quantity</InputWithLabel>
 				</div>
 				
 				<div class="p-1 flex flex-row gap-1 items-center self-start">Option Selection

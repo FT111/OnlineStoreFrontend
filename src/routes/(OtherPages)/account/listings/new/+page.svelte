@@ -24,6 +24,7 @@
 		import StateButton from '$lib/components/StateButton.svelte';
 		import NewListingInfoCard from '$lib/components/sellerDashboard/NewListingInfoCard.svelte';
 		import { Textarea } from '$lib/components/ui/textarea/index.js';
+	import InputWithLabel from '$lib/components/InputWithLabel.svelte';
 	
 		let formState = 'default';
 
@@ -79,15 +80,15 @@
 	<!--					-->
 						<form onsubmit={(event) => {submitFunc(event)}}>
 							<div class="flex flex-col gap-3.5 items-end">
-								<Input bind:value={selectedTitle} label="Title" placeholder="Enter a title for your listing" />
-								<Textarea bind:value={selectedDesc} class="h-28 text-wrap"  label="Description" placeholder="Enter a description for your listing" />
+								<InputWithLabel required bind:value={selectedTitle} max="40" label="Title" placeholder="What are you selling?">Title</InputWithLabel>
+								<Textarea bind:value={selectedDesc} max="100" class="h-28 text-wrap"  label="Description" placeholder="Describe your listing — Make sure to include keywords to appear in search results" />
 								
 								<div class="flex flex-row gap-3.5 w-full">
 									<div class="basis-1/2">
 										{#await fetchCategories()}
-										<Dropdown title="Category" />
+										<Dropdown required title="Category" />
 									{:then categories}
-										<Dropdown options={categories.data.map(category => {return category.title})} title="Category" bind:value={selectedCategory}
+										<Dropdown required options={categories.data.map(category => {return category.title})} title="Category" bind:value={selectedCategory}
 										subtitle="Find a category"/>
 									{:catch error}
 										<p>{error.message}</p>
@@ -98,9 +99,9 @@
 									{#if selectedCategory}
 										{#key formData.subCategory}
 											{#await fetchCategory(selectedCategory)}
-												<Dropdown title="Subcategory" />
+												<Dropdown required title="Subcategory" />
 											{:then categoryData}
-												<Dropdown options={categoryData.data.subCategories.map(subcategory => {return subcategory.title})} title="Subcategory"
+												<Dropdown required options={categoryData.data.subCategories.map(subcategory => {return subcategory.title})} title="Subcategory"
 												subtitle="Search for a subcategory" bind:value={selectedSubcategory}/>
 											{:catch error}
 												<p>{error.message}</p>
