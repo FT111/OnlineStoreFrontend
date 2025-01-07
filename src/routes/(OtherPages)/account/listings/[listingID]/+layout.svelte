@@ -139,7 +139,7 @@
 															<Tooltip.Trigger>
 																{#key sku.stock}
 																	<div class="flex flex-row gap-1 items-center rounded-full
-																		{sku.stock=== 0 ? 'bg-red-700 text-white px-2 ': 'bg-none'}">
+																		{Number(sku.stock) === 0 ? 'bg-red-700 text-white px-2 ': 'bg-none'}">
 																		{sku.stock}
 																		<Box size={18} strokeWidth={1.25} /></div>
 																{/key}
