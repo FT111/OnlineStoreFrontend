@@ -8,7 +8,7 @@
 	import { baseURL } from '$lib/api/core.js';
 	import { onMount } from 'svelte';
 	import { newListing, updateListing } from '$lib/api/listings.js';
-	import { FileWarning, ImagePlus, MailWarning, Save, Text, TriangleAlert, X } from 'lucide-svelte';
+	import { FileWarning, Globe, ImagePlus, MailWarning, Save, Text, TriangleAlert, X } from 'lucide-svelte';
 	import { afterNavigate, beforeNavigate, invalidate, invalidateAll, onNavigate } from '$app/navigation';
 		import { Textarea } from '$lib/components/ui/textarea/index.js';
 		import VariantConfigurator from '$lib/components/sellerDashboard/VariantConfigurator.svelte';
@@ -16,6 +16,10 @@
 	import { selectedListing } from '$lib/account.svelte.js';
 	import { browser } from '$app/environment';
 	import { Check } from 'lucide-svelte';
+	import { fetchCategories, fetchCategory } from '$lib/api/categories.js';
+	import Dropdown from '$lib/components/dropdown.svelte';
+	import DropdownWithLabel from '$lib/components/DropdownWithLabel.svelte';
+	import { Toggle } from '$lib/components/ui/toggle/index.js';
 	
 	let initiallisting = $state(JSON.parse(JSON.stringify(selectedListing.listing)));
 	let listing = $state(selectedListing.listing);
@@ -134,9 +138,35 @@
 					<InputWithLabel maxlength="40" min="1" label="Title" bind:value={listing.title} placeholder="Enter a short, descriptive title" required >Title</InputWithLabel>
 					<Textarea maxlength="100" label="Description" bind:value={listing.description} placeholder="Enter a detailed description">Description</Textarea>
 					<div class="flex flex-row gap-3 w-full grow">
-						<InputWithLabel label="Category" bind:value={listing.category}  placeholder="How much?" required>Category</InputWithLabel>
-						<InputWithLabel label="Subcategory" bind:value={listing.subCategory} placeholder="How much off?" required>Subcategory</InputWithLabel>
-						<InputWithLabel label="Visibility" bind:value={listing.public} placeholder="How many?" required>Visibility</InputWithLabel>
+						<div class="flex flex-row gap-3.5 w-full">
+							<div class="basis-1/2">
+								{#await fetchCategories()}
+									<Dropdown required title="Category" />
+								{:then categories}
+									<DropdownWithLabel required options={categories.data.map(category => {return category.title})} title="Category" bind:value={listing.category}
+																		 subtitle="Find a category">Category</DropdownWithLabel>
+								{:catch error}
+									<p>{error.message}</p>
+								{/await}
+							</div>
+							
+							<div class="basis-1/2">
+									{#key listing.category}
+										{#await fetchCategory(listing.category)}
+											<Dropdown required title="Subcategory" />
+										{:then categoryData}
+											<DropdownWithLabel required options={categoryData.data.subCategories.map(subcategory => {return subcategory.title})} title="Subcategory"
+																				 subtitle="Search for a subcategory" bind:value={listing.subCategory}>Subcategory</DropdownWithLabel>
+										{:catch error}
+											<p>{error.message}</p>
+										{/await}
+									{/key}
+							</div>
+							<Toggle variant="outline" bind:pressed={listing.public} class="justify-self-start self-end w-fit">
+								<Globe size={20} strokeWidth={1.25} />
+								Public
+							</Toggle>
+						</div>
 					</div>
 					<p class="text-sm font-light text-muted-foreground self-start">If variants, the listing's least expensive variation will be shown as the base price</p>
 				</div>
