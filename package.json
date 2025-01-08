@@ -16,7 +16,7 @@
 		"@sveltejs/vite-plugin-svelte": "latest",
 		"@types/eslint": "^8.56.7",
 		"autoprefixer": "^10.4.19",
-		"bits-ui": "^1.0.0-next.77",
+		"bits-ui": "^0.22.0",
 		"cmdk-sv": "^0.0.18",
 		"embla-carousel-svelte": "^8.3.0",
 		"eslint": "^9.0.0",

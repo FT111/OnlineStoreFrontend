@@ -10,7 +10,7 @@ import * as Dialog from '$lib/components/ui/dialog/index.js';
 	/** @type {Props} */
 	let { children } = $props();
 
-let openState = $state();
+let openState = $state(false);
 </script>
 
 

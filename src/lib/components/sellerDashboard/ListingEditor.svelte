@@ -46,15 +46,6 @@
 		initiallisting = JSON.parse(JSON.stringify(listing));
 	});
 
-
-	// onMount(() => {
-	//  // Prevents caching of edits when navigating back to the page
-	//  invalidateAll();
-	// })
-	
-	// let initiallisting = $state(JSON.parse(JSON.stringify(listing)));
-
-
 	let editing = $derived(!!listing.id); // if listing id exists, edit State is true. Not needed but enhances readability
 	let edited = $derived(JSON.stringify(listing) !== JSON.stringify(initiallisting)); // if listing is edited, edited state is true
 	let saveBtn = $state();
@@ -100,6 +91,29 @@
 		}
 	};
 	
+	const fetchSubcategoriesAndDefaultToFirst = async (category) => {
+		try {
+			const res = await fetchCategory(category);
+			const titleArray = res.data.subCategories.map(subcategory => {return subcategory.title});
+			console.log(titleArray);
+			console.log(listing.subCategory);
+			
+			let flag = false;
+			for (let i = 0; i < titleArray.length; i++) {
+				if (titleArray[i] === listing.subCategory) {
+					flag = true;
+					break;
+				}
+			}
+			if (!flag) {
+				listing.subCategory = titleArray[0];
+			}
+			
+			return titleArray;
+		} catch (error) {
+			console.error('Error fetching subcategories:', error);
+		}
+	};
 </script>
 
 
@@ -152,17 +166,17 @@
 							
 							<div class="basis-1/2">
 									{#key listing.category}
-										{#await fetchCategory(listing.category)}
+										{#await fetchSubcategoriesAndDefaultToFirst(listing.category)}
 											<Dropdown required title="Subcategory" />
-										{:then categoryData}
-											<DropdownWithLabel required options={categoryData.data.subCategories.map(subcategory => {return subcategory.title})} title="Subcategory"
+										{:then subCategoryList}
+											<DropdownWithLabel required options={subCategoryList} title="Subcategory"
 																				 subtitle="Search for a subcategory" bind:value={listing.subCategory}>Subcategory</DropdownWithLabel>
 										{:catch error}
 											<p>{error.message}</p>
 										{/await}
 									{/key}
 							</div>
-							<Toggle variant="outline" bind:pressed={listing.public} class="justify-self-start self-end w-fit">
+							<Toggle variant="outline" bind:pressed={listing.public} class="justify-self-start self-end w-fit px-4 gap-1.5 hover:bg-secondary hover:text-secondary-foreground">
 								<Globe size={20} strokeWidth={1.25} />
 								Public
 							</Toggle>
