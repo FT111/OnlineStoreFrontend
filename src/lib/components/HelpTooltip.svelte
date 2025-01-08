@@ -7,12 +7,12 @@
 	 */
 
 	/** @type {Props} */
-	let { children } = $props();
+	let { children, ...restProps } = $props();
 </script>
 
 <Tooltip.Root>
 	<Tooltip.Trigger>
-		<HelpCircle size={18} strokeWidth={1.25} opacity="0.5" />
+		<HelpCircle size={18} strokeWidth={1.25} opacity="0.5" class={restProps.class} />
 	</Tooltip.Trigger>
 	<Tooltip.Content class="max-w-56">
 		<p>{@render children?.()}</p>

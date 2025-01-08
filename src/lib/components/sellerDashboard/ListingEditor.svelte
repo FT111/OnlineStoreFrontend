@@ -8,7 +8,7 @@
 	import { baseURL } from '$lib/api/core.js';
 	import { onMount } from 'svelte';
 	import { newListing, updateListing } from '$lib/api/listings.js';
-	import { FileWarning, Globe, ImagePlus, MailWarning, Save, Text, TriangleAlert, X } from 'lucide-svelte';
+	import { EyeOff, FileWarning, Globe, ImagePlus, MailWarning, Save, Text, TriangleAlert, X } from 'lucide-svelte';
 	import { afterNavigate, beforeNavigate, invalidate, invalidateAll, onNavigate } from '$app/navigation';
 		import { Textarea } from '$lib/components/ui/textarea/index.js';
 		import VariantConfigurator from '$lib/components/sellerDashboard/VariantConfigurator.svelte';
@@ -152,7 +152,7 @@
 					<InputWithLabel maxlength="40" min="1" label="Title" bind:value={listing.title} placeholder="Enter a short, descriptive title" required >Title</InputWithLabel>
 					<Textarea maxlength="100" label="Description" bind:value={listing.description} placeholder="Enter a detailed description">Description</Textarea>
 					<div class="flex flex-row gap-3 w-full grow">
-						<div class="flex flex-row gap-3.5 w-full">
+						<div class="flex flex-row gap-3.5 w-full items-center">
 							<div class="basis-1/2">
 								{#await fetchCategories()}
 									<Dropdown required title="Category" />
@@ -176,14 +176,29 @@
 										{/await}
 									{/key}
 							</div>
-							<Toggle variant="outline" bind:pressed={listing.public} class="justify-self-start self-end w-fit px-4 gap-1.5 hover:bg-secondary hover:text-secondary-foreground">
+							<div class="basis-3/12 max-w-32 flex flex-col gap-1">
+								<label class="text-xs px-2 font-normal text-slate-600 flex flex-row items-center gap-1" for='visibility'>
+									Visibility
+									<HelpTooltip class="size-4">
+										<span class="font-semibold">Public listings</span> are visible to everyone and can be purchased.
+										<br /> <span class="font-semibold">Private listings</span> are only visible to you and can't be purchased.
+										<br /><br />
+										Existing orders are not affected.
+									</HelpTooltip>
+								</label>
+							<Toggle name="visibility" variant="outline" bind:pressed={listing.public} class="h-10 justify-center px-2.5 gap-1.5 hover:bg-secondary hover:text-secondary-foreground">
+								{#if listing.public}
 								<Globe size={20} strokeWidth={1.25} />
 								Public
+									{:else}
+									<EyeOff size={20} strokeWidth={1.25} />
+									Private
+								{/if}
 							</Toggle>
 						</div>
 					</div>
-					<p class="text-sm font-light text-muted-foreground self-start">If variants, the listing's least expensive variation will be shown as the base price</p>
 				</div>
+					<p class="text-sm font-light text-muted-foreground self-start">If variants, the listing's least expensive variation will be shown as the base price</p>
 			</form>
 	</div>
 		{/key}
