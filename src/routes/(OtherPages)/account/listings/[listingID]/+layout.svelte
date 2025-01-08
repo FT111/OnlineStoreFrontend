@@ -72,7 +72,7 @@
 				{/key}
 			
 	<!--			Variant cards-->
-				<div class="flex flex-row gap-3 sticky bottom-3.5 w-full h-fit bg-slate-100 self-end rounded-2xl drop-shadow-sm">
+				<div class="flex flex-row gap-3 sticky bottom-3.5 w-full h-fit bg-slate-100 self-end rounded-2xl shadow-md outline outline-1 outline-muted/40">
 				
 	<!--				Main listing card -->
 					<div class="flex-col flex gap-2.5 w-fit h-fit p-4 rounded-l-2xl bg-amber-50">
@@ -104,14 +104,14 @@
 								Variations are what users pick from and purchase.<br />
 								You may need to scroll to see all variations.
 							</HelpTooltip></p>
-						<div class="flex flex-row gap-3 h-36 flex-wrap overflow-y-scroll">
+						<div class="flex flex-row gap-3 gap-y-2 h-36 flex-wrap overflow-y-scroll">
 							{#if !currentListing.skus}
 								<div></div>
 							{:else}
 							
 								{#each currentListing.skus as sku}
 									<a href={`/account/listings/${currentListing.id}/${sku.id}`}>
-										<Card.Root class="w-48 h-36 justify-between flex flex-col hover:border-accent transition-all hover:brightness-125
+										<Card.Root class="w-48 h-32 justify-between flex flex-col hover:border-accent transition-all hover:brightness-125
 															{typeof(selectedVariant)==='object' ? selectedVariant.id===sku.id ? ' border-slate-800 border-2 ' : '' : ''}">
 											<Card.Header class="p-3.5 line-clamp-2">
 												<p>{sku.title}</p>
@@ -158,7 +158,7 @@
 							
 						<!--	Add new variant card -->
 							<a href={`/account/listings/${currentListing.id}/new`}>
-								<Card.Root class="w-48 h-36 flex flex-col border-2 border-dashed bg-emerald-50/40 items-center justify-center
+								<Card.Root class="w-48 h-32 flex flex-col border-2 border-dashed bg-emerald-50/40 items-center justify-center
 												  hover:border-solid hover:bg-emerald-100 hover:border-emerald-500 transition-all group
 												{selectedVariant==='new' ? 'border-emerald-500 border-solid' : ''}">
 									<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"

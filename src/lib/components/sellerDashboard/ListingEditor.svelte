@@ -8,7 +8,18 @@
 	import { baseURL } from '$lib/api/core.js';
 	import { onMount } from 'svelte';
 	import { newListing, updateListing } from '$lib/api/listings.js';
-	import { EyeOff, FileWarning, Globe, ImagePlus, MailWarning, Save, Text, TriangleAlert, X } from 'lucide-svelte';
+	import {
+		EyeOff,
+		FileWarning,
+		Globe,
+		ImagePlus,
+		Info,
+		MailWarning,
+		Save,
+		Text,
+		TriangleAlert,
+		X
+	} from 'lucide-svelte';
 	import { afterNavigate, beforeNavigate, invalidate, invalidateAll, onNavigate } from '$app/navigation';
 		import { Textarea } from '$lib/components/ui/textarea/index.js';
 		import VariantConfigurator from '$lib/components/sellerDashboard/VariantConfigurator.svelte';
@@ -20,6 +31,7 @@
 	import Dropdown from '$lib/components/dropdown.svelte';
 	import DropdownWithLabel from '$lib/components/DropdownWithLabel.svelte';
 	import { Toggle } from '$lib/components/ui/toggle/index.js';
+	import * as Alert from '$lib/components/ui/alert/index.js';
 	
 	let initiallisting = $state(JSON.parse(JSON.stringify(selectedListing.listing)));
 	let listing = $state(selectedListing.listing);
@@ -129,7 +141,13 @@
 			</HelpTooltip>
 		</div>
 		{#if Object.keys(listing.skuOptions).length === 0 && listing.skus.length > 1}
-			<div class="text-sm text-muted-foreground pl-2 flex flex-row gap-1"><TriangleAlert size={20} strokeWidth={1.25} />No options configured, defaulting to variation titles</div>
+			<Alert.Root class="bg-neutral-50">
+				<Info size={20} strokeWidth={1.5} />
+				<Alert.Title>No variation options configured</Alert.Title>
+				<Alert.Description
+				>Users will be shown a list of variant titles instead</Alert.Description
+				>
+			</Alert.Root>
 		{/if}
 		<VariantConfigurator bind:variantOptions={listing.skuOptions} configuring={true} validation={false} />
 	</div>
