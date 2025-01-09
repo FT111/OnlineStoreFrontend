@@ -123,7 +123,8 @@
 													{/key}
 													
 													<div class="flex flex-row gap-2">
-														<Tooltip.Root>
+														<Tooltip.Provider>
+															<Tooltip.Root>
 															<Tooltip.Trigger>
 																<div class="flex flex-row gap-1 items-center">
 																	{Number(Math.random() * 6).toFixed(0)}
@@ -134,8 +135,10 @@
 																<p>Number of orders</p>
 															</Tooltip.Content>
 														</Tooltip.Root>
+														</Tooltip.Provider>
 														
-														<Tooltip.Root>
+														<Tooltip.Provider>
+<Tooltip.Root>
 															<Tooltip.Trigger>
 																{#key sku.stock}
 																	<div class="flex flex-row gap-1 items-center rounded-full
@@ -148,6 +151,7 @@
 																<p>In Stock</p>
 															</Tooltip.Content>
 														</Tooltip.Root>
+														</Tooltip.Provider>
 													</div>
 												</div>
 											</Card.Description>

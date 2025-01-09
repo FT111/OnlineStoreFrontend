@@ -1,7 +1,7 @@
 <script>
-	import { Button } from '$lib/components/ui/button/index.js';
-	import * as Popover from '$lib/components/ui/popover/index.js';
-	import * as Command from '$lib/components/ui/command/index.js';
+	import * as Command from "$lib/components/ui/command/index.js";
+	import * as Popover from "$lib/components/ui/popover/index.js";
+	import { Button } from "$lib/components/ui/button/index.js";
 	import { tick } from 'svelte';
 
 	
@@ -10,31 +10,33 @@
 		title,
 		subtitle,
 		options = [],
-		clickAction = () => {}
+		clickAction = () => {},
+		class: className = '',
 	} = $props();
 
 
 	let open = $state(false);
+	let triggerRef = $state(null)
 
-	function closeAndFocusTrigger(triggerId) {
+	function closeAndFocusTrigger() {
 		open = false;
 		tick().then(() => {
-			document.getElementById(triggerId)?.focus();
+			triggerRef.focus();
 		});
 	}
+
 	
 </script>
 
-<Popover.Root bind:open >
-	{#snippet children({ ids })}
-		<Popover.Trigger asChild >
-			{#snippet children({ builder })}
-				<Button
-				  builders={[builder]}
-				  variant="outline"
-				  role="combobox"
-				  aria-expanded={open}
-				  class="w-full justify-between text-ellipsis hover:bg-secondary hover:text-secondary-foreground"
+<Popover.Root bind:open>
+	<Popover.Trigger bind:ref={triggerRef}>
+		{#snippet child({ props })}
+			<Button
+				variant="outline"
+				{...props}
+				role="combobox"
+				aria-expanded={open}
+				class={`w-full justify-between text-ellipsis hover:bg-secondary hover:text-secondary-foreground basis-full ${className}`}
 				>
 					{#if value !== undefined && value !== null}
 						{value}
@@ -57,10 +59,9 @@
 						  class="aria-selected:text-white transition-all duration-100"
 						  value={option}
 						  onSelect={(currentValue) => {
-									
 								  value = currentValue;
 									clickAction();
-								  closeAndFocusTrigger(ids.trigger);
+								  closeAndFocusTrigger();
 	            }}
 						>
 							{option}
@@ -69,5 +70,4 @@
 				</Command.Group>
 			</Command.Root>
 		</Popover.Content>
-	{/snippet}
 </Popover.Root>

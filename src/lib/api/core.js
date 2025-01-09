@@ -36,13 +36,15 @@ export const GET = async (endpoint, token=null, credentialsOpt='omit') => {
 			headers: formHeaders(token),
 			credentials: 'include',
 		}
-	).then((response) => response.json())
+	).then((response) => response.json()
 		.then((data) => {
+			if (!response.ok) {
+				return new Error(data.detail[0]);
+			}
 			return data;
 		}).catch((error) => {
-			console.error('Error:', error);
-		});
-
+			return error
+		}));
 }
 
 export const POST = async (endpoint, data, credentialsOpt='omit') => {
@@ -52,12 +54,13 @@ export const POST = async (endpoint, data, credentialsOpt='omit') => {
 		body: data,
 		credentials: 'include',
 
-	}).then((response) => response.json())
+	}).then((response) => response.json()
 		.then((data) => {
 			return data;
 		}).catch((error) => {
-			console.error('Error:', error);
-		});
+			return error;
+		}
+		));
 }
 
 export const PUT = async (endpoint, data, token=null, credentialsOpt='omit') => {
@@ -67,10 +70,11 @@ export const PUT = async (endpoint, data, token=null, credentialsOpt='omit') => 
 		body: data,
 		credentials: 'include',
 
-	}).then((response) => response.json())
+	}).then((response) => response.json()
 		.then((data) => {
-			return data;
+			return data
 		}).catch((error) => {
-			console.error('Error:', error);
-		});
+			return error
+		}
+		));
 }

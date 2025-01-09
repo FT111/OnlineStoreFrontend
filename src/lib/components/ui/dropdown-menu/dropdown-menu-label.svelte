@@ -1,13 +1,13 @@
 <script>
-	import { DropdownMenu as DropdownMenuPrimitive } from "bits-ui";
 	import { cn } from "$lib/utils.js";
-	let { class: className = undefined, inset = undefined, children, ...rest } = $props();
-	
+	import {} from "bits-ui";
+	let { ref = $bindable(null), class: className, inset, children, ...restProps } = $props();
 </script>
 
-<DropdownMenuPrimitive.Label
+<div
+	bind:this={ref}
 	class={cn("px-2 py-1.5 text-sm font-semibold", inset && "pl-8", className)}
-	{...rest}
+	{...restProps}
 >
 	{@render children?.()}
-</DropdownMenuPrimitive.Label>
+</div>

@@ -1,9 +1,9 @@
 <script>
 	import { cn } from "$lib/utils.js";
-	let { class: className = undefined, children, ...rest } = $props();
-	
+
+	let { ref = $bindable(null), class: className, children, ...restProps } = $props();
 </script>
 
-<ul class={cn("flex flex-row items-center gap-1", className)} {...rest}>
+<ul bind:this={ref} class={cn("flex flex-row items-center gap-1", className)} {...restProps}>
 	{@render children?.()}
 </ul>

@@ -4,7 +4,7 @@
 
 	import { Input } from '$lib/components/ui/input/index.js';
 	import * as Card from '$lib/components/ui/card/index.js';
-	import { page } from '$app/stores';
+	import { page } from '$app/state';
 	import { Button } from '$lib/components/ui/button/index.js';
 	import InputWithLabel from '$lib/components/InputWithLabel.svelte';
 	import { baseURL } from '$lib/api/core.js';
@@ -157,7 +157,7 @@
 	
 	<div class="basis-1/2 bg-slate-50 rounded-2xl h-full p-5 space-y-1.5 md:order-1 order-first">
 		{#key sku.id}
-		<form onsubmit={repSert($page.params.listingID, sku)}>
+		<form onsubmit={repSert(page.params.listingID, sku)}>
 			<div class="p-1 flex flex-row gap-2 items-center">Details
 				<Button bind:this={saveBtn} class=" rounded-full transition-all gap-1.5 origin-left {edited ? 'scale-100': ' scale-0 '}" type="submit" size="sm">
 					<Save size={20} strokeWidth={1.25} />Save</Button>

@@ -64,7 +64,7 @@ switch (selectedOrder) {
 }
 
 afterNavigate(() => {
-	showCategoryHeader = $page.url.searchParams.get('showCategoryHeader') === 'true';
+	showCategoryHeader = page.url.searchParams.get('showCategoryHeader') === 'true';
 })
 
 onMount(() => {
@@ -85,20 +85,16 @@ run(() => {
 	}
 	});
 
-// Fetches subcategories based on selected category
-run(() => {
-		if (browser && selectedCategory !== 'All Categories' && selectedCategory !== 'Categories' && selectedCategory !== undefined) {
-		fetchCategory(selectedCategory).then((data) => {
-			subCategories.push('All Sub Categories')
-			for (let i = 0; i < data.data['subCategories'].length; i++) {
-				subCategories.push(data.data['subCategories'][i].title)}
-		})
-	}
-	});
-
 // Navigates to the listings page with the selected category, subcategory, and sort whenever the params are changed
 
 const refineListings = () => {
+	if (browser && selectedCategory !== 'All Categories' && selectedCategory !== 'Categories' && selectedCategory !== undefined) {
+		fetchCategory(selectedCategory).then((data) => {
+			subCategories.push('All Sub Categories')
+			subCategories = data.data.subCategories.map(subcategory => {
+				return subcategory.title
+			})})
+	}
 	goto(formQueryURL(query, selectedCategory, selectedSubcategory, selectedSort, selectedOrder));
 }
 
@@ -134,9 +130,9 @@ let slider2Value = 10;
 		</div>
 		<Separator />
 		
-		<div class="flex flex-row gap-2 w-full ">
-			<Dropdown clickAction={refineListings} title="Sort" subtitle="Select a sort" options={ sorts } bind:value={selectedSort} />
-			<Dropdown clickAction={refineListings} title="Order" subtitle="Select an order" options={ orders } bind:value={selectedOrder} />
+		<div class="flex flex-row gap-2 w-full">
+			<Dropdown class="basis-full" clickAction={refineListings} title="Sort" subtitle="Select a sort" options={ sorts } bind:value={selectedSort} />
+			<Dropdown class="basis-full" clickAction={refineListings} title="Order" subtitle="Select an order" options={ orders } bind:value={selectedOrder} />
 		</div>
 		<Separator />
 		
@@ -160,7 +156,6 @@ let slider2Value = 10;
 				</div>
 			</div>
 			
-			<Dropdown title="Relevant filter 5" subtitle="Select a sub category" options={ subCategories }  />
 		</div>
 	
 	</Sidebar>

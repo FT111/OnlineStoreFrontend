@@ -1,27 +1,26 @@
 <script>
 	import { Pagination as PaginationPrimitive } from "bits-ui";
 	import ChevronLeft from "lucide-svelte/icons/chevron-left";
-	import { Button } from "$lib/components/ui/button/index.js";
+	import { buttonVariants } from "$lib/components/ui/button/index.js";
 	import { cn } from "$lib/utils.js";
-	let { class: className = undefined, children, ...rest } = $props();
-	
 
-	const children_render = $derived(children);
+	let { ref = $bindable(null), class: className, children, ...restProps } = $props();
 </script>
 
-<PaginationPrimitive.PrevButton asChild >
-	{#snippet children({ builder })}
-		<Button
-			variant="ghost"
-			class={cn("gap-1 pl-2.5", className)}
-			builders={[builder]}
-			on:click
-			{...rest}
-		>
-			{#if children_render}{@render children_render()}{:else}
-				<ChevronLeft class="h-4 w-4" />
-				<span>Previous</span>
-			{/if}
-		</Button>
-	{/snippet}
-</PaginationPrimitive.PrevButton>
+{#snippet Fallback()}
+	<ChevronLeft class="size-4" />
+	<span>Previous</span>
+{/snippet}
+
+<PaginationPrimitive.PrevButton
+	bind:ref
+	class={cn(
+		buttonVariants({
+			variant: "ghost",
+			class: "gap-1 pl-2.5",
+		}),
+		className
+	)}
+	children={children || Fallback}
+	{...restProps}
+/>

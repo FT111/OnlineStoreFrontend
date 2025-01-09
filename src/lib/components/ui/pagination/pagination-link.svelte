@@ -2,29 +2,25 @@
 	import { Pagination as PaginationPrimitive } from "bits-ui";
 	import { cn } from "$lib/utils.js";
 	import { buttonVariants } from "$lib/components/ui/button/index.js";
-	/**
-	 * @typedef {Object} Props
-	 * @property {any} [class]
-	 * @property {any} page
-	 * @property {string} [size]
-	 * @property {boolean} [isActive]
-	 * @property {import('svelte').Snippet} [children]
-	 */
 
-	/** @type {Props & { [key: string]: any }} */
 	let {
-		class: className = undefined,
-		page = $bindable(),
+		ref = $bindable(null),
+		class: className,
 		size = "icon",
 		isActive = false,
+		page,
 		children,
-		...rest
+		...restProps
 	} = $props();
-	
 </script>
 
+{#snippet Fallback()}
+	{page.value}
+{/snippet}
+
 <PaginationPrimitive.Page
-	bind:page
+	bind:ref
+	{page}
 	class={cn(
 		buttonVariants({
 			variant: isActive ? "outline" : "ghost",
@@ -32,8 +28,6 @@
 		}),
 		className
 	)}
-	{...rest}
-	on:click
->
-	{#if children}{@render children()}{:else}{page.value}{/if}
-</PaginationPrimitive.Page>
+	children={children || Fallback}
+	{...restProps}
+/>

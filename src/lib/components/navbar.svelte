@@ -8,7 +8,8 @@
 	import * as Avatar from '$lib/components/ui/avatar/index.js';
 	import Searchbar from './searchbar.svelte';
 	import { logout } from '$lib/api/authentication.js';
-	
+	import { buttonVariants} from '$lib/components/ui/button/index.js';
+
 	import { basketSvelte } from '$lib/basket.svelte.js';
 		import { Plus } from 'lucide-svelte';
 		import NewListingDialog from '$lib/components/NewListingDialog.svelte';
@@ -134,41 +135,78 @@
 			{#key user}
 				{#if user}
 					
-						<DropdownMenu.Root>
-							<DropdownMenu.Trigger>
-								<Avatar.Root class="text-primary h-9 w-9">
-									<Avatar.Image src={user['profilePictureURL']} alt="Avatar" />
-									<Avatar.Fallback>EB</Avatar.Fallback>
-								</Avatar.Root>
-							</DropdownMenu.Trigger>
-							<DropdownMenu.Content class="w-56">
-								<DropdownMenu.Label class="font-bold text-lg text-primary">Hello {user['username']}!</DropdownMenu.Label>
+					<DropdownMenu.Root>
+						<DropdownMenu.Trigger
+						>
+							<Avatar.Root>
+								<Avatar.Image src={user.profilePictureURL} alt="Avatar" />
+								<Avatar.Fallback class="bg-secondary text-primary">{user.username[0] + user.username[1]}</Avatar.Fallback>
+							</Avatar.Root>
+						</DropdownMenu.Trigger
+						>
+						<DropdownMenu.Content class="w-56">
+							<DropdownMenu.Group>
+								<DropdownMenu.GroupHeading>My Account</DropdownMenu.GroupHeading>
 								<DropdownMenu.Separator />
 								<DropdownMenu.Group>
-									<DropdownMenu.Label>My Account</DropdownMenu.Label>
-									<DropdownMenu.Separator />
-									<DropdownMenu.Item href="/users/{user['id']}">Profile</DropdownMenu.Item>
-									<DropdownMenu.Item>My orders</DropdownMenu.Item>
-									<DropdownMenu.Item>Settings</DropdownMenu.Item>
+									<a href="/users/{user.id}">
+										<DropdownMenu.Item>
+											<span>Profile</span>
+											<DropdownMenu.Shortcut>⇧⌘P</DropdownMenu.Shortcut>
+										</DropdownMenu.Item>
+									</a>
+									<DropdownMenu.Item>
+										<span>Orders</span>
+										<DropdownMenu.Shortcut>⌘B</DropdownMenu.Shortcut>
+									</DropdownMenu.Item>
 								</DropdownMenu.Group>
 								<DropdownMenu.Separator />
 								<DropdownMenu.Group>
-									<DropdownMenu.Label>My Sales</DropdownMenu.Label>
-									<DropdownMenu.Separator />
-									<DropdownMenu.Item href="/account/dashboard">Dashboard</DropdownMenu.Item>
-									<DropdownMenu.Item href="/account/listings" sveltekit-data->Listings</DropdownMenu.Item>
-									<DropdownMenu.Item href="/account/transactions">Transactions</DropdownMenu.Item>
+									<DropdownMenu.GroupHeading>
+										<span>My Sales</span>
+									</DropdownMenu.GroupHeading>
+									<DropdownMenu.Sub>
+										<DropdownMenu.SubTrigger>
+											<span>Dashboard...</span>
+										</DropdownMenu.SubTrigger>
+										<DropdownMenu.SubContent>
+											<DropdownMenu.Item>
+												<span>Dashboard</span>
+											</DropdownMenu.Item>
+											<a href="/account/listings">
+												<DropdownMenu.Item>
+													<span>Listings</span>
+												</DropdownMenu.Item>
+											</a>
+											<DropdownMenu.Item>
+												<span>Sales</span>
+											</DropdownMenu.Item>
+										</DropdownMenu.SubContent>
+									</DropdownMenu.Sub>
+									<DropdownMenu.Item>
+										<Plus class="mr-2 size-4" />
+										<span>New Team</span>
+										<DropdownMenu.Shortcut>⌘+T</DropdownMenu.Shortcut>
+									</DropdownMenu.Item>
 								</DropdownMenu.Group>
 								<DropdownMenu.Separator />
-								<DropdownMenu.Item class="bg-red-100/50" on:click={async () => {logout().then(async ()=>{await goto('/')})}}>
-									<div class="flex flex-row w-full justify-between ">Sign out
-										<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="	0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-5 text-accent">
-											<path stroke-linecap="round" stroke-linejoin="round" d="M8.25 9V5.25A2.25 2.25 0 0 1 10.5 3h6a2.25 2.25 0 0 1 2.25 2.25v13.5A2.25 2.25 0 0 1 16.5 21h-6a2.25 2.25 0 0 1-2.25-2.25V15M12 9l3 3m0 0-3 3m3-3H2.25" />
-										</svg>
-									</div>
+								<DropdownMenu.Item>
+									<span>GitHub</span>
 								</DropdownMenu.Item>
-							</DropdownMenu.Content>
-						</DropdownMenu.Root>
+								<DropdownMenu.Item>
+									<span>Support</span>
+								</DropdownMenu.Item>
+								<DropdownMenu.Item>
+									<span>API</span>
+								</DropdownMenu.Item>
+								<DropdownMenu.Separator />
+								<DropdownMenu.Item>
+									<span>Log out</span>
+									<DropdownMenu.Shortcut>⇧⌘Q</DropdownMenu.Shortcut>
+								</DropdownMenu.Item>
+							</DropdownMenu.Group>
+						</DropdownMenu.Content>
+					</DropdownMenu.Root>
 						{:else}
 							<div class="flex flex-row gap-3">
 								<a href="/signup">
