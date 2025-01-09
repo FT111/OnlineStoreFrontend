@@ -36,7 +36,7 @@
 				{...props}
 				role="combobox"
 				aria-expanded={open}
-				class={`w-full justify-between text-ellipsis hover:bg-secondary hover:text-secondary-foreground basis-full ${className}`}
+				class={`w-full justify-between text-ellipsis hover:bg-secondary hover:text-secondary-foreground ${className}`}
 				>
 					{#if value !== undefined && value !== null}
 						{value}

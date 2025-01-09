@@ -136,7 +136,7 @@ let slider2Value = 10;
 		</div>
 		<Separator />
 		
-		<Dropdown clickAction={refineListings}  title="Categories" subtitle="Select a category" options={ categories } bind:value={selectedCategory} />
+		<Dropdown clickAction={refineListings} title="Categories" subtitle="Select a category" options={ categories } bind:value={selectedCategory} />
 		{#key selectedCategory}
 			<Dropdown on:click={refineListings}  title="Sub Categories" subtitle="Select a sub category" options={ subCategories } bind:value={selectedSubcategory} />
 		{/key}
