@@ -2,7 +2,7 @@
 	import { run } from 'svelte/legacy';
 
 
-	import { Box, Info, Plus, Truck } from 'lucide-svelte';
+	import { ArrowDown, ArrowUp, Box, Info, Plus, Truck } from 'lucide-svelte';
 	import { page } from '$app/state';
 
 	import DashboardPageLayout from '$lib/components/DashboardPageLayout.svelte';
@@ -12,17 +12,20 @@
 		import { onMount } from 'svelte';
 		import * as Tooltip from "$lib/components/ui/tooltip";
 		import HelpTooltip from '$lib/components/HelpTooltip.svelte';
-	import { selectedListing } from '$lib/account.svelte.js';
+	import { selectedListing, refreshSelectedListing } from '$lib/account.svelte.js';
 	import { afterNavigate } from '$app/navigation';
 	import { browser } from '$app/environment';
+	import { debounce } from '@melt-ui/svelte/internal/helpers';
 
 	let { data = {
 		listing: { skus: []}},
 							children } = $props();
 	
+	
+	let variantCardContainer = $state(null);
+	let scrollDistance = $state(0); // For tracking scroll position of variant card container
 	let selectedVariant = $state('not selected');
 	let currentListing = $state(selectedListing.listing)
-
 	
 	afterNavigate(() => {
 		currentListing = selectedListing.listing;
@@ -49,6 +52,14 @@
 		}
 	});
 
+	if (browser) {
+		onMount(() => {
+			variantCardContainer.addEventListener('scroll', debounce(() => {
+				scrollDistance = variantCardContainer.scrollTop;
+			}, 100));
+		});
+	}
+
 </script>
 
 <DashboardPageLayout>
@@ -72,7 +83,7 @@
 				{/key}
 			
 	<!--			Variant cards-->
-				<div class="flex flex-row gap-3 sticky bottom-3.5 w-full h-fit bg-slate-100 self-end rounded-2xl shadow-md outline outline-1 outline-muted/40">
+				<div class="flex flex-row gap-3 z-10 sticky bottom-3.5 w-full h-fit bg-slate-100 self-end rounded-2xl shadow-md outline outline-1 outline-muted/40">
 				
 	<!--				Main listing card -->
 					<div class="flex-col flex gap-2.5 w-fit h-fit p-4 rounded-l-2xl bg-amber-50">
@@ -104,11 +115,11 @@
 								Variations are what users pick from and purchase.<br />
 								You may need to scroll to see all variations.
 							</HelpTooltip></p>
-						<div class="flex flex-row gap-3 gap-y-2 h-36 flex-wrap overflow-y-scroll">
+						<div class="flex flex-row gap-1 items-center w-full">
+						<div bind:this={variantCardContainer} class="flex flex-row gap-3 gap-y-2 h-36 flex-wrap overflow-y-scroll">
 							{#if !currentListing.skus}
 								<div></div>
 							{:else}
-							
 								{#each currentListing.skus as sku}
 									<a href={`/account/listings/${currentListing.id}/${sku.id}`}>
 										<Card.Root class="w-48 h-32 justify-between flex flex-col hover:border-accent transition-all hover:brightness-125
@@ -173,6 +184,10 @@
 									</svg>
 								</Card.Root>
 							</a>
+						</div>
+						
+						<ArrowDown strokeWidth="1.25" class="size-8 text-slate-700 opacity-70 transition-all
+																{scrollDistance !== (variantCardContainer?.scrollHeight - variantCardContainer?.clientHeight) ? 'rotate-0' : 'rotate-180'}" />
 						</div>
 					</div>
 				</div>
