@@ -40,3 +40,9 @@ export let selectedListing = $state({listing: {
 		skus: [],
 	}
 });
+
+export const refreshSelectedListing = async () => {
+	if (selectedListing.listing.id) {
+		selectedListing.listing = await fetchListing(selectedListing.listing.id, true);
+	}
+}
