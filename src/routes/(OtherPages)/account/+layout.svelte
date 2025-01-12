@@ -7,7 +7,7 @@ import { Card } from '$lib/components/ui/card/index.js';
 import { Button } from '$lib/components/ui/button/index.js';
 import * as DropdownMenu from "$lib/components/ui/dropdown-menu";
 import { page } from '$app/state';
-import { Plus } from 'lucide-svelte';
+import { ChartSpline, LayoutDashboard, LayoutList, Plus, Truck } from 'lucide-svelte';
 import NewListingDialog from '$lib/components/NewListingDialog.svelte';
 
 
@@ -16,6 +16,9 @@ let user = $derived(data.user);
 
 
 let selectedPage = $derived(page.url.pathname.split('/')[2]);
+
+let buttonClasses = ' border-transparent hover:border-accent/10 border justify-start transition-all hover:bg-white bg-none ';
+let selectedClasses = '!border-accent/30 bg-white pl-5 ';
 
 
 </script>
@@ -36,7 +39,7 @@ let selectedPage = $derived(page.url.pathname.split('/')[2]);
 							</Avatar.Root>
 							
 							<div class="flex flex-col p-2 justify-start">
-								<p class="font-semibold text-xl">{user['username']}</p>
+								<p class="font-semibold text-sm overflow-ellipsis w-full">{user['username']}</p>
 								<p class="text-sm text-left font-light text-slate-500">{user['id']}</p>
 							</div>
 						</div>
@@ -64,18 +67,26 @@ let selectedPage = $derived(page.url.pathname.split('/')[2]);
 			
 			<Separator />
 			
+			<div class="flex flex-col gap-1.5">
+				<div class="flex flex-row gap-1.5 pt-1 pb-1.5  items-center text-md font-semibold"><ChartSpline size={18} strokeWidth={1.25} />Seller Dashboard</div>
+				
+				<div class="flex flex-col gap-1">
+					<Button id="dashboard" href="/account/dashboard" class="{selectedPage==='dashboard'&&selectedClasses} {buttonClasses}"
+					variant="secondary"><LayoutDashboard size={20} strokeWidth={1.25} />Overview</Button>
+					<Button id="listings" href="/account/listings" class="{selectedPage==='listings'&&selectedClasses} {buttonClasses}"
+					variant="secondary"><LayoutList size={20} strokeWidth={1.25} />Listings</Button>
+					<Button id="orders" href="/account/orders" class="{selectedPage==='orders'&&selectedClasses} {buttonClasses}"
+					variant="secondary"><Truck size={20} strokeWidth={1.25} />Orders</Button>
+				</div>
+				<Separator />
+			</div>
 			
-			<Button id="dashboard" href="/account/dashboard" class="{selectedPage==='dashboard' ? 'border-accent' : ''} bg-white hover:border-accent border   hover:bg-white" variant="secondary">Dashboard</Button>
-			<Button id="listings" href="/account/listings" class="{selectedPage==='listings' ? 'border-accent ' : ''} bg-white hover:border-accent border   hover:bg-white" variant="secondary">Listings</Button>
-			<Button id="orders" href="/account/sales" class="{selectedPage==='orders' ? 'border-accent ' : ''} bg-white hover:border-accent border  hover:bg-white" variant="secondary">Orders</Button>
-			
-			<Separator />
 			
 			<div class="flex flex-col  p-1">
 				<div class="flex flex-row justify-between w-full items-center font-semibold text-lg rounded-md p-2">
 					Your listings
 					<NewListingDialog>
-						<Button class="w-min p-2 px-3" size="sm">
+						<Button class="w-min p-1 size-7 bg-emerald-600 hover:bg-emerald-500" size="sm">
 							<Plus />
 						</Button>
 					</NewListingDialog>

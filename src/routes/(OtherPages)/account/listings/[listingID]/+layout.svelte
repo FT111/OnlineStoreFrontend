@@ -2,7 +2,7 @@
 	import { run } from 'svelte/legacy';
 
 
-	import { ArrowDown, ArrowUp, Box, Info, Plus, Truck } from 'lucide-svelte';
+	import { ArrowDown, ArrowUp, Box, Info, Plus, TriangleAlert, Truck } from 'lucide-svelte';
 	import { page } from '$app/state';
 
 	import DashboardPageLayout from '$lib/components/DashboardPageLayout.svelte';
@@ -115,7 +115,7 @@
 								Variations are what users pick from and purchase.<br />
 								You may need to scroll to see all variations.
 							</HelpTooltip></p>
-						<div class="flex flex-row gap-1 items-center w-full">
+						<div class="flex flex-row justify-between gap-1 items-center w-full">
 						<div bind:this={variantCardContainer} class="flex flex-row gap-3 gap-y-2 h-36 flex-wrap overflow-y-scroll">
 							{#if !currentListing.skus}
 								<div></div>
@@ -134,6 +134,21 @@
 													{/key}
 													
 													<div class="flex flex-row gap-2">
+														{#if Object.keys(sku.options).length !== Object.keys(currentListing.skuOptions).length }
+															<Tooltip.Provider>
+																<Tooltip.Root>
+																	<Tooltip.Trigger>
+																		<div class="flex flex-row gap-1 items-center bg-red-700 text-white rounded-3xl px-2 ">
+																			<TriangleAlert size={18} strokeWidth={1.25} color="white" class="text-white stroke-white" />
+																		</div>
+																	</Tooltip.Trigger>
+																	<Tooltip.Content class="max-w-60">
+																		<p><strong>Invalid</strong> variant options selected<br/><br/>Variant may not be able to be selected</p>
+																	</Tooltip.Content>
+																</Tooltip.Root>
+															</Tooltip.Provider>
+														{/if}
+														
 														<Tooltip.Provider>
 															<Tooltip.Root>
 															<Tooltip.Trigger>
@@ -143,7 +158,7 @@
 																</div>
 															</Tooltip.Trigger>
 															<Tooltip.Content>
-																<p>Number of orders</p>
+																<p>Current Orders</p>
 															</Tooltip.Content>
 														</Tooltip.Root>
 														</Tooltip.Provider>
@@ -185,9 +200,13 @@
 								</Card.Root>
 							</a>
 						</div>
-						
+							
+							{#if currentListing.skus.length > 1}
+							
 						<ArrowDown strokeWidth="1.25" class="size-8 text-slate-700 opacity-70 transition-all
 																{scrollDistance !== (variantCardContainer?.scrollHeight - variantCardContainer?.clientHeight) ? 'rotate-0' : 'rotate-180'}" />
+								
+								{/if}
 						</div>
 					</div>
 				</div>
