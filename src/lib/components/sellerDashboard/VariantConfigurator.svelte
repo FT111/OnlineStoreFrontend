@@ -138,7 +138,7 @@
 		<div in:fly={{y:50}} class="flex flex-col bg-slate-50 p-2 px-4 border-b-2 border-slate-200">
 			<div class="flex flex-row gap-1 items-center">
 				{#if configuring}
-					<Button class="px-2" variant={"ghost"}>
+					<Button class="px-2" variant={"ghost"} onclick={()=>{removeCategory(category)}}>
 						<Trash2 size={20} strokeWidth={1.25} />
 					</Button>
 					<Input  class="font-semibold text-lg bg-none border-none w-fit" placeholder={category} value={category} />
@@ -149,7 +149,7 @@
 			</div>
 			<div class="flex flex-row flex-wrap relative rounded-t-2xl p-2 px-1 gap-2 w-full">
 				{#each variantOptions[category] as option}
-					<button in:fly={{x:-100, duration: 150, z:0}} out:fly={{x:-100, duration: 150, z: 0}} onclick={()=>{onSelect(category, option)}} class="{selectedOptions[category]===option ? ' !bg-accent border-amber-900 ' : '' }
+					<button in:fly={{x:-100, duration: 150, z:0}} out:fly={{x:-100, duration: 150, z: 0}} onclick={()=>{configuring ? removeOption(category, option) : onSelect(category, option)}} class="{selectedOptions[category]===option ? ' !bg-accent border-amber-900 ' : '' }
 					{currentAvailableOptions[category].includes(option)||!validation ? '' : ' disabled !hover:bg-primary/60 !bg-primary/60 !cursor-default  '}
 					 bg-primary flex flex-row z-10 gap-1 h-8 items-center font-semibold text-xs text-primary-foreground border-2 border-transparent outline-none hover:bg-destructive justify-center min-w-16 w-fit p-2 px-3 rounded-3xl flex-shrink-0 transition-all duration-250 ease-in-out cursor-pointer">
 						{option}
