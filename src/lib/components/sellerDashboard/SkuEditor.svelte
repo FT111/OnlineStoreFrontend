@@ -27,8 +27,6 @@
 	  options: {},
 	  
 	}), listingVariantOptions = {} } = $props();
-	sku.price = String(sku.price);
-	sku.stock = String(sku.stock);
 	let initialSKU = $state(JSON.parse(JSON.stringify(sku)));
 	$inspect(sku);
 	
