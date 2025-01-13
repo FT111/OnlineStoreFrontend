@@ -68,7 +68,7 @@ let selectedClasses = '!border-accent/30 bg-white pl-5 ';
 			<Separator />
 			
 			<div class="flex flex-col gap-1.5">
-				<div class="flex flex-row gap-1.5 pt-1 pb-1.5  items-center text-md font-semibold"><ChartSpline size={18} strokeWidth={1.25} />Seller Dashboard</div>
+				<div class="flex flex-row gap-1.5 pl-1.5 pt-1 pb-1.5  items-center text-md font-semibold"><ChartSpline size={18} strokeWidth={1.25} />Seller Dashboard</div>
 				
 				<div class="flex flex-col gap-1">
 					<Button id="dashboard" href="/account/dashboard" class="{selectedPage==='dashboard'&&selectedClasses} {buttonClasses}"

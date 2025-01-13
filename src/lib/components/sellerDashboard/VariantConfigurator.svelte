@@ -17,7 +17,7 @@
 		validation = true,
 		defaultOptions = false,
 		configuring = false } = $props();
-	$inspect(validation)
+
 	let lastSelectedCategory = $state(Object.keys(variantOptions)[0]);
 	let currentAvailableOptions = $state(variantOptions);
 	// Select the first option in each category by default
@@ -104,7 +104,6 @@
 		determineSelectableOptions();
 	}
 	
-	$inspect(selectedProduct, selectedOptions, defaultOptions, variantOptions, currentAvailableOptions);
 	
 	const addOption = (form, category) => {
 		form.preventDefault();
