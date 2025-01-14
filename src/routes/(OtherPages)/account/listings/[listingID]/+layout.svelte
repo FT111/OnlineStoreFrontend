@@ -134,7 +134,9 @@
 													{/key}
 													
 													<div class="flex flex-row gap-2">
-														{#if Object.keys(sku.options).length !== Object.keys(currentListing.skuOptions).length }
+														{#if Object.keys(sku.options).length !== Object.keys(currentListing.skuOptions).length ||
+														Object.keys(sku.options).some(option => !currentListing.skuOptions[option].includes(sku.options[option]))
+														&& Object.keys(currentListing).length > 0}
 															<Tooltip.Provider>
 																<Tooltip.Root>
 																	<Tooltip.Trigger>
