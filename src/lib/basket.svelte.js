@@ -1,57 +1,76 @@
-import { writable } from 'svelte/store';
 import { browser } from '$app/environment';
+import { GET, POST } from '$lib/api/core.js';
+import { enrichBasket } from '$lib/api/transactions.js';
 
 const createBasket = () => {
-	// Creates a reactive svelte writable store - {items: {sku.id: {sku, quantity}, total: 0}}
-	const { subscribe, set, update } = writable({items: {}, total: 0});
-
+	let basket = $state({items: {}, total:0, value:0});
+	// Init state
 	if (browser) {
-		// Load basketSvelte from local storage
-		const basket = localStorage.getItem('basketSvelte');
 		try {
-			// set(JSON.parse(basketSvelte));
+			const localBasket = localStorage?.getItem('basket');
+			if (localBasket) {
+				basket = JSON.parse(localBasket);
+			}
+		} catch (error) {
+			basket = {items: {}, total:0, value:0};
 		}
-		catch (e) {
-			localStorage.removeItem('basketSvelte');
-			set({items: {}, total: 0});
-		}
+	}
 
 
-		// Save basketSvelte to local storage
-		subscribe(value => {
-			localStorage.setItem('basketSvelte', JSON.stringify(value));
-		});
+	// Save basket to local storage on change
+	function saveBasketLocally() {
+		localStorage?.setItem('basket', JSON.stringify(basket));
+	}
+
+
+	// Add and remove items from basket
+	function addSKU(sku, parentListingID) {
+		if (basket.items[sku.id]) {
+			basket.items[sku.id].quantity++
+		} else {
+			basket.items[sku.id] = { quantity: 1 };
+		}
+		basket.total++;
+
+		saveBasketLocally();
+	}
+
+	function removeSKU(sku) {
+		const item = basket.items[sku.id];
+		if (item.quantity > 1) {
+			item.quantity--
+		} else {
+			delete basket.items[sku.id];
+		}
+		basket.total--;
+		saveBasketLocally();
+	}
+
+	function loadBasketContent() {
+		// Fetch basket content from server
+
+		if (basket.total === 0) {
+			return;
+		}
+
+		enrichBasket(JSON.parse(localStorage.getItem('basket')))
+			.then((response) => {
+				basket = response.data;
+			})
+			.catch((error) => {
+				console.error(error);
+			});
 	}
 
 	return {
-		subscribe,
-		addItem: (sku) => {
-			update(basket => {
-				if (basket.items[sku.id]) {
-					basket.items[sku.id].quantity++
-				} else {
-					basket.items[sku.id] = { ...sku, quantity: 1 };
-				}
-				basket.total += sku.price;
-
-				return basket;
-			});
+		get basket() {
+			return basket;
 		},
-		removeItem: (sku) => {
-			update(basket => {
-				const item = basket.items[sku];
-				if (item.quantity > 1) {
-					item.quantity--
-				} else {
-					delete basket.items[sku];
-				}
-				basket.total -= item.price;
-
-				return basket;
-			});
-		},
+		addSKU,
+		removeSKU,
+		loadBasketContent,
 	}
 
 }
 
-export const basketSvelte = createBasket();
+export const basketStore = createBasket();

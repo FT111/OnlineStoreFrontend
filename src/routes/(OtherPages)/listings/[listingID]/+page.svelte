@@ -11,6 +11,7 @@
 	import { queryListings } from '$lib/api/listings.js';
 	import VariantConfigurator from '$lib/components/sellerDashboard/VariantConfigurator.svelte';
 	import { redirect } from '@sveltejs/kit';
+	import { basketStore } from '$lib/basket.svelte.js';
 	
 	let { data } = $props();
 	let listing = $derived(data.listing)
@@ -127,7 +128,7 @@
 			{#key selectedSKU.price}
 			<Price price={selectedSKU.price ? selectedSKU.price : listing.skus[0].price} />
 				{/key}
-			<Button class="w-full h-full text-2xl basis-1/2 font-bold border-[1.5px] border-accent p-3 px-5 bg-accent hover:bg-accent hover:brightness-125 hover:border-amber-900 transition-all shadow-md rounded-xl" variant="default">Add to Basket</Button>
+			<Button onclick={()=> {basketStore.addSKU(selectedSKU)}} class="w-full h-full text-2xl basis-1/2 font-bold border-[1.5px] border-accent p-3 px-5 bg-accent hover:bg-accent hover:brightness-125 hover:border-amber-900 transition-all shadow-md rounded-xl" variant="default">Add to Basket</Button>
 		</div>
 	</div>
 </div>

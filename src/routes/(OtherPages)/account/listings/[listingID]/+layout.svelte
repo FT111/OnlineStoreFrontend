@@ -134,6 +134,7 @@
 													{/key}
 													
 													<div class="flex flex-row gap-2">
+<!--												Checks for sku option/listing option integrity		-->
 														{#if Object.keys(sku.options).length !== Object.keys(currentListing.skuOptions).length ||
 														Object.keys(sku.options).some(option => !currentListing.skuOptions[option].includes(sku.options[option]))
 														&& Object.keys(currentListing).length > 0}
