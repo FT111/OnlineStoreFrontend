@@ -1,13 +1,13 @@
 <script>
 	import { cn } from "$lib/utils.js";
-	let { el = $bindable(undefined), class: className = undefined, children, ...rest } = $props();
-	
+
+	let { ref = $bindable(null), class: className, children, ...restProps } = $props();
 </script>
 
 <div
-	bind:this={el}
+	bind:this={ref}
 	class={cn("grid gap-1.5 p-4 text-center sm:text-left", className)}
-	{...rest}
+	{...restProps}
 >
 	{@render children?.()}
 </div>

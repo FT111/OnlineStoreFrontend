@@ -1,13 +1,12 @@
 <script>
 	import { Dialog as DialogPrimitive } from "bits-ui";
 	import { cn } from "$lib/utils.js";
-	let { class: className = undefined, children, ...rest } = $props();
-	
+
+	let { ref = $bindable(null), class: className, ...restProps } = $props();
 </script>
 
 <DialogPrimitive.Description
+	bind:ref
 	class={cn("text-muted-foreground text-sm", className)}
-	{...rest}
->
-	{@render children?.()}
-</DialogPrimitive.Description>
+	{...restProps}
+/>

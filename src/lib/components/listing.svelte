@@ -7,7 +7,7 @@
 	import Image from "$lib/components/image.svelte";
 	import Price from "$lib/components/price.svelte";
 	import * as Avatar from "$lib/components/ui/avatar";
-	import { basketSvelte } from "$lib/basket.svelte.js";
+	import { basketStore } from "$lib/basket.svelte.js";
 		import { baseURL } from '$lib/api/core.js';
 	
 	
@@ -45,7 +45,7 @@
 		addToBasket = (event) => {
 		event.preventDefault();
 		console.log("Adding to basketSvelte");
-		basketSvelte.addItem({id: listing.id});
+		basketStore.addItem({id: listing.id});
 	}
 	} = $props();
 </script>

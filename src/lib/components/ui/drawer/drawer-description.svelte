@@ -1,14 +1,12 @@
 <script>
 	import { Drawer as DrawerPrimitive } from "vaul-svelte";
 	import { cn } from "$lib/utils.js";
-	let { el = $bindable(undefined), class: className = undefined, children, ...rest } = $props();
-	
+
+	let { ref = $bindable(null), class: className, ...restProps } = $props();
 </script>
 
 <DrawerPrimitive.Description
-	bind:el
+	bind:ref
 	class={cn("text-muted-foreground text-sm", className)}
-	{...rest}
->
-	{@render children?.()}
-</DrawerPrimitive.Description>
+	{...restProps}
+/>
