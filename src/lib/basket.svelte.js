@@ -3,7 +3,7 @@ import { GET, POST } from '$lib/api/core.js';
 import { enrichBasket } from '$lib/api/transactions.js';
 
 const createBasket = () => {
-	let basket = $state({items: {}, total:0, value:0});
+	let basket = $state({items: {}, total:0, value:0, enriched: false});
 	// Init state
 	if (browser) {
 		try {
@@ -49,13 +49,9 @@ const createBasket = () => {
 	function loadBasketContent() {
 		// Fetch basket content from server
 
-		if (basket.total === 0) {
-			return;
-		}
-
 		enrichBasket(JSON.parse(localStorage.getItem('basket')))
 			.then((response) => {
-				basket = response.data;
+				basket = { ...response.data, ...response.meta, enriched: true };
 			})
 			.catch((error) => {
 				console.error(error);
