@@ -12,7 +12,9 @@
 	import VariantConfigurator from '$lib/components/sellerDashboard/VariantConfigurator.svelte';
 	import { redirect } from '@sveltejs/kit';
 	import { basketStore } from '$lib/basket.svelte.js';
-	
+	import { Check } from 'lucide-svelte';
+	import { scale, fly } from 'svelte/transition';
+
 	let { data } = $props();
 	let listing = $derived(data.listing)
 	let selectedSKU = $state({
@@ -29,8 +31,28 @@
 		listing && listing.skuOptions && Object.keys(listing.skuOptions).length === 0
 	);
 	
+	let addProductButtonState = $state('default');
+	let addProductButtonStateClasses = $derived(()=>{
+		switch(addProductButtonState) {
+			case 'default':
+				return 'bg-accent hover:bg-accent hover:brightness-125 hover:border-amber-900';
+			case 'added':
+				return 'bg-green-500 hover:bg-green-500 hover:brightness-125 hover:border-green-500';
+		}
+	})
+	
 	let skus = true;
+	
+	function handleAddToBasket() {
+		basketStore.addSKU(selectedSKU).then(() => {
+			addProductButtonState = 'added';
+			setTimeout(() => {
+				addProductButtonState = 'default';
+			}, 2000);
+		});
+	}
 </script>
+
 
 <!--Page Container-->
 <div class="mt-20 md:px-14 px-1">
@@ -128,7 +150,23 @@
 			{#key selectedSKU.price}
 			<Price price={selectedSKU.price ? selectedSKU.price : listing.skus[0].price} />
 				{/key}
-			<Button onclick={()=> {basketStore.addSKU(selectedSKU)}} class="w-full h-full text-2xl basis-1/2 font-bold border-[1.5px] border-accent p-3 px-5 bg-accent hover:bg-accent hover:brightness-125 hover:border-amber-900 transition-all shadow-md rounded-xl" variant="default">Add to Basket</Button>
+			<Button onclick={()=> {handleAddToBasket()}} class="{addProductButtonState==='added' ? '!bg-emerald-600' : ''} w-56 h-full text-2xl font-bold border-[1.5px] border-accent p-3 px-5 bg-accent hover:bg-accent hover:brightness-125 hover:border-amber-900 transition-all shadow-md rounded-xl" variant="default">
+				<div class="grid grid-cols-1 grid-rows-1 items-center size-full">
+				
+				{#if addProductButtonState === 'default'}
+					<div in:fly={{y: 20, direction: 'top', absolute:true}} out:fly={{y: -20, direction: 'bottom', absolute:true}} style="grid-column: 1; grid-row: 1;">
+						<p>Add to Basket</p>
+					</div>
+				{:else}
+					<div class="flex flex-row gap-1.5 items-center" in:fly={{y:20, direction: 'top', absolute:true}} out:fly={{y: -20, direction: 'bottom', absolute:true}} style="grid-column: 1; grid-row: 1;">
+						<p>Added</p>
+						<span transition:scale={{direction: 'left'}}>
+							<Check class="size-10" />
+						</span>
+					</div>
+				{/if}
+				</div>
+			</Button>
 		</div>
 	</div>
 </div>
