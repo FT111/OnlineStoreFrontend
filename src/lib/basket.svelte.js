@@ -3,7 +3,7 @@ import { GET, POST } from '$lib/api/core.js';
 import { enrichBasket } from '$lib/api/transactions.js';
 
 const createBasket = () => {
-	let basket = $state({items: {}, total:0, value:0, enriched: false});
+	let basket = $state({ items: {}, total: 0, value: 0, enriched: false });
 	// Init state
 	if (browser) {
 		try {
@@ -12,7 +12,7 @@ const createBasket = () => {
 				basket = JSON.parse(localBasket);
 			}
 		} catch (error) {
-			basket = {items: {}, total:0, value:0};
+			basket = { items: {}, total: 0, value: 0 };
 		}
 	}
 
@@ -24,15 +24,22 @@ const createBasket = () => {
 
 
 	// Add and remove items from basket
-	function addSKU(sku, parentListingID) {
-		if (basket.items[sku.id]) {
-			basket.items[sku.id].quantity++
-		} else {
-			basket.items[sku.id] = { quantity: 1 };
-		}
-		basket.total++;
-
-		saveBasketLocally();
+	async function addSKU(sku) {
+		// Return a promise to orchestrate the UI
+		return new Promise((resolve, reject) => {
+			if (!sku) {
+				reject('SKU not found');
+			}
+			if (basket.items[sku.id]) {
+				basket.items[sku.id].quantity++
+			} else {
+				basket.items[sku.id] = { quantity: 1 };
+			}
+			basket.total++;
+			basket.enriched = false;
+			saveBasketLocally();
+			resolve();
+		});
 	}
 
 	function removeSKU(sku) {
@@ -46,16 +53,19 @@ const createBasket = () => {
 		saveBasketLocally();
 	}
 
-	function loadBasketContent() {
+	async function loadBasketContent() {
 		// Fetch basket content from server
-
-		enrichBasket(JSON.parse(localStorage.getItem('basket')))
-			.then((response) => {
-				basket = { ...response.data, ...response.meta, enriched: true };
-			})
-			.catch((error) => {
-				console.error(error);
-			});
+		return new Promise((resolve, reject) => {
+			enrichBasket(JSON.parse(localStorage.getItem('basket')))
+				.then((response) => {
+					basket = { ...response.data, ...response.meta, enriched: true };
+					resolve(basket);
+				})
+				.catch((error) => {
+					console.error(error);
+					reject(error);
+				});
+		});
 	}
 
 	return {
