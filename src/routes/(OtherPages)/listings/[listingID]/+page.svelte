@@ -14,6 +14,9 @@
 	import { basketStore } from '$lib/basket.svelte.js';
 	import { Check } from 'lucide-svelte';
 	import { scale, fly } from 'svelte/transition';
+	import { onNavigate } from '$app/navigation';
+	import { registerListingView } from '$lib/analytics/listings.js';
+	import { onMount } from 'svelte';
 
 	let { data } = $props();
 	let listing = $derived(data.listing)
@@ -42,6 +45,10 @@
 	})
 	
 	let skus = true;
+	
+	onMount(() => {
+		registerListingView(listing);
+	});
 	
 	function handleAddToBasket() {
 		basketStore.addSKU(selectedSKU).then(() => {
