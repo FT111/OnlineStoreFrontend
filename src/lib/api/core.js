@@ -47,11 +47,11 @@ export const GET = async (endpoint, token=null, credentialsOpt='omit') => {
 		}));
 }
 
-export const POST = async (endpoint, data, credentialsOpt='omit') => {
+export const POST = async (endpoint, data = null, credentialsOpt='omit') => {
 	return await fetch(baseURL + endpoint, {
 		method: 'POST',
 		headers: formHeaders(),
-		body: data,
+		body: data ? data : null, // If data is not provided, send null
 		credentials: 'include',
 
 	}).then((response) => response.json()
