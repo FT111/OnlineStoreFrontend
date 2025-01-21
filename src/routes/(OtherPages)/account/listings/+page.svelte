@@ -29,6 +29,7 @@
 						<Table.Head>Status</Table.Head>
 						<Table.Head>Variants</Table.Head>
 						<Table.Head>Views</Table.Head>
+						<Table.Head>Clicks</Table.Head>
 						<Table.Head>Sales</Table.Head>
 						<Table.Head class="text-right">Revenue</Table.Head>
 						<Table.Head class="w-[100px]">Actions</Table.Head>
@@ -45,6 +46,7 @@
 								<Table.Cell></Table.Cell>
 								<Table.Cell></Table.Cell>
 								<Table.Cell></Table.Cell>
+								<Table.Cell></Table.Cell>
 								<Table.Cell class="text-right"><Skeleton class="w-8" /></Table.Cell>
 								<Table.Cell class="flex flex-row gap-2 justify-end">
 									<Button variant="ghost"><Skeleton class="w-[50px]" /></Button>
@@ -57,8 +59,9 @@
 								<Table.Row class="h-16">
 									<Table.Cell class="font-medium">{listing.title}</Table.Cell>
 									<Table.Cell><Badge variant="{listing.public ? 'default' : 'outline'}">{listing.public ? 'Public' : 'Private'}</Badge></Table.Cell>
-									<Table.Cell>4</Table.Cell>
+									<Table.Cell>{listing.skus?.length}</Table.Cell>
 									<Table.Cell>{listing.views}</Table.Cell>
+									<Table.Cell>{listing.clicks}</Table.Cell>
 									<Table.Cell>{listing.sales}</Table.Cell>
 									<Table.Cell class="text-right"><Price price={listing.basePrice} /></Table.Cell>
 									<Table.Cell class="flex flex-row gap-2 justify-end">
