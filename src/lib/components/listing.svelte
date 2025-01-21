@@ -9,6 +9,7 @@
 	import * as Avatar from "$lib/components/ui/avatar";
 	import { basketStore } from "$lib/basket.svelte.js";
 		import { baseURL } from '$lib/api/core.js';
+		import ListingImpressionHandler from '$lib/components/analytics/listingImpressionHandler.svelte';
 	import { registerListingClick } from '$lib/analytics/listings.js';
 	
 	/**
@@ -21,6 +22,7 @@
 	 */
 
 	/** @type {Props} */
+	let listingRef= $state(null);
 	let {
 		class: className = '',
 		listing = {ownerUser: {
@@ -45,9 +47,12 @@
 		basketStore.addItem({id: listing.id});
 	}
 	} = $props();
+	
+	
 </script>
 
-<a href="/listings/{listing.id}" class="w-full h-min {className}" onclick={registerListingClick(listing)}>
+
+<a  href="/listings/{listing.id}" class="w-full h-min {className}" onclick={registerListingClick(listing)}>
 	<Card.Root class="flex flex-col justify-start h-full w-full shadow-sm group rounded-xl bg-muted/60
 					transition-all duration-150 ease-in-out hover:scale-[1.00] hover:bg-slate-200/50 hover:border-accent/50
 					border-slate-200 gap-0" href="/listings/{listing.id}">
@@ -93,7 +98,7 @@
 			
 		</Card.Header>
 		<div class="flex flex-col justify-end">
-			<Card.Content class="py-1 ">
+			<Card.Content class="py-1 " bind:ref={listingRef}>
 				<Image class="h-full rounded-md border-b aspect-square  " src={listing.images ? `${baseURL}static/listingImages/${listing.images[0]}` : 'https://placehold.co/1000'} alt="{listing.description}" />
 			</Card.Content>
 			<Card.Footer class="gap-2 justify-end pb-3">
@@ -159,3 +164,4 @@
 		</div>
 	</Card.Root>
 </a>
+<ListingImpressionHandler listing={listing} listingRef={listingRef} />

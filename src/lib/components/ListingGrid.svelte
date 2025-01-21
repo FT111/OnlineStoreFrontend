@@ -30,7 +30,7 @@
 				
 				</div>
 			{:else}
-				{#each data.data as listing}
+				{#each data.data as listing, i}
 					<Listing listing={listing} editMode={false} />
 				{/each}
 			{/if}
