@@ -1,9 +1,9 @@
 <script>
 	import { cn } from "$lib/utils.js";
-	let { class: className = undefined, children, ...rest } = $props();
-	
+
+	let { ref = $bindable(null), class: className, children, ...restProps } = $props();
 </script>
 
-<div class={cn("flex items-center p-6 pt-0", className)} {...rest}>
+<div bind:this={ref} class={cn("flex items-center p-6 pt-0", className)} {...restProps}>
 	{@render children?.()}
 </div>
