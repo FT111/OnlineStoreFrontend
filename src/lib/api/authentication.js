@@ -3,7 +3,7 @@ import { GET, POST, PUT } from './core.js';
 
 
 export const token = () => {
-	if (!document.cookie) {
+	if (!document.cookie.split('; ').find(row => row.startsWith('token='))) {
 		return null;
 	}
 	return document.cookie.split('; ').find(row => row.startsWith('token=')).split('=')[1];
@@ -41,6 +41,8 @@ export const signUp = async (username, name, email, password) => {
 	if (!response.data.token) {
 		new Error('Sign up failed');
 	}
+
+	document.cookie = `token=${response.data.token}`;
 
 	return true;
 }

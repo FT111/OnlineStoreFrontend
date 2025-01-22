@@ -31,12 +31,14 @@
 		console.log('Signing up');
 		if (confirmPassword !== password) {
 			toast.error('Passwords do not match');
-			return;
+			
+			throw Error('Passwords do not match');
 			}
 	  
 		if (password.length < 8) {
 			toast.error('Password must be at least 8 characters long');
-			return;
+			
+			throw Error('Password must be at least 8 characters long');
 		}
 	 
 		
@@ -44,8 +46,7 @@
 		await signUp(username, name, email, password).then((response) => {
 			if (response) {
 				console.log('Signed up');
-				invalidateAll();
-				goto('/dashboard');
+				window.location.href = '/';
 			} else {
 				toast.error('An error occurred. Please try again');
 			}

@@ -10,7 +10,6 @@ const formHeaders = (userToken) => {
 	// Allows for it to be used in the server
 	if (browser && !userToken) {
 		userToken = token()
-		console.log(`UserToken: ${userToken}`);
 	}
 
 	let headers = {'Content-Type': 'application/json',
@@ -66,7 +65,7 @@ export const POST = async (endpoint, data = null, credentialsOpt='omit') => {
 export const PUT = async (endpoint, data, token=null, credentialsOpt='omit') => {
 	return await fetch(baseURL + endpoint, {
 		method: 'PUT',
-		headers: formHeaders(token),
+		headers: formHeaders(),
 		body: data,
 		credentials: 'include',
 
