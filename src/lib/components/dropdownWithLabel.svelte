@@ -22,7 +22,7 @@
 		{readonly}
 		on:blur
 		on:change
-		on:click
+		onclick
 		on:focus
 		on:focusin
 		on:focusout

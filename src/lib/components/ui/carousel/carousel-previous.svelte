@@ -28,7 +28,7 @@
 		className
 	)}
 	disabled={!$canScrollPrev}
-	on:click={scrollPrev}
+	onclick={scrollPrev}
 	on:keydown={handleKeyDown}
 	{...rest}
 >

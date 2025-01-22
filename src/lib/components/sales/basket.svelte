@@ -25,7 +25,7 @@ $inspect(basketStore.basket);
 	<Sheet.Content class="p-0 overflow-y-scroll h-full flex flex-col w-full bg-slate-100" width="64">
 		<Sheet.Header class="sticky top-0 bg-none backdrop-blur-2xl z-10 flex flex-row items-center pr-6 justify-between">
 			<Sheet.Title class="p-8">Your Basket</Sheet.Title>
-			<Button variant="ghost" on:click={()=>{basketOpen=false}}>
+			<Button variant="ghost" onclick={()=>{basketOpen=false}}>
 				<svg   xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
 					<path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
 				</svg>

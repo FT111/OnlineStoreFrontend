@@ -12,7 +12,7 @@
 		className
 	)}
 	{...rest}
-	on:click
+	onclick
 	on:keydown
 >
 	<SwitchPrimitive.Thumb

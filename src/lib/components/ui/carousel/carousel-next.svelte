@@ -28,7 +28,7 @@
 		className
 	)}
 	disabled={!$canScrollNext}
-	on:click={scrollNext}
+	onclick={scrollNext}
 	on:keydown={handleKeyDown}
 	{...rest}
 >

@@ -10,18 +10,8 @@
 	import { basketStore } from "$lib/basket.svelte.js";
 		import { baseURL } from '$lib/api/core.js';
 		import ListingImpressionHandler from '$lib/components/analytics/listingImpressionHandler.svelte';
-	import { registerListingClick } from '$lib/analytics/listings.js';
+	import { registerListingClick, registerListingImpression } from '$lib/analytics/listings.js';
 	
-	/**
-	 * @typedef {Object} Props
-	 * @property {string} [class]
-	 * @property {any} [listing] - Listing object - Default values are used during skeleton loading
-	 * @property {boolean} [editMode]
-	 * @property {boolean} [isLoading]
-	 * @property {any} [addToBasket]
-	 */
-
-	/** @type {Props} */
 	let listingRef= $state(null);
 	let {
 		class: className = '',
@@ -43,16 +33,19 @@
 		isLoading = false,
 		addToBasket = (event) => {
 		event.preventDefault();
-		console.log("Adding to basketSvelte");
 		basketStore.addItem({id: listing.id});
 	}
 	} = $props();
 	
+	function clickHandler(e) {
+		registerListingImpression(listing);
+		registerListingClick(listing);
+	}
 	
 </script>
 
 
-<a  href="/listings/{listing.id}" class="w-full h-min {className}" onclick={registerListingClick(listing)}>
+<a  href="/listings/{listing.id}" class="w-full h-min {className}" onclick={clickHandler}>
 	<Card.Root class="flex flex-col justify-start h-full w-full shadow-sm group rounded-xl bg-muted/60
 					transition-all duration-150 ease-in-out hover:scale-[1.00] hover:bg-slate-200/50 hover:border-accent/50
 					border-slate-200 gap-0" href="/listings/{listing.id}">
@@ -104,24 +97,24 @@
 			<Card.Footer class="gap-2 justify-end pb-3">
 				<div in:slide={{duration:300}} class="flex flex-row gap-1">
 				{#if editMode === true}
-						<Button variant="ghost" class="hover:bg-red-600/60 hover:text-white md:w-md opacity-0 group-hover:opacity-100 transition-all duration-200" on:click={() => console.log("Delete")}>
+						<Button variant="ghost" class="hover:bg-red-600/60 hover:text-white md:w-md opacity-0 group-hover:opacity-100 transition-all duration-200" onclick={() => console.log("Delete")}>
 							<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
 								<path stroke-linecap="round" stroke-linejoin="round" d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0" />
 							</svg>
 						</Button>
-						<Button variant="ghost" class="w-min opacity-0 group-hover:opacity-100 transition-all duration-200" on:click={() => console.log("Edit")}>
+						<Button variant="ghost" class="w-min opacity-0 group-hover:opacity-100 transition-all duration-200" onclick={() => console.log("Edit")}>
 							<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
 								<path stroke-linecap="round" stroke-linejoin="round" d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L6.832 19.82a4.5 4.5 0 0 1-1.897 1.13l-2.685.8.8-2.685a4.5 4.5 0 0 1 1.13-1.897L16.863 4.487Zm0 0L19.5 7.125" />
 							</svg>
 						</Button>
 					{:else}
-					<Button variant="ghost" class="w-min opacity-100 group-hover:opacity-100 transition-all duration-200 hover:bg-primary" on:click={(event) => addToBasket(event)}>
+					<Button variant="ghost" class="w-min opacity-100 group-hover:opacity-100 transition-all duration-200 hover:bg-primary" onclick={(event) => addToBasket(event)}>
 						<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-8">
 							<path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
 						</svg>
 					</Button>
 	
-	<!--				<Button variant="ghost" class="w-min opacity-0 group-hover:opacity-100 transition-all duration-200" on:click={() => console.log("Edit")}>-->
+	<!--				<Button variant="ghost" class="w-min opacity-0 group-hover:opacity-100 transition-all duration-200" onclick={() => console.log("Edit")}>-->
 	<!--					<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">-->
 	<!--						<path stroke-linecap="round" stroke-linejoin="round" d="M3.75 3.75v4.5m0-4.5h4.5m-4.5 0L9 9M3.75 20.25v-4.5m0 4.5h4.5m-4.5 0L9 15M20.25 3.75h-4.5m4.5 0v4.5m0-4.5L15 9m5.25 11.25h-4.5m4.5 0v-4.5m0 4.5L15 15" />-->
 	<!--					</svg>-->

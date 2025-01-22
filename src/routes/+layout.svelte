@@ -43,8 +43,8 @@
 		</div>
 		
 		<div class="flex flex-col sm:flex-row gap-4">
-			<Button on:click={() => giveConsent(consentPopup)} class="rounded-xl">Accept</Button>
-			<Button on:click={() => revokeConsent(consentPopup)} class="rounded-xl" variant="secondary">Decline</Button>
+			<Button onclick={() => giveConsent(consentPopup)} class="rounded-xl">Accept</Button>
+			<Button onclick={() => revokeConsent(consentPopup)} class="rounded-xl" variant="secondary">Decline</Button>
 		</div>
 	</div>
 </div>
