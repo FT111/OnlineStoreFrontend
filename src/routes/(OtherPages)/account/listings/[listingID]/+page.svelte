@@ -5,6 +5,7 @@
 	
 	let { data } = $props();
 	let listing = selectedListing.listing
+	selectedListing.listing = data.listing;
 
 	
 </script>

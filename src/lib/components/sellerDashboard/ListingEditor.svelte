@@ -33,13 +33,14 @@
 	import { Toggle } from '$lib/components/ui/toggle/index.js';
 	import * as Alert from '$lib/components/ui/alert/index.js';
 	
+	
 	let initiallisting = $state(JSON.parse(JSON.stringify(selectedListing.listing)));
 	let listing = $state(selectedListing.listing);
 	$inspect(listing, initiallisting);
 	
 	if (browser){
 		addEventListener('skuSaved', () => {
-			listing = selectedListing;
+			listing = selectedListing.listing;
 		});
 	}
 
