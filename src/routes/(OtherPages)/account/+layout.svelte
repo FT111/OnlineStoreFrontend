@@ -40,7 +40,7 @@ let selectedClasses = '!border-accent/30 bg-white pl-5 ';
 							
 							<div class="flex flex-col p-2 justify-start">
 								<p class="font-semibold text-sm overflow-ellipsis w-full">{user['username']}</p>
-								<p class="text-sm text-left font-light text-slate-500">{user['id']}</p>
+<!--								<p class="text-sm text-left font-light text-slate-500">{user['id']}</p>-->
 							</div>
 						</div>
 						

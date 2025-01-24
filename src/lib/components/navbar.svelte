@@ -98,11 +98,6 @@
 									<DropdownMenu.GroupHeading>
 										<span>My Sales</span>
 									</DropdownMenu.GroupHeading>
-									<DropdownMenu.Sub>
-										<DropdownMenu.SubTrigger>
-											<span>Dashboard...</span>
-										</DropdownMenu.SubTrigger>
-										<DropdownMenu.SubContent>
 											<DropdownMenu.Item>
 												<span>Dashboard</span>
 											</DropdownMenu.Item>
@@ -114,24 +109,7 @@
 											<DropdownMenu.Item>
 												<span>Sales</span>
 											</DropdownMenu.Item>
-										</DropdownMenu.SubContent>
-									</DropdownMenu.Sub>
-									<DropdownMenu.Item>
-										<Plus class="mr-2 size-4" />
-										<span>New Team</span>
-										<DropdownMenu.Shortcut>⌘+T</DropdownMenu.Shortcut>
-									</DropdownMenu.Item>
 								</DropdownMenu.Group>
-								<DropdownMenu.Separator />
-								<DropdownMenu.Item>
-									<span>GitHub</span>
-								</DropdownMenu.Item>
-								<DropdownMenu.Item>
-									<span>Support</span>
-								</DropdownMenu.Item>
-								<DropdownMenu.Item>
-									<span>API</span>
-								</DropdownMenu.Item>
 								<DropdownMenu.Separator />
 								<DropdownMenu.Item>
 									<span>Log out</span>

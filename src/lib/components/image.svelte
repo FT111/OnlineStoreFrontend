@@ -12,8 +12,6 @@
 
 	/** @type {Props} */
 	let { src = "https://via.placeholder.com/800", alt = "Image", class: className = undefined } = $props();
-	
-
 
 
 	let loaded = $state(false);
@@ -26,10 +24,10 @@
 	
 </script>
 
-<div class="w-full h-full max-h-full grid grid-cols-1 grid-rows-1">
+<div class="w-full h-auto max-h-full grid grid-cols-1 grid-rows-1">
 	{#if !loaded}
-		<Skeleton class="aspect-square h-full w-auto rounded-md col" style="grid-column: 1;grid-row: 1" />
+		<Skeleton class="aspect-square h-auto w-full rounded-md col" style="grid-column: 1;grid-row: 1" />
 	{/if}
-	<img loading="lazy" bind:this={imageElement} src={src} alt={alt} class="rounded-md border-b object-cover w-fit h-full opacity-0 {className}" style="grid-column: 1;grid-row: 1" onload={handleLoad} />
+	<img loading="lazy" bind:this={imageElement} src={src} alt={alt} class="rounded-md border-b object-cover w-full h-auto opacity-0 {className}" style="grid-column: 1;grid-row: 1" onload={handleLoad} />
 	
 </div>

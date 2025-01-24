@@ -67,9 +67,7 @@
 	<div class="h-fit sm:h-[80vh] bg-muted/30 rounded-2xl flex flex-col sm:flex-row gap-5 p-5">
 	
 <!--	Images Container	-->
-		<div class="basis-1/2">
-			<Image src="https://via.placeholder.com/1000" alt="Listing Image" class="w-full h-full" />
-		</div>
+			<Image src="https://via.placeholder.com/1000" alt="Listing Image" class="w-1/2 h-auto" />
 		
 <!--	Detail Container	-->
 		<div class="sm:basis-1/2 basis-1 sm:w-1/2 flex flex-col gap-4 flex-shrink-0 justify-between">
