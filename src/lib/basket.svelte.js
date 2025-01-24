@@ -54,6 +54,11 @@ const createBasket = () => {
 	}
 
 	async function loadBasketContent() {
+		if (basket.total === 0) {
+			console.log('Basket is empty');
+			return;
+		}
+
 		// Fetch basket content from server
 		return new Promise((resolve, reject) => {
 			enrichBasket(JSON.parse(localStorage.getItem('basket')))

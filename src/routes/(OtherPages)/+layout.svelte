@@ -10,8 +10,11 @@
 
 </script>
 
-<Navbar user={data.user} />
-
-{@render children?.()}
+<main class="min-h-screen">
+	<Navbar user={data.user} />
+	
+	{@render children?.()}
+	
+</main>
 
 <Footer />
