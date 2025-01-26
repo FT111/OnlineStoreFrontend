@@ -4,9 +4,10 @@
 	import * as Card from '$lib/components/ui/card/index.js';
 		import { Input } from '$lib/components/ui/input/index.js';
 		import Dropdown from '$lib/components/dropdown.svelte';
+		import DropdownWithLabel from '$lib/components/DropdownWithLabel.svelte';
 		import { fetchCategories, fetchCategory } from '$lib/api/categories.js';
 		import { Button } from '$lib/components/ui/button/index.js';
-		import { newListing } from '$lib/api/listings.js';
+		import { newListing, fetchConditions } from '$lib/api/listings.js';
 		import {
 					ArrowBigRight,
 					ArrowRight,
@@ -32,6 +33,7 @@
 		let selectedSubcategory = $state();
 		let selectedTitle = $state();
 		let selectedDesc = $state();
+	let selectedCondition = $state();
 		
 		let submitFunc = $state();
 		
@@ -39,7 +41,8 @@
 			title: selectedTitle,
 			description: selectedDesc,
 			category: selectedCategory,
-			subCategory: selectedSubcategory
+			subCategory: selectedSubcategory,
+			condition: selectedCondition
 		})
 		
 		
@@ -80,7 +83,21 @@
 	<!--					-->
 						<form onsubmit={(event) => {submitFunc(event)}}>
 							<div class="flex flex-col gap-3.5 items-end">
-								<InputWithLabel required bind:value={selectedTitle} max="40" label="Title" placeholder="What are you selling?">Title</InputWithLabel>
+								<div class="flex flex-row gap-3.5 w-full items-end">
+									<InputWithLabel required bind:value={selectedTitle} max="40" label="Title" placeholder="What are you selling?">Title</InputWithLabel>
+									
+									<div class="w-1/2">
+										{#await fetchConditions()}
+										<DropdownWithLabel class="w-full" required title="What condition is it in?">Condition</DropdownWithLabel>
+										{:then conditions}
+										<DropdownWithLabel class="w-full" required options={conditions.data} title="What condition is it in?"
+										bind:value={selectedCondition}>Condition</DropdownWithLabel>
+										{:catch error}
+										<p>{error.message}</p>
+										{/await}
+									</div>
+									
+								</div>
 								<Textarea bind:value={selectedDesc} max="100" class="h-28 text-wrap"  label="Description" placeholder="Describe your listing — Make sure to include keywords to appear in search results" />
 								
 								<div class="flex flex-row gap-3.5 w-full">
@@ -96,7 +113,7 @@
 									</div>
 									
 									<div class="basis-1/2">
-									{#if selectedCategory}
+									{#if true}
 										{#key formData.subCategory}
 											{#await fetchCategory(selectedCategory)}
 												<Dropdown required title="Subcategory" />

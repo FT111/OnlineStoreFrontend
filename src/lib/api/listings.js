@@ -67,3 +67,7 @@ export const queryListings = async (query=null, category=null, subCategory=null,
 export const fetchUserListings = async (userID, includePrivileged=false) => {
 	return await GET(`users/${userID}/listings${includePrivileged ? '?includePrivileged=true' : ''}`);
 }
+
+export const fetchConditions = async () => {
+	return await GET('listings/conditions/');
+}
