@@ -10,5 +10,9 @@ export const getUserByID = async (id, token=null) => {
 }
 
 export const requestPasswordReset = async (email) => {
-	return POST('users/reset', JSON.stringify({'email': email}));
+	return POST('users/requestPasswordReset', JSON.stringify({'email': email}));
+}
+
+export const resetPassword = async (token, password) => {
+	return POST(`users/resetPassword`, JSON.stringify({'token': token, 'password': password}));
 }

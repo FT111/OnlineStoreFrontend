@@ -3,10 +3,34 @@
 	import * as Card from '$lib/components/ui/card/index.js';
 	import { Input } from '$lib/components/ui/input/index.js';
 	import InputWithLabel from '$lib/components/InputWithLabel.svelte';
+	import { resetPassword } from '$lib/api/user.js';
 	import { Button } from '$lib/components/ui/button/index.js';
 	import Logo from '$lib/branding/logo.svelte';
+	import { toast } from 'svelte-sonner';
 
 	let { data } = $props();
+	
+	async function handlePasswordReset(e) {
+		e.preventDefault();
+		const formData = new FormData(e.target);
+		const password = formData.get('password');
+		const passwordConfirmation = formData.get('passwordConfirmation');
+		
+		if (password !== passwordConfirmation) {
+			toast.error('Passwords do not match')
+			return;
+		}
+		toast.info(data.token)
+		toast.info(password)
+		await resetPassword(data.token, password).then((data) =>
+		{
+			if (data.data) {
+				toast.success('Password reset!')
+			} else {
+				toast.error('Invalid Reset URL')
+			}
+		})
+	}
 </script>
 
 <div class="w-full h-screen flex flex-col gap-6 items-center justify-center bg-primary  "
@@ -15,9 +39,9 @@ style={"background-image: url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.o
 	<Card.Root class="p-6 w-full sm:w-1/3 border-none">
 		<Card.Title>Reset your password</Card.Title>
 		<Card.Content>
-			<form class="flex flex-col gap-4">
-				<InputWithLabel type="password" placeholder="New password">New password</InputWithLabel>
-				<InputWithLabel type="password" placeholder="Confirm new password">Password Confirmation</InputWithLabel>
+			<form class="flex flex-col gap-4" onsubmit={(e)=>handlePasswordReset(e)}>
+				<InputWithLabel name="password" type="password" placeholder="New password">New password</InputWithLabel>
+				<InputWithLabel name="passwordConfirmation" type="password" placeholder="Confirm new password">Password Confirmation</InputWithLabel>
 				
 				<Button type="submit" class="w-full">Reset password</Button>
 			</form>
