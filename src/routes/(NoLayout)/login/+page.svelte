@@ -6,7 +6,10 @@
 	import { Button } from '$lib/components/ui/button/index.js';
 	import { login } from '$lib/api/authentication.js';
 	import StateButton from '$lib/components/StateButton.svelte';
+	import {baseURL} from '$lib/api/core.js';
+	import * as Popover from '$lib/components/ui/popover/index.js';
 	import { backInOut } from 'svelte/easing';
+	import { requestPasswordReset } from '$lib/api/user.js';
 	
 		
 	let email = $state();
@@ -15,8 +18,25 @@
 	let submitBtnElement = $state();
 	let signIn = $state();
 	
+	let passwordResetOpenState = $state(false);
+	
 	async function handleLoginAttempt() {
 		return await login(email, password)
+	}
+	
+	async function handlePasswordResetRequest(e) {
+		e.preventDefault();
+		passwordResetOpenState = false;
+		
+		const formData = new FormData(e.target);
+		const emailAddress = formData.get('emailAddress');
+		console.log(emailAddress);
+		const data =  await requestPasswordReset(emailAddress);
+		if (data.data) {
+			console.log('Password reset email sent');
+		} else {
+			alert('An error occurred');
+		}
 	}
 </script>
 
@@ -46,16 +66,29 @@
 			</div>
 
 			
-			<form bind:this={signInFormElement} onsubmit={(event) => {signIn(event, true)}} class="flex flex-col gap-4 md:w-5/6 w-full">
+			<form bind:this={signInFormElement} onsubmit={(event) => {signIn(event, true)}} class="flex flex-col gap-4 md:w-5/6 w-full items-start">
 				<Input bind:value={email} type="email" required placeholder="Email" name="username" />
 				<Input bind:value={password} type="password" required placeholder="Password" name="password"  />
 				
-				<StateButton bind:this={submitBtnElement} authFunction={handleLoginAttempt} bind:onPress={signIn} class="w-full justify-between hover:drop-shadow-xl drop-shadow-none transition-all duration-150">
-					<p out:fly={{y:-20, easing: backInOut, duration: 700}}>Sign in</p>
-					<svg out:fade xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-5">
-						<path stroke-linecap="round" stroke-linejoin="round" d="M16.5 10.5V6.75a4.5 4.5 0 1 0-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 0 0 2.25-2.25v-6.75a2.25 2.25 0 0 0-2.25-2.25H6.75a2.25 2.25 0 0 0-2.25 2.25v6.75a2.25 2.25 0 0 0 2.25 2.25Z" />
-					</svg>
-				</StateButton>
+				<div class="flex flex-col gap-0.5 w-full items-start">
+					<StateButton bind:this={submitBtnElement} authFunction={handleLoginAttempt} bind:onPress={signIn} class="w-full justify-between hover:drop-shadow-xl drop-shadow-none transition-all duration-150">
+						<p out:fly={{y:-20, easing: backInOut, duration: 700}}>Sign in</p>
+						<svg out:fade xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-5">
+							<path stroke-linecap="round" stroke-linejoin="round" d="M16.5 10.5V6.75a4.5 4.5 0 1 0-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 0 0 2.25-2.25v-6.75a2.25 2.25 0 0 0-2.25-2.25H6.75a2.25 2.25 0 0 0-2.25 2.25v6.75a2.25 2.25 0 0 0 2.25 2.25Z" />
+						</svg>
+					</StateButton>
+					<Popover.Root bind:open={passwordResetOpenState}>
+						<Popover.Trigger>
+						<Button variant="link" class="text-sm text-left text-muted-foreground p-0 py-0">Forgot your password?</Button>
+						</Popover.Trigger>
+						<Popover.Content>
+							<form class="flex flex-col gap-2.5 items-start" onsubmit={(e)=>handlePasswordResetRequest(e)}>
+								<Input minlength=1 type="email" required placeholder="Email" name="emailAddress" />
+								<Button submit variant="secondary" class="w-full" type="submit">Email me a password reset</Button>
+							</form>
+						</Popover.Content>
+					</Popover.Root>
+				</div>
 			</form>
 		
 		</Card>
