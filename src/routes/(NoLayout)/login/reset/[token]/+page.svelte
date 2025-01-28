@@ -7,6 +7,7 @@
 	import { Button } from '$lib/components/ui/button/index.js';
 	import Logo from '$lib/branding/logo.svelte';
 	import { toast } from 'svelte-sonner';
+	import { goto } from '$app/navigation';
 
 	let { data } = $props();
 	
@@ -20,12 +21,15 @@
 			toast.error('Passwords do not match')
 			return;
 		}
-		toast.info(data.token)
-		toast.info(password)
+		
 		await resetPassword(data.token, password).then((data) =>
 		{
-			if (data.data) {
+			if (Object.keys(data).includes('data')) {
 				toast.success('Password reset!')
+				
+				setTimeout(() => {
+					goto('/login')
+				}, 1000);
 			} else {
 				toast.error('Invalid Reset URL')
 			}

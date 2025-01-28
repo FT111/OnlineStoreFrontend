@@ -10,6 +10,7 @@
 	import * as Popover from '$lib/components/ui/popover/index.js';
 	import { backInOut } from 'svelte/easing';
 	import { requestPasswordReset } from '$lib/api/user.js';
+	import { toast } from 'svelte-sonner';
 	
 		
 	let email = $state();
@@ -32,10 +33,10 @@
 		const emailAddress = formData.get('emailAddress');
 		console.log(emailAddress);
 		const data =  await requestPasswordReset(emailAddress);
-		if (data.data) {
-			console.log('Password reset email sent');
+		if (Object.keys(data).includes('data')) {
+			toast.success('Password reset email sent if the email exists');
 		} else {
-			alert('An error occurred');
+			toast.error('Error occurred');
 		}
 	}
 </script>
