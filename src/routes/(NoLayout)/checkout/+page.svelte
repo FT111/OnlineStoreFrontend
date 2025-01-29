@@ -24,16 +24,9 @@
 			<div class="md:max-w-full flex flex-col w-full gap-4">
 				<h2 class="p-6 z-10 text-4xl font-semibold top-0 sticky bg-primary/80 w-full text-left backdrop-blur-2xl">Summary</h2>
 				<ul class="px-6 flex flex-col gap-2 py-0 rounded-lg text-black">
-					{#await basketStore.loadBasketContent()}
-						{#each Array(basketStore.basket.items.length) as _}
-								<Skeleton class="w-1/2 h-2.5" />
-						{/each}
-					{:then basket}
 					{#each Object.values(basketStore.basket.items) as item}
 						<SKUrow product={item}/>
 					{/each}
-					
-					{/await}
 				</ul>
 				<ul class="p-6 z-10 sticky bottom-0 bg-primary/80 backdrop-blur-2xl">
 					<li>Total: {basketStore.basket.total} products</li>
