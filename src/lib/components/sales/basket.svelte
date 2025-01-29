@@ -6,6 +6,7 @@ import * as Sheet from '$lib/components/ui/sheet/index.js';
 import { basketStore } from '$lib/basket.svelte.js';
 import { Skeleton } from '$lib/components/ui/skeleton/index.js';
 import * as Popover from "$lib/components/ui/popover";
+import { page  } from '$app/state';
 
 
 let basketOpen = $state(false);
@@ -81,7 +82,7 @@ $inspect(basketStore.basket);
 			<div class="h-fit bottom-0 sticky bg-muted/50 backdrop-blur-2xl w-full flex flex-row gap-8 p-5 mt-2 items-center justify-end">
 				<Price price={1000} />
 				
-				<a href="/checkout"><Button>Checkout</Button></a>
+				<a href={`/checkout?referrer=${page.url}`}><Button>Checkout</Button></a>
 			</div>
 	</Sheet.Content>
 </Sheet.Root>
