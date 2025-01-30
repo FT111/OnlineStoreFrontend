@@ -8,7 +8,7 @@
 </script>
 
 
-<div class="flex flex-col gap-0.5 w-full h-full">
+<div class="flex flex-col gap-0.5 w-auto h-full">
 	<label class="text-xs px-2 font-normal text-slate-600" for={label}>
 		{@render children?.()}
 	</label>

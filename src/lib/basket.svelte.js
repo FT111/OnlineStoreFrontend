@@ -36,6 +36,7 @@ const createBasket = () => {
 				basket.items[sku.id] = { quantity: 1 };
 			}
 			basket.total++;
+			basket.value += sku.price;
 			basket.enriched = false;
 			saveBasketLocally();
 			resolve();
@@ -50,11 +51,12 @@ const createBasket = () => {
 			delete basket.items[sku.id];
 		}
 		basket.total--;
+		basket.value -= sku.price;
 		saveBasketLocally();
 	}
 
 	async function loadBasketContent() {
-		if (basket.total === 0) {
+		if (basket.total === 0 || basket.items.length === 0) {
 			console.log('Basket is empty');
 			return;
 		}
