@@ -10,13 +10,19 @@
 	import Price from '$lib/components/price.svelte';
 	import { Button } from '$lib/components/ui/button/index.js';
 	import { ArrowLeft } from 'lucide-svelte';
+	import { afterNavigate } from '$app/navigation';
 	
 	const { data } = $props()
+	let previousPage = $state('/')
+	
+	afterNavigate(({from}) => {
+		previousPage = from?.url.pathname || previousPage
+	})
 </script>
 
 <div class="flex flex-col h-screen">
 	<div class="relative h-[10vh] flex flex-row items-center justify-between w-full  border border-b-[1px]">
-		<a href={`${page.url.searchParams.get('referrer')}`}  class="z-10 mx-4">
+		<a href={previousPage}  class="z-10 mx-4">
 			<Button variant="ghost"><ArrowLeft stroke-width="1.25" /> Back</Button>
 		</a>
 		<div class="absolute items-center flex justify-center flex-row size-full">

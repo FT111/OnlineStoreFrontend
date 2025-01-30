@@ -80,9 +80,9 @@ $inspect(basketStore.basket);
 		</div>
 			
 			<div class="h-fit bottom-0 sticky bg-muted/50 backdrop-blur-2xl w-full flex flex-row gap-8 p-5 mt-2 items-center justify-end">
-				<Price price={1000} />
+				<Price price={basketStore.basket.value} />
 				
-				<a href={`/checkout?referrer=${page.url}`}><Button>Checkout</Button></a>
+				<a href='/checkout'><Button>Checkout</Button></a>
 			</div>
 	</Sheet.Content>
 </Sheet.Root>
