@@ -1,30 +1,21 @@
 
 <script>
 	
-	
-	/**
-	 * @typedef {Object} Props
-	 * @property {any} class
-	 * @property {any} href
-	 * @property {boolean} [altArrow]
-	 * @property {import('svelte').Snippet} [children]
-	 */
-
-	/** @type {Props} */
 	let {
 		class: className,
 		href,
-		altArrow = false,
-		children
+		altArrow,
+		children,
+		...restProps
 	} = $props();
 	
 </script>
 
 
 
-<a class="rounded-xl hover:basis-4/12 basis-1/4 p-5 justify-end align-bottom grow border-2 border-slate-300 hover:border-accent/60
+<a class="rounded-xl hover:basis-4/12 basis-1/4 p-5 justify-end align-bottom grow border-2 border-slate-300 !hover:border-accent/60
 			hover:shadow-lg shadow-none
- 			hover:bg-opacity-90 transition-all duration-200 grid grid-cols-1 grid-rows-1 {className}" href={href}>
+ 			hover:bg-opacity-90 transition-all duration-200 grid grid-cols-1 grid-rows-1 {className}" {...restProps} href={href}>
 	
 	<div class="w-full h-full" style="grid-column: 1;grid-row: 1">
 		<div class="flex w-full h-full p-2 justify-end align-bottom justify-items-end items-end">

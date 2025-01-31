@@ -34,9 +34,9 @@
 								<div class="w-24 aspect-square">
 									<Image src={product?.id} alt="Product " class="w-10 h-10" />
 								</div>
-								<div class="flex flex-col p-2 w-44">
-									<p class="font-normal text-sm">{product.listing?.title}</p>
-									<p class="font-semibold text-md line-clamp-2 text-ellipsis">{product.sku?.title}</p>
+								<div class="flex flex-col p-1.5 w-44">
+									<p class="font-normal text-xs">{product.listing?.title}</p>
+									<p class="font-semibold text-sm line-clamp-2 text-ellipsis">{product.sku?.title}</p>
 								
 								</div>
 							</a>
