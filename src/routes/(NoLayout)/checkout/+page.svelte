@@ -14,10 +14,15 @@
 	import InputWithLabel from '$lib/components/InputWithLabel.svelte';
 	import * as Dialog from '$lib/components/ui/dialog/index.js';
 	import { fly } from 'svelte/transition';
+	import { Payment } from '$lib/payments.svelte.js';
 	
 	const { data } = $props()
 	let previousPage = $state('/')
+	// Stores temporarily to provide visual feedback
 	let cardNumber = $state('')
+	
+	let transaction = Payment();
+	$inspect(transaction.paymentMethod)
 	
 	afterNavigate(({from}) => {
 		previousPage = from?.url.pathname || previousPage
@@ -36,6 +41,15 @@
 		}
 		return sum % 10 === 0
 	}
+
+	async function setFromForm(target, formEvent) {
+		return new Promise(async (resolve, reject) => {
+			const form = formEvent.target;
+
+			transaction.paymentMethod = (Object.fromEntries(new FormData(form)))
+			resolve(transaction.paymentMethod)
+		})
+	}
 	
 	
 	const handleFinishAndPay = async (event) => {
@@ -46,13 +60,14 @@
 		const data = Object.fromEntries(formData)
 		console.log(data)
 		
-		if (!validateCardNumber(cardNumber)) {
-			alert('Invalid card number')
-		}
-		
-		
 	}
+	
+	$effect(() => {
+		console.log(transaction)
+	})
 </script>
+
+<form id="paymentMethodDialogForm" onsubmit={(e)=>{console.log('moew?');setFromForm(transaction.setPaymentMethod, e)}}></form>
 
 <div class="flex flex-col h-screen">
 	<div class="relative h-[10vh] flex  items-center justify-between w-full  border border-b-[1px]">
@@ -82,7 +97,8 @@
 							<InputWithLabel value={data.user.city} name="city" label="City" placeholder="City" required>Town/City</InputWithLabel>
 						<div class="flex flex-row gap-2.5">
 							<InputWithLabel value={data.user.country} name="country" label="County" placeholder="Country" required>Country</InputWithLabel>
-							<InputWithLabel value={data.user.postcode} name="postcode" label="Postcode" placeholder="Postcode" required>Postcode</InputWithLabel>
+							<InputWithLabel value={data.user.postcode} name="postcode" label="Postcode" placeholder="Postcode"
+															minlength="6" maxlength="7" required>Postcode</InputWithLabel>
 						</div>
 						{#if data.user.addressLine1}
 							<p class="flex flex-row gap-1 text-muted-foreground items-center self-end text-sm"><CheckCircle size="15" /><span>Using your saved address</span></p>
@@ -103,12 +119,14 @@
 						<Dialog.Content>
 							<Dialog.Header>
 								<Dialog.Title class="flex flex-row gap-1.5 items-center"><CreditCard size={20} strokeWidth={1.25} /> Payment details</Dialog.Title>
+								<Dialog.Description>Please take care to avoid anyone looking at your screen to prevent fraud.</Dialog.Description>
 							</Dialog.Header>
 							<div class="flex flex-col gap-2.5">
 								<div class="flex flex-row max-h-16 items-center">
 									<InputWithLabel bind:value={cardNumber} type="number" class="flex flex-col gap-0.5 w-full h-full z-10 "
 																	maxlength="16" sv="8" name="cardNumber" label="Card number"
-																	placeholder="XXXX XXXX XXXX XXXX" required>Card number</InputWithLabel>
+																	placeholder="XXXX XXXX XXXX XXXX"
+																	form="paymentMethodDialogForm" required>Card number</InputWithLabel>
 									<div class="size-24 grid grid-cols-1 grid-rows-1 content-center place-items-center">
 									{#if cardNumber?.toString().startsWith('4')}
 										<svg in:fly={{x: -50, z: -10}} out:fly={{x: -50, z: -10}} style="grid-column: 1; grid-row: 1" class="size-full  block m-auto pt-3 content-center items-center place-items-center text-center" fill="#000000" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"><path d="M16.539 9.186a4.155 4.155 0 0 0-1.451-.251c-1.6 0-2.73.806-2.738 1.963-.01.85.803 1.329 1.418 1.613.631.292.842.476.84.737-.004.397-.504.577-.969.577-.639 0-.988-.089-1.525-.312l-.199-.093-.227 1.332c.389.162 1.09.301 1.814.313 1.701 0 2.813-.801 2.826-2.032.014-.679-.426-1.192-1.352-1.616-.563-.275-.912-.459-.912-.738 0-.247.299-.511.924-.511a2.95 2.95 0 0 1 1.213.229l.15.067.227-1.287-.039.009zm4.152-.143h-1.25c-.389 0-.682.107-.852.493l-2.404 5.446h1.701l.34-.893 2.076.002c.049.209.199.891.199.891h1.5l-1.31-5.939zm-10.642-.05h1.621l-1.014 5.942H9.037l1.012-5.944v.002zm-4.115 3.275.168.825 1.584-4.05h1.717l-2.551 5.931H5.139l-1.4-5.022a.339.339 0 0 0-.149-.199 6.948 6.948 0 0 0-1.592-.589l.022-.125h2.609c.354.014.639.125.734.503l.57 2.729v-.003zm12.757.606.646-1.662c-.008.018.133-.343.215-.566l.111.513.375 1.714H18.69v.001h.001z"></path></g></svg>
@@ -128,12 +146,14 @@
 									</div>
 										</div>
 								<div class="flex flex-row gap-2.5 flex-grow">
-									<InputWithLabel name="cardExpiry" label="Expiry date" placeholder="XX/XX" required>Expiry date</InputWithLabel>
-									<InputWithLabel name="cardCVV" label="CVV" placeholder="2 or 3 character CVV" required>CVV</InputWithLabel>
+									<InputWithLabel form="paymentMethodDialogForm"  name="cardExpiry" label="Expiry date" placeholder="XX/XX"
+																	minlength="5" maxlength="5" required>Expiry date</InputWithLabel>
+									<InputWithLabel form="paymentMethodDialogForm" name="cardCVV" label="CVV" placeholder="2 or 3 character CVV"
+																	minlength="2" maxlength="3" type="number" required>CVV</InputWithLabel>
 								</div>
 							</div>
 							<Dialog.Footer>
-								<Button variant="default">Add<Plus /></Button>
+								<Button variant="default" type="submit" form="paymentMethodDialogForm">Add<Plus /></Button>
 							</Dialog.Footer>
 						</Dialog.Content>
 					</Dialog.Root>
