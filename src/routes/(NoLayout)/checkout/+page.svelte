@@ -1,28 +1,24 @@
 
 <script>
-	import Logo from "$lib/branding/logo.svelte";
+	import Logo from '$lib/branding/logo.svelte';
 	import { basketStore } from '$lib/basket.svelte.js';
-	import { browser } from '$app/environment';
-	import { onMount } from 'svelte';
-	import { page } from '$app/state';
 	import { Skeleton } from '$lib/components/ui/skeleton/index.js';
 	import SkuRow from '$lib/components/sales/SKUrow.svelte';
 	import Price from '$lib/components/price.svelte';
 	import { Button } from '$lib/components/ui/button/index.js';
-	import { ArrowLeft, CheckCheck, CheckCircle, Circle, CreditCard, Plus } from 'lucide-svelte';
+	import { ArrowLeft, CheckCircle, CreditCard, Edit, Edit2, Edit3, Plus } from 'lucide-svelte';
 	import { afterNavigate } from '$app/navigation';
 	import InputWithLabel from '$lib/components/InputWithLabel.svelte';
-	import * as Dialog from '$lib/components/ui/dialog/index.js';
 	import { fly } from 'svelte/transition';
 	import { Payment } from '$lib/payments.svelte.js';
-	
+	import * as Dialog from '$lib/components/ui/dialog/index.js';
+
 	const { data } = $props()
 	let previousPage = $state('/')
 	// Stores temporarily to provide visual feedback
 	let cardNumber = $state('')
 	
-	let transaction = Payment();
-	$inspect(transaction.paymentMethod)
+	let transaction = $state(Payment());
 	
 	afterNavigate(({from}) => {
 		previousPage = from?.url.pathname || previousPage
@@ -42,13 +38,11 @@
 		return sum % 10 === 0
 	}
 
-	async function setFromForm(target, formEvent) {
-		return new Promise(async (resolve, reject) => {
-			const form = formEvent.target;
-
-			transaction.paymentMethod = (Object.fromEntries(new FormData(form)))
-			resolve(transaction.paymentMethod)
-		})
+	async function setPaymentMethod(formEvent) {
+		const form = formEvent.target
+		const formData = new FormData(form)
+		
+		transaction.paymentMethod = Object.fromEntries(formData)
 	}
 	
 	
@@ -61,13 +55,10 @@
 		console.log(data)
 		
 	}
-	
-	$effect(() => {
-		console.log(transaction)
-	})
 </script>
 
-<form id="paymentMethodDialogForm" onsubmit={(e)=>{console.log('moew?');setFromForm(transaction.setPaymentMethod, e)}}></form>
+<form id="paymentMethodDialogForm" onsubmit={(e)=>setPaymentMethod(e)}></form>
+<input type="hidden" name="set" value={true} form="paymentMethodDialogForm" />
 
 <div class="flex flex-col h-screen">
 	<div class="relative h-[10vh] flex  items-center justify-between w-full  border border-b-[1px]">
@@ -109,12 +100,26 @@
 					<h3 class="text-2xl">Payment</h3>
 					<p class="text-sm text-muted-foreground">Please enter your payment details. <br />We do not store them after receiving your payment.</p>
 					<Dialog.Root>
+						{#if !transaction.paymentMethod.set}
 						<Dialog.Trigger as="div" class="flex flex-row items-center justify-center h-28 w-full border border-dashed transition-all
 						 rounded-xl border-slate-400/50 hover:border-emerald-700/70 hover:bg-emerald-100/60 group">
-							<div class="flex flex-row gap-1.5 items-center group-hover:scale-[1.02] transition-all">
+							<div class="flex flex-row gap-1.5 items-center transition-all">
 								<Plus /> Enter a payment method
 							</div>
 						</Dialog.Trigger>
+							{:else}
+							<Dialog.Trigger class="flex flex-row items-center h-28 w-full border transition-all p-4 px-6 hover:border-transparent duration-150
+						 rounded-xl border-slate-400/50 group justify-between hover:outline-black hover:outline-2 outline outline-0" as="div">
+								<div class="flex flex-row gap-4 item">
+									<CreditCard size={28} strokeWidth={1.25} />
+									<div class="flex flex-col justify-evenly items-start transition-all">
+										<p class="text-lg font-mono">**** **** **** {transaction.paymentMethod.cardNumber.slice(-4)}</p>
+										<p class="text-sm text-muted-foreground">Expires {transaction.paymentMethod.cardExpiry}</p>
+									</div>
+								</div>
+								<Edit2 size={20} strokeWidth={1.25} class="opacity-40 group-hover:opacity-90 transition-all" />
+							</Dialog.Trigger>
+						{/if}
 						
 						<Dialog.Content>
 							<Dialog.Header>
@@ -124,7 +129,7 @@
 							<div class="flex flex-col gap-2.5">
 								<div class="flex flex-row max-h-16 items-center">
 									<InputWithLabel bind:value={cardNumber} type="number" class="flex flex-col gap-0.5 w-full h-full z-10 "
-																	maxlength="16" sv="8" name="cardNumber" label="Card number"
+																	maxlength="19" minlength="13" name="cardNumber" label="Card number"
 																	placeholder="XXXX XXXX XXXX XXXX"
 																	form="paymentMethodDialogForm" required>Card number</InputWithLabel>
 									<div class="size-24 grid grid-cols-1 grid-rows-1 content-center place-items-center">
@@ -145,15 +150,22 @@
 										{/if}
 									</div>
 										</div>
+								<InputWithLabel value={transaction.paymentMethod.cardHolder} form="paymentMethodDialogForm" name="cardHolder" label="Name on card" placeholder="Name on card" required>Name on card</InputWithLabel>
 								<div class="flex flex-row gap-2.5 flex-grow">
-									<InputWithLabel form="paymentMethodDialogForm"  name="cardExpiry" label="Expiry date" placeholder="XX/XX"
+									<InputWithLabel value={transaction.paymentMethod.cardExpiry} form="paymentMethodDialogForm"  name="cardExpiry" label="Expiry date" placeholder="XX/XX"
 																	minlength="5" maxlength="5" required>Expiry date</InputWithLabel>
-									<InputWithLabel form="paymentMethodDialogForm" name="cardCVV" label="CVV" placeholder="2 or 3 character CVV"
+									<InputWithLabel value={transaction.paymentMethod.cardCVV} form="paymentMethodDialogForm" name="cardCVV" label="CVV" placeholder="2 or 3 character CVV"
 																	minlength="2" maxlength="3" type="number" required>CVV</InputWithLabel>
 								</div>
 							</div>
 							<Dialog.Footer>
-								<Button variant="default" type="submit" form="paymentMethodDialogForm">Add<Plus /></Button>
+								<Button variant="default" type="submit" form="paymentMethodDialogForm">
+									{#if transaction.paymentMethod.set}
+										Update
+									{:else}
+										Save
+									{/if}
+								</Button>
 							</Dialog.Footer>
 						</Dialog.Content>
 					</Dialog.Root>

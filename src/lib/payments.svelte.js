@@ -5,7 +5,8 @@ export const Payment = () => {
 			'cardNumber': '',
 			'cardHolder': '',
 			'cardExpiration': '',
-			'cardCVC': ''
+			'cardCVV': '',
+			'set': false
 		})
 
 		let deliveryDetails = $state({
@@ -26,11 +27,7 @@ export const Payment = () => {
 		});
 
 	async function setPaymentMethod(newPaymentMethod) {
-		return new Promise((resolve, reject) => {
-			paymentMethod = newPaymentMethod;
-			console.log(paymentMethod);
-			resolve();
-		})
+		paymentMethod = newPaymentMethod;
 	}
 
 	// Set a state object from a form, targets a function
