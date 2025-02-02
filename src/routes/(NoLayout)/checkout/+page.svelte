@@ -12,16 +12,19 @@
 	import { fly } from 'svelte/transition';
 	import { Payment } from '$lib/payments.svelte.js';
 	import * as Dialog from '$lib/components/ui/dialog/index.js';
+	import { toast } from 'svelte-sonner';
 
 	const { data } = $props()
 	let previousPage = $state('/')
 	// Stores temporarily to provide visual feedback
 	let cardNumber = $state('')
+	// Controls the state of the payment dialog
+	let paymentDialogOpenState = $state(false)
 	
 	let transaction = $state(Payment());
 	
 	afterNavigate(({from}) => {
-		previousPage = from?.url.pathname || previousPage
+		previousPage = from?.url.pathname!=='/checkout' ? from?.url.pathname || previousPage : '/'
 	})
 	
 	const validateCardNumber = (cardNumber) => {
@@ -42,6 +45,13 @@
 		const form = formEvent.target
 		const formData = new FormData(form)
 		
+		if (!validateCardNumber(formData.get('cardNumber')) || formData.get('cardNumber').length < 13
+			|| formData.get('cardNumber').length > 19) {
+			toast.error('Invalid card number')
+			throw new Error('Invalid card number')
+
+		}
+		
 		transaction.paymentMethod = Object.fromEntries(formData)
 	}
 	
@@ -57,7 +67,10 @@
 	}
 </script>
 
-<form id="paymentMethodDialogForm" onsubmit={(e)=>setPaymentMethod(e)}></form>
+<form id="paymentMethodDialogForm" onsubmit={(e)=>{setPaymentMethod(e).then(
+	()=>{paymentDialogOpenState=false}
+	).catch((e)=>{}
+)}}></form>
 <input type="hidden" name="set" value={true} form="paymentMethodDialogForm" />
 
 <div class="flex flex-col h-screen">
@@ -99,7 +112,7 @@
 				<div class="flex flex-col gap-2.5">
 					<h3 class="text-2xl">Payment</h3>
 					<p class="text-sm text-muted-foreground">Please enter your payment details. <br />We do not store them after receiving your payment.</p>
-					<Dialog.Root>
+					<Dialog.Root bind:open={paymentDialogOpenState}>
 						{#if !transaction.paymentMethod.set}
 						<Dialog.Trigger as="div" class="flex flex-row items-center justify-center h-28 w-full border border-dashed transition-all
 						 rounded-xl border-slate-400/50 hover:border-emerald-700/70 hover:bg-emerald-100/60 group">
@@ -109,7 +122,7 @@
 						</Dialog.Trigger>
 							{:else}
 							<Dialog.Trigger class="flex flex-row items-center h-28 w-full border transition-all p-4 px-6 hover:border-transparent duration-150
-						 rounded-xl border-slate-400/50 group justify-between hover:outline-black hover:outline-2 outline outline-0" as="div">
+						 rounded-xl border-slate-400/50 group justify-between hover:outline-black outline-transparent outline outline-1" as="div">
 								<div class="flex flex-row gap-4 item">
 									<CreditCard size={28} strokeWidth={1.25} />
 									<div class="flex flex-col justify-evenly items-start transition-all">
@@ -174,8 +187,11 @@
 		
 		</div>
 		<div class="basis-1/2 bg-secondary text-secondary-foreground flex flex-col items-start md:overflow-y-scroll ">
-			<div class="md:max-w-full flex flex-col w-full h-full">
-				<h2 class="p-6 pb-2 z-10 text-2xl top-0 sticky bg-secondary/80 w-full text-left backdrop-blur-2xl">Summary</h2>
+			<div class="md:max-w-full flex flex-col w-full h-full gap-1.5">
+				<div class="p-6 pb-flex flex-col gap-1.5 sticky top-0 bg-secondary/80 backdrop-blur-2xl z-10 h-full w-full">
+					<h2 class="pb-0 z-10 text-2xl w-full text-left">Summary</h2>
+					<p class="  text-muted-foreground text-sm">Review your basket</p>
+				</div>
 				<ul class="px-6 flex-col gap-2 py-2 rounded-lg text-black max-w-5/6 w-fit md:flex hidden">
 					{#if Object.keys(basketStore.basket.items).length === 0}
 						{#each Array(3) as _}
@@ -191,10 +207,8 @@
 				<div class="p-4 justify-self-end z-10 sticky bottom-0 bg-secondary/60 text-muted-foreground backdrop-blur-2xl">
 <!--				Content Container	-->
 					<div class="flex flex-col md:w-2/3 w-full gap-2.5">
-						<ul>
-							<li class="flex flex-row gap-1.5">{basketStore.basket.total} products — <p>Total includes VAT</p></li>
-							<li class="flex flex-col items-start text-sm text-black">Total<Price price={basketStore.basket.value} /></li>
-						</ul>
+							<p class="flex flex-col items-start text-sm text-black">Total<Price price={basketStore.basket.value} /></p>
+							<div class="flex flex-row gap-1.5">{basketStore.basket.total} products — <p>Total includes VAT</p></div>
 						<Button size="lg" class="w-full p-2.5 shadow-xl" variant="default" type="submit" submit>Finish and Pay</Button>
 					</div>
 				</div>
