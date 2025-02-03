@@ -7,13 +7,16 @@
 	import Price from '$lib/components/price.svelte';
 	import { Button } from '$lib/components/ui/button/index.js';
 	import { ArrowLeft, CheckCircle, CreditCard, Edit, Edit2, Edit3, Plus } from 'lucide-svelte';
-	import { afterNavigate } from '$app/navigation';
+	import { afterNavigate, beforeNavigate } from '$app/navigation';
 	import InputWithLabel from '$lib/components/InputWithLabel.svelte';
 	import { fly } from 'svelte/transition';
 	import { Payment } from '$lib/payments.svelte.js';
 	import * as Dialog from '$lib/components/ui/dialog/index.js';
+	import { Checkbox } from "$lib/components/ui/checkbox/index.js";
 	import { toast } from 'svelte-sonner';
 	import HelpTooltip from '$lib/components/HelpTooltip.svelte';
+	import { Input } from '$lib/components/ui/input/index.js';
+	import { enhance } from '$app/forms'
 
 	const { data } = $props()
 	let previousPage = $state('/')
@@ -36,6 +39,13 @@
 	
 	afterNavigate(({from}) => {
 		previousPage = from?.url.pathname!=='/checkout' ? from?.url.pathname || previousPage : '/'
+	})
+	beforeNavigate((navigation)=>{
+		if (window.confirm('Are you sure you want to leave?' +
+			' \n Your unsaved details will be lost.')) {
+		} else {
+			navigation.cancel()
+		}
 	})
 	
 	const validateCardNumber = (cardNumber) => {
@@ -64,8 +74,18 @@
 	async function setPaymentMethod(formEvent) {
 		const form = formEvent.target
 		const formData = new FormData(form)
+		let {cardNumber, cardExpiry} = Object.fromEntries(formData)
+		let {cardExpiryMonth, cardExpiryYear} = cardExpiry.split('/').map((x) => parseInt(x))
+		let currentDate = new Date()
 		
-		if (!validateCardNumber(formData.get('cardNumber')) || formData.get('cardNumber').length < 13
+		if (cardExpiryMonth < currentDate.getMonth() + 1 && cardExpiryYear <= currentDate.getFullYear()) {
+			toast.error('Card has expired')
+			throw new Error('Card has expired')
+		}
+		
+		
+		
+		if (!validateCardNumber(cardNumber) || cardNumber.length < 13
 			|| formData.get('cardNumber').length > 19) {
 			toast.error('Invalid card number')
 			throw new Error('Invalid card number')
@@ -87,7 +107,9 @@
 	}
 </script>
 
-<form id="paymentMethodDialogForm" onsubmit={(e)=>{setPaymentMethod(e).then(
+<form id="paymentMethodDialogForm" onsubmit={(e)=>{
+	e.preventDefault();
+	setPaymentMethod(e).then(
 	()=>{paymentDialogOpenState=false}
 	).catch((e)=>{}
 )}}></form>
@@ -105,7 +127,7 @@
 	
 	<form class="flex md:flex-row flex-col w-full h-[90vh]" onsubmit={(e)=>{handleFinishAndPay(e)}}>
 		<div class="basis-1/2 flex-col flex md:items-end items-center p-6 overflow-y-scroll">
-			<div class="md:w-3/4 flex flex-col w-fit">
+			<div class="md:w-3/4 flex flex-col w-fit gap-2.5">
 				<div class="flex flex-col gap-2.5">
 					<h3 class="text-2xl">Delivery</h3>
 					<p class="text-sm text-muted-foreground">Please enter your delivery details</p>
@@ -124,9 +146,16 @@
 							<InputWithLabel value={data.user.postcode} name="postcode" label="Postcode" placeholder="Postcode"
 															minlength="6" maxlength="7" required>Postcode</InputWithLabel>
 						</div>
+						
+						<div class="flex md:flex-row flex-col md:justify-between gap-2 w-full text-sm">
+							<div class="flex flex-row items-center gap-1.5">
+								<Checkbox name="saveAddress" form="paymentMethodDialogForm" />
+								<label for="saveAddress">Save this address for future purchases</label>
+							</div>
 						{#if data.user.addressLine1}
 							<p class="flex flex-row gap-1 text-muted-foreground items-center self-end text-sm"><CheckCircle size="15" /><span>Using your saved address</span></p>
 						{/if}
+						</div>
 					</div>
 				</div>
 				<div class="flex flex-col gap-2.5">
@@ -206,9 +235,9 @@
 								<InputWithLabel value={transaction.paymentMethod.cardHolder} form="paymentMethodDialogForm" name="cardHolder" label="Name on card" placeholder="Name on card" required>Name on card</InputWithLabel>
 								<div class="flex flex-row gap-2.5 flex-grow">
 									<InputWithLabel value={transaction.paymentMethod.cardExpiry} form="paymentMethodDialogForm"  name="cardExpiry" label="Expiry date" placeholder="XX/XX"
-																	minlength="5" maxlength="5" required>Expiry date</InputWithLabel>
-									<InputWithLabel value={transaction.paymentMethod.cardCVV} form="paymentMethodDialogForm" name="cardCVV" label="CVV" placeholder="2 or 3 character CVV"
-																	minlength="2" maxlength="3" type="number" required>CVV</InputWithLabel>
+																	minlength="5" maxlength="5"  required>Expiry date</InputWithLabel>
+									<InputWithLabel value={transaction.paymentMethod.cardCVV} form="paymentMethodDialogForm" name="cardCVV" label="CVV"
+																	placeholder="2 or 3 character CVV" maxlength="3" minlength="2" required>CVV</InputWithLabel>
 								</div>
 							</div>
 							<Dialog.Footer>
@@ -247,8 +276,8 @@
 				<div class="p-4 justify-self-end z-10 sticky bottom-0 bg-secondary/60 text-muted-foreground backdrop-blur-2xl">
 <!--				Content Container	-->
 					<div class="flex flex-col md:w-2/3 w-full gap-2.5">
-							<p class="flex flex-col items-start text-sm text-black">Total<Price price={basketStore.basket.value} /></p>
-							<div class="flex flex-row gap-1.5">{basketStore.basket.total} products — <p>Total includes VAT</p></div>
+							<p class="flex flex-col items-start  text-black">Total<Price price={basketStore.basket.value} /></p>
+							<div class="flex flex-row gap-1.5 text-sm">{basketStore.basket.total} products • <p>Total includes VAT</p></div>
 						<Button size="lg" class="w-full p-2.5 shadow-xl" variant="default" type="submit" submit>Finish and Pay</Button>
 					</div>
 				</div>

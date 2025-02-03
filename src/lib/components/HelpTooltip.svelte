@@ -1,12 +1,7 @@
 <script>
 	import * as Tooltip from '$lib/components/ui/tooltip';
 		import { HelpCircle } from 'lucide-svelte';
-	/**
-	 * @typedef {Object} Props
-	 * @property {import('svelte').Snippet} [children]
-	 */
 
-	/** @type {Props} */
 	let { children, ...restProps } = $props();
 </script>
 
