@@ -32,6 +32,15 @@
 		}
 	})
 	
+	let shipmentSellers = $derived.by(()=> {
+		return Object.values(basketStore.basket.items).map((item) => item.listing.ownerUser)
+	})
+	
+	// One shipment for each unique seller
+	let shipmentCount = $derived.by(()=>{
+		return new Set(shipmentSellers).size
+	})
+	
 	// Controls the state of the payment dialog
 	let paymentDialogOpenState = $state(false)
 	
@@ -277,7 +286,12 @@
 <!--				Content Container	-->
 					<div class="flex flex-col md:w-2/3 w-full gap-2.5">
 							<p class="flex flex-col items-start  text-black">Total<Price price={basketStore.basket.value} /></p>
-							<div class="flex flex-row gap-1.5 text-sm">{basketStore.basket.total} products • <p>Total includes VAT</p></div>
+						<div class="flex flex-row gap-1.5 text-sm"><p class="font-mono">{basketStore.basket.total}</p> products
+							{#if shipmentCount > 1}
+								<p>in {shipmentCount} shipments</p>
+							{/if}
+							•
+							<p>Total includes VAT</p></div>
 						<Button size="lg" class="w-full p-2.5 shadow-xl" variant="default" type="submit" submit>Finish and Pay</Button>
 					</div>
 				</div>
