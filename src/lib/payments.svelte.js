@@ -1,3 +1,5 @@
+import { enrichBasket, submitCheckout } from '$lib/api/transactions.js';
+import { basketStore} from '$lib/basket.svelte.js';
 
 
 export const Payment = () => {
@@ -46,7 +48,23 @@ export const Payment = () => {
 	}
 
 	function submit() {
-		// Submit payment
+		return new Promise(async (resolve, reject) => {
+			await basketStore.loadBasketContent().catch((error) => {
+				reject(error);
+			});
+
+			const checkout = {
+				'paymentDetails': paymentMethod,
+				'deliveryDetails': deliveryDetails,
+				'basket': basketStore.basket
+			}
+
+			console.log(checkout);
+
+			await submitCheckout(checkout).then((response) => {
+				resolve(response);
+			})
+		})
 	}
 
 	return {

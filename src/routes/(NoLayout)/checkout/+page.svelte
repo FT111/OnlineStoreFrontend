@@ -6,22 +6,21 @@
 	import SkuRow from '$lib/components/sales/SKUrow.svelte';
 	import Price from '$lib/components/price.svelte';
 	import { Button } from '$lib/components/ui/button/index.js';
-	import { ArrowLeft, CheckCircle, CreditCard, Edit, Edit2, Edit3, Plus } from 'lucide-svelte';
+	import { ArrowLeft, CheckCircle, CreditCard, Edit2, Plus } from 'lucide-svelte';
 	import { afterNavigate, beforeNavigate } from '$app/navigation';
 	import InputWithLabel from '$lib/components/InputWithLabel.svelte';
 	import { fly } from 'svelte/transition';
 	import { Payment } from '$lib/payments.svelte.js';
-	import * as Dialog from '$lib/components/ui/dialog/index.js';
-	import { Checkbox } from "$lib/components/ui/checkbox/index.js";
+	import { Checkbox } from '$lib/components/ui/checkbox/index.js';
 	import { toast } from 'svelte-sonner';
 	import HelpTooltip from '$lib/components/HelpTooltip.svelte';
-	import { Input } from '$lib/components/ui/input/index.js';
-	import { enhance } from '$app/forms'
+	import * as Dialog from '$lib/components/ui/dialog/index.js';
 
 	const { data } = $props()
 	let previousPage = $state('/')
 	// Stores temporarily to provide visual feedback
 	let cardNumber = $state('')
+	
 	let cardBrand = $derived.by(() => {
 		if (cardNumber?.toString().startsWith('4')) {
 			return 'Visa'
@@ -81,19 +80,18 @@
 	}
 
 	async function setPaymentMethod(formEvent) {
+		// Sets the payment method for the transaction
 		const form = formEvent.target
 		const formData = new FormData(form)
 		let {cardNumber, cardExpiry} = Object.fromEntries(formData)
 		let {cardExpiryMonth, cardExpiryYear} = cardExpiry.split('/').map((x) => parseInt(x))
 		let currentDate = new Date()
 		
+		// Guard clauses
 		if (cardExpiryMonth < currentDate.getMonth() + 1 && cardExpiryYear <= currentDate.getFullYear()) {
 			toast.error('Card has expired')
 			throw new Error('Card has expired')
 		}
-		
-		
-		
 		if (!validateCardNumber(cardNumber) || cardNumber.length < 13
 			|| formData.get('cardNumber').length > 19) {
 			toast.error('Invalid card number')
@@ -110,8 +108,9 @@
 		event.preventDefault()
 		const form = event.target
 		const formData = new FormData(form)
-		const data = Object.fromEntries(formData)
-		console.log(data)
+		transaction.setDeliveryDetails(Object.fromEntries(formData))
+		
+		await transaction.submit()
 		
 	}
 </script>

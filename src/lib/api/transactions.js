@@ -9,3 +9,13 @@ export const enrichBasket = async (basket) => {
 			console.error(error);
 		});
 }
+
+export const submitCheckout = async (checkout) => {
+	return POST('transactions/checkout', JSON.stringify(checkout))
+		.then((response) => {
+			return response;
+		})
+		.catch((error) => {
+			console.error(error);
+		});
+}
