@@ -3,7 +3,7 @@ import { basketStore} from '$lib/basket.svelte.js';
 
 
 export const Payment = () => {
-		let paymentMethod = $state({
+		let paymentDetails = $state({
 			'cardNumber': '',
 			'cardHolder': '',
 			'cardExpiration': '',
@@ -28,8 +28,8 @@ export const Payment = () => {
 			enriched: false
 		});
 
-	async function setPaymentMethod(newPaymentMethod) {
-		paymentMethod = newPaymentMethod;
+	function setPaymentMethod(newPaymentMethod) {
+		paymentDetails = newPaymentMethod;
 	}
 
 	// Set a state object from a form, targets a function
@@ -37,7 +37,7 @@ export const Payment = () => {
 		return new Promise(async (resolve, reject) => {
 			const form = formEvent.target;
 
-			await setPaymentMethod(Object.fromEntries(new FormData(form))).then(() => {
+			setPaymentMethod(Object.fromEntries(new FormData(form))).then(() => {
 				resolve();
 			})
 		})
@@ -54,7 +54,7 @@ export const Payment = () => {
 			});
 
 			const checkout = {
-				'paymentDetails': paymentMethod,
+				'paymentDetails': paymentDetails,
 				'deliveryDetails': deliveryDetails,
 				'basket': basketStore.basket
 			}
@@ -68,7 +68,7 @@ export const Payment = () => {
 	}
 
 	return {
-		paymentMethod,
+		paymentDetails,
 		deliveryDetails,
 		basket,
 		setPaymentMethod,

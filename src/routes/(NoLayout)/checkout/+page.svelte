@@ -44,6 +44,7 @@
 	let paymentDialogOpenState = $state(false)
 	
 	let transaction = $state(Payment());
+	$inspect(transaction)
 	
 	afterNavigate(({from}) => {
 		previousPage = from?.url.pathname!=='/checkout' ? from?.url.pathname || previousPage : '/'
@@ -79,16 +80,25 @@
 		return sum % 10 === 0
 	}
 
-	async function setPaymentMethod(formEvent) {
+	function setPaymentMethod(formEvent) {
 		// Sets the payment method for the transaction
+		console.log('Setting payment method')
 		const form = formEvent.target
 		const formData = new FormData(form)
-		let {cardNumber, cardExpiry} = Object.fromEntries(formData)
-		let {cardExpiryMonth, cardExpiryYear} = cardExpiry.split('/').map((x) => parseInt(x))
+		let {cardNumber, cardExpiration} = Object.fromEntries(formData)
+		let [
+			cardExpiryMonth,
+			cardExpiryYear
+		] = cardExpiration.split('/').map((x) => parseInt(x))
+
 		let currentDate = new Date()
-		
+
+		console.log(cardNumber, cardExpiration, cardExpiryMonth, cardExpiryYear)
 		// Guard clauses
-		if (cardExpiryMonth < currentDate.getMonth() + 1 && cardExpiryYear <= currentDate.getFullYear()) {
+		console.log(currentDate.getMonth() + 1, currentDate.getFullYear()-2000)
+		console.log(cardExpiryMonth < currentDate.getMonth() + 1, cardExpiryYear <= currentDate.getFullYear()-2000)
+		if (cardExpiryMonth < currentDate.getMonth() + 1 && cardExpiryYear === currentDate.getFullYear()-2000 ||
+			cardExpiryYear < currentDate.getFullYear()-2000) {
 			toast.error('Card has expired')
 			throw new Error('Card has expired')
 		}
@@ -96,10 +106,12 @@
 			|| formData.get('cardNumber').length > 19) {
 			toast.error('Invalid card number')
 			throw new Error('Invalid card number')
-
 		}
 		
-		transaction.paymentMethod = Object.fromEntries(formData)
+		console.log('Setting payment method')
+		transaction.setPaymentMethod(Object.fromEntries(formData))
+		console.log(Object.fromEntries(formData))
+		console.log(transaction.paymentDetails)
 	}
 	
 	
@@ -117,10 +129,9 @@
 
 <form id="paymentMethodDialogForm" onsubmit={(e)=>{
 	e.preventDefault();
-	setPaymentMethod(e).then(
-	()=>{paymentDialogOpenState=false}
-	).catch((e)=>{}
-)}}></form>
+	setPaymentMethod(e);
+	paymentDialogOpenState=false;
+}}></form>
 <input type="hidden" name="set" value={true} form="paymentMethodDialogForm" />
 
 <div class="flex flex-col h-screen">
@@ -170,7 +181,7 @@
 					<h3 class="text-2xl">Payment</h3>
 					<p class="text-sm text-muted-foreground">Please enter your payment details. <br />We do not store them after receiving your payment.</p>
 					<Dialog.Root bind:open={paymentDialogOpenState}>
-						{#if !transaction.paymentMethod.set}
+						{#if !transaction.paymentDetails.set}
 						<Dialog.Trigger as="div" class="flex flex-row items-center justify-center h-28 w-full border border-dashed transition-all
 						 rounded-xl border-slate-400/50 hover:border-emerald-700/70 hover:bg-emerald-100/60 group">
 							<div class="flex flex-row gap-1.5 items-center transition-all">
@@ -180,12 +191,12 @@
 							{:else}
 							<Dialog.Trigger class="flex flex-row items-center h-28 w-full border transition-all p-4 px-6 hover:border-transparent duration-150
 						 rounded-xl border-slate-400/50 group justify-between hover:outline-black outline-transparent outline outline-1" as="div">
-								<div class="flex flex-row gap-4 item">
+								<div class="flex flex-row gap-4 item" type="button">
 									<CreditCard size={28} strokeWidth={1.25} />
 									<div class="flex flex-col justify-evenly items-start transition-all">
-										<p class="text-lg font-mono">**** **** **** {transaction.paymentMethod.cardNumber.slice(-4)}</p>
+										<p class="text-lg font-mono">**** **** **** {transaction.paymentDetails.cardNumber.slice(-4)}</p>
 										<p class="text-sm text-muted-foreground">
-											{cardBrand} • Expires {transaction.paymentMethod.cardExpiry}</p>
+											{cardBrand} • Expires {transaction.paymentDetails.cardExpiration}</p>
 									</div>
 								</div>
 								<Edit2 size={20} strokeWidth={1.25} class="opacity-40 group-hover:opacity-90 transition-all" />
@@ -240,17 +251,17 @@
 										{/if}
 									</div>
 										</div>
-								<InputWithLabel value={transaction.paymentMethod.cardHolder} form="paymentMethodDialogForm" name="cardHolder" label="Name on card" placeholder="Name on card" required>Name on card</InputWithLabel>
+								<InputWithLabel value={transaction.paymentDetails.cardHolder} form="paymentMethodDialogForm" name="cardHolder" label="Name on card" placeholder="Name on card" required>Name on card</InputWithLabel>
 								<div class="flex flex-row gap-2.5 flex-grow">
-									<InputWithLabel value={transaction.paymentMethod.cardExpiry} form="paymentMethodDialogForm"  name="cardExpiry" label="Expiry date" placeholder="XX/XX"
-																	minlength="5" maxlength="5"  required>Expiry date</InputWithLabel>
-									<InputWithLabel value={transaction.paymentMethod.cardCVV} form="paymentMethodDialogForm" name="cardCVV" label="CVV"
+									<InputWithLabel value={transaction.paymentDetails.cardExpiration} form="paymentMethodDialogForm" name="cardExpiration" label="Expiry date" placeholder="XX/XX"
+																	minlength="5" maxlength="5" required>Expiry date</InputWithLabel>
+									<InputWithLabel value={transaction.paymentDetails.cardCVV} form="paymentMethodDialogForm" name="cardCVV" label="CVV"
 																	placeholder="2 or 3 character CVV" maxlength="3" minlength="2" required>CVV</InputWithLabel>
 								</div>
 							</div>
 							<Dialog.Footer>
 								<Button variant="default" type="submit" form="paymentMethodDialogForm">
-									{#if transaction.paymentMethod.set}
+									{#if transaction.paymentDetails.set}
 										Update
 									{:else}
 										Save
@@ -281,9 +292,11 @@
 					{/if}
 				</ul>
 <!--		Bottom Layout		-->
-				<div class="p-4 justify-self-end z-10 sticky bottom-0 bg-secondary/60 text-muted-foreground backdrop-blur-2xl">
+				<div class="grid grid-cols-1 grid-rows-1 justify-self-end justify-end sticky bottom-0 text-muted-foreground ">
+				
 <!--				Content Container	-->
-					<div class="flex flex-col md:w-2/3 w-full gap-2.5">
+					<div class="p-4 flex flex-col md:w-2/3 w-full gap-2.5 z-10 size-full justify-end" style="
+											grid-column: 1;grid-row: 1">
 							<p class="flex flex-col items-start  text-black">Total<Price price={basketStore.basket.value} /></p>
 						<div class="flex flex-row gap-1.5 text-sm"><p class="font-mono">{basketStore.basket.total}</p> products
 							{#if shipmentCount > 1}
@@ -293,6 +306,10 @@
 							<p>Total includes VAT</p></div>
 						<Button size="lg" class="w-full p-2.5 shadow-xl" variant="default" type="submit" submit>Finish and Pay</Button>
 					</div>
+<!--			Background		-->
+					<div class="size-full backdrop-blur-2xl h-56 bottom-0"
+							 style="mask: linear-gradient(transparent, whitesmoke, white, white);
+											grid-column: 1;grid-row: 1"></div>
 				</div>
 			</div>
 			
