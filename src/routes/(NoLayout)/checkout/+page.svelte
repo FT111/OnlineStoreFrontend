@@ -16,6 +16,7 @@
 	import HelpTooltip from '$lib/components/HelpTooltip.svelte';
 	import * as Dialog from '$lib/components/ui/dialog/index.js';
 	import PaymentMethodSelector from '$lib/components/sales/PaymentMethodSelector.svelte';
+	import { submitCheckout } from '$lib/api/transactions.js';
 
 	const { data } = $props()
 	let previousPage = $state('/')
@@ -54,8 +55,9 @@
 			toast.error('Please enter your payment information')
 			return
 		}
+		transaction.basket = basketStore.basket
 		
-		await transaction.submit()
+		await submitCheckout(transaction)
 		
 	}
 </script>
