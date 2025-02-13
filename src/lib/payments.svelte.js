@@ -78,3 +78,27 @@ export const Payment = () => {
 	}
 
 }
+
+
+export const validateCardNumber = (cardNumber) => {
+	// Luhn algorithm
+	let sum = 0
+	let isSecond = false
+
+	for (let i = cardNumber.length - 1; i >= 0; i--) {
+		// Parse the digit
+		let d = cardNumber[i] - '0'
+		// If it's the second digit, double it
+		if (isSecond) {
+			d = d * 2
+		}
+		// Add two digits to handle
+		sum += Math.floor(d / 10) + d % 10
+
+		// Toggle flag
+		isSecond = !isSecond
+	}
+
+	// If the sum is divisible by 10, the number is valid
+	return sum % 10 === 0
+}
