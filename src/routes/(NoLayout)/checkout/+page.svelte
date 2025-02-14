@@ -6,7 +6,7 @@
 	import SkuRow from '$lib/components/sales/SKUrow.svelte';
 	import Price from '$lib/components/price.svelte';
 	import { Button } from '$lib/components/ui/button/index.js';
-	import { ArrowLeft, CheckCircle, CreditCard, Edit2, Plus } from 'lucide-svelte';
+	import { ArrowLeft, Check, CheckCircle, CreditCard, Edit2, Plus } from 'lucide-svelte';
 	import { afterNavigate, beforeNavigate } from '$app/navigation';
 	import InputWithLabel from '$lib/components/InputWithLabel.svelte';
 	import { fly } from 'svelte/transition';
@@ -75,8 +75,11 @@
 	<div class="flex md:flex-row flex-col w-full h-[90vh]" >
 		<div class="basis-1/2 flex-col flex md:items-end items-center p-6 overflow-y-scroll">
 			<div class="md:w-3/4 flex flex-col w-fit gap-2.5">
-				<form id="transactionForm" class="flex flex-col gap-2.5" onsubmit={(e)=>{handleFinishAndPay(e)}}>
-					<h3 class="text-2xl">Delivery</h3>
+				<form id="transactionForm" class="group flex flex-col gap-2.5 " onsubmit={(e)=>{handleFinishAndPay(e)}}>
+					<div class="text-2xl flex flex-row gap-2.5 items-center">
+						<h3>Delivery</h3>
+						<Check class="group-has-[:invalid]:scale-0 scale-100 transition-all duration-150 origin-left opacity-70 ease-in-out" />
+					</div>
 					<p class="text-sm text-muted-foreground">Please enter your delivery details</p>
 					<div class="flex flex-col gap-2.5">
 						<div class="flex flex-row flex-grow flex-1 gap-2.5">
@@ -105,9 +108,11 @@
 						</div>
 					</div>
 				</form>
-				<div class="flex flex-col gap-2.5 grow">
-					<h3 class="text-2xl">Payment</h3>
-					<p class="text-sm text-muted-foreground">Please enter your payment details. <br />We do not store them after receiving your payment.</p>
+				<div class="flex flex-col  gap-2.5 grow">
+					<div class="text-2xl flex flex-row gap-2.5 items-center">
+						<h3>Payment</h3>
+						<Check class=" { transaction.paymentDetails.set ? 'scale-100' : 'scale-0' } transition-all duration-150 origin-left opacity-70 ease-in-out " />
+					</div>					<p class="text-sm text-muted-foreground">Please enter your payment details. <br />We do not store them after receiving your payment.</p>
 					<PaymentMethodSelector transaction={transaction} />
 				</div>
 			</div>
@@ -143,7 +148,12 @@
 							{/if}
 							•
 							<p>Total includes VAT</p></div>
-						<Button size="lg" class="w-full p-2.5 shadow-xl" variant="default" type="submit" form="transactionForm" submit>Finish and Pay</Button>
+						{#if !transaction.paymentDetails.set}
+							<Button size="lg" class="w-full p-2.5 shadow-xl disabled" variant="default" type="submit" form="transactionForm" disabled>Finish and Pay</Button>
+						{:else}
+						<Button size="lg" class="w-full p-2.5 shadow-xl { transaction.paymentDetails.set || 'disabled'}" variant="default" type={ transaction.paymentDetails.set ? 'submit' : 'disabled'}
+										form="transactionForm">Finish and Pay</Button>
+							{/if}
 					</div>
 <!--			Background		-->
 					<div class="size-full backdrop-blur-2xl h-56 bottom-0"
