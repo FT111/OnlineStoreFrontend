@@ -27,10 +27,24 @@ const createBasket = () => {
 	async function addSKU(sku) {
 		// Return a promise to orchestrate the UI
 		return new Promise((resolve, reject) => {
+			// Guard clauses - check if SKU exists
 			if (!sku) {
 				reject('SKU not found');
+				return;
 			}
+			// Guard clause - Check if SKU in stock
+			if (sku.stock <= 0) {
+				reject('SKU out of stock');
+				return;
+			}
+
 			if (basket.items[sku.id]) {
+				// Guard clause - check if SKU has sufficient stock
+				if (basket.items[sku.id].quantity >= sku.stock) {
+					reject('SKU out of stock');
+					return;
+				}
+
 				basket.items[sku.id].quantity++
 			} else {
 				basket.items[sku.id] = { quantity: 1 };

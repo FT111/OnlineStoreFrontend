@@ -12,7 +12,7 @@
 	import VariantConfigurator from '$lib/components/sellerDashboard/VariantConfigurator.svelte';
 	import { redirect } from '@sveltejs/kit';
 	import { basketStore } from '$lib/basket.svelte.js';
-	import { Check } from 'lucide-svelte';
+	import { BadgeX, Check, Grid2x2X } from 'lucide-svelte';
 	import { scale, fly } from 'svelte/transition';
 	import { onNavigate } from '$app/navigation';
 	import { registerListingView } from '$lib/analytics/listings.js';
@@ -24,7 +24,7 @@
 		price: 0,
 		id: 0
 	});
-
+	
 	let variantOptions = $derived(
 		listing && listing.skuOptions && Object.keys(listing.skuOptions).length !== 0
 			? listing.skuOptions
@@ -35,12 +35,14 @@
 	);
 	
 	let addProductButtonState = $state('default');
-	let addProductButtonStateClasses = $derived(()=>{
+	let addProductButtonStateClasses = $derived.by(()=>{
 		switch(addProductButtonState) {
 			case 'default':
-				return 'bg-accent hover:bg-accent hover:brightness-125 hover:border-amber-900';
+				return 'bg-accent hover:bg-accent hover:brightness-125 hover:border-amber-900 border-amber-900';
 			case 'added':
-				return 'bg-green-500 hover:bg-green-500 hover:brightness-125 hover:border-green-500';
+				return 'bg-emerald-700 hover:bg-green-500 pointer-events-none pointer-none border-emerald-600';
+			case 'outOfStock':
+				return 'bg-slate-200 hover:bg-slate-200 text-primary disabled pointer-events-none pointer-none';
 		}
 	})
 	
@@ -50,12 +52,32 @@
 		registerListingView(listing);
 	});
 	
+	$effect(() => {
+		'Handles detecting if the product is out of stock when switching between variants'
+		
+		if (basketStore.basket.items[selectedSKU.id]?.quantity >= selectedSKU.stock
+		|| selectedSKU.stock === 0) {
+			addProductButtonState = 'outOfStock';
+		} else {
+			addProductButtonState = 'default';
+		}
+	});
+	
 	function handleAddToBasket() {
+		'Handles adding the selected SKU to the basket'
 		basketStore.addSKU(selectedSKU).then(() => {
 			addProductButtonState = 'added';
 			setTimeout(() => {
-				addProductButtonState = 'default';
+				// Reset the button state after 2 seconds
+				// Checks if the product is now out of stock
+				if (basketStore.basket.items[selectedSKU.id]?.quantity >= selectedSKU.stock) {
+					addProductButtonState = 'outOfStock';
+				} else {
+					addProductButtonState = 'default';
+				}
 			}, 2000);
+		}).catch(() => {
+			addProductButtonState = 'outOfStock';
 		});
 	}
 </script>
@@ -88,7 +110,7 @@
 						<p class="text-lg">rating</p>
 					</div>
 					<div class="basis-1/5 h-full bg-zinc-50 rounded-2xl  flex flex-col  items-center flex-wrap align-middle justify-center">
-						<p class="text-2xl font-bold">25+</p>
+						<p class="text-2xl font-bold">{selectedSKU.stock}</p>
 						<p class="text-lg">in stock</p>
 					</div>
 					<div class="basis-1/5 h-full flex flex-col items-center flex-wrap align-middle justify-center">
@@ -155,12 +177,19 @@
 			{#key selectedSKU.price}
 			<Price price={selectedSKU.price ? selectedSKU.price : listing.skus[0].price} />
 				{/key}
-			<Button onclick={()=> {handleAddToBasket()}} class="{addProductButtonState==='added' ? '!bg-emerald-600' : ''} w-56 h-full text-2xl font-bold border-[1.5px] border-accent p-3 px-5 bg-accent hover:bg-accent hover:brightness-125 hover:border-amber-900 transition-all shadow-md rounded-xl" variant="default">
+			<Button onclick={()=> {handleAddToBasket()}} type={addProductButtonState==='outOfStock' && 'disabled'} class="{addProductButtonStateClasses} w-56 h-full text-2xl font-bold border-[1.5px] p-3 px-5 transition-all rounded-xl" variant="default">
 				<div class="grid grid-cols-1 grid-rows-1 items-center size-full">
 				
 				{#if addProductButtonState === 'default'}
 					<div in:fly={{y: 20, direction: 'top', absolute:true}} out:fly={{y: -20, direction: 'bottom', absolute:true}} style="grid-column: 1; grid-row: 1;">
 						<p>Add to Basket</p>
+					</div>
+					{:else if addProductButtonState === 'outOfStock'}
+					<div class="flex flex-row gap-1.5 items-center justify-center" in:fly={{y:20, direction: 'bottom', absolute:true}} out:fly={{y: -20, direction: 'top', absolute:true}} style="grid-column: 1; grid-row: 1;">
+						<p>Out of Stock</p>
+						<div transition:scale={{direction: 'left'}}>
+							<BadgeX class="size-10" size={40} />
+						</div>
 					</div>
 				{:else}
 					<div class="flex flex-row gap-1.5 items-center" in:fly={{y:20, direction: 'top', absolute:true}} out:fly={{y: -20, direction: 'bottom', absolute:true}} style="grid-column: 1; grid-row: 1;">
