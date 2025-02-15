@@ -30,7 +30,7 @@
 						<div class="flex flex-row justify-between h-28 mx-3 rounded-2xl gap-4 p-2 align-middle
 									items-center transition-all duration-75 hover:outline-slate-300 outline-1 outline
 									outline-transparent bg-white hover:bg-slate-100" {...restProps} in:fly={{y:50, duration: 200, easing:expoOut}} out:fly={{ y:-50, duration: 200, easing: expoOut, z: -10 }}>
-							<a href="/listings/{product.listing.id}" class="flex flex-row gap-1 h-full w-72" >
+							<a href="/listings/{product.listing.id}?selected={product.sku?.id}" class="flex flex-row gap-1 h-full w-72" >
 								<div class="w-24 aspect-square">
 									<Image src={product?.id} alt="Product " class="w-10 h-10" />
 								</div>

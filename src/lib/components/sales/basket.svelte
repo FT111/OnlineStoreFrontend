@@ -59,11 +59,12 @@ $inspect(basketStore.basket);
 					{/if}
 				{/if}
 		</div>
-			
+		{#if Object.keys(basketStore.basket.items).length > 0}
 			<div class="h-fit bottom-0 sticky bg-muted/50 backdrop-blur-2xl w-full flex flex-row gap-8 p-5 mt-2 items-center justify-end">
 				<Price price={basketStore.basket.value} />
 				
 				<a href='/checkout'><Button>Checkout</Button></a>
 			</div>
+			{/if}
 	</Sheet.Content>
 </Sheet.Root>

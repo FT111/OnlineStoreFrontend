@@ -12,7 +12,7 @@
 	import VariantConfigurator from '$lib/components/sellerDashboard/VariantConfigurator.svelte';
 	import { redirect } from '@sveltejs/kit';
 	import { basketStore } from '$lib/basket.svelte.js';
-	import { BadgeX, Check, Grid2x2X } from 'lucide-svelte';
+	import { BadgeX, Check, Grid2x2X, ShoppingBasket } from 'lucide-svelte';
 	import { scale, fly } from 'svelte/transition';
 	import { onNavigate } from '$app/navigation';
 	import { registerListingView } from '$lib/analytics/listings.js';
@@ -169,9 +169,17 @@
 
 <!--		Basket options	-->
 <div class="fixed w-full sm:w-1/2 justify-self-end bottom-4 min-h-24 p-3 z-20 right-3 min-w-fit">
-	<div class=" bg-slate-100 rounded-xl p-3 flex flex-row align-middle items-center justify-between border-2 border-slate-200 shadow-md">
+	<div class=" bg-slate-100 rounded-xl p-3 flex flex-col md:flex-row gap-1 items-end align-middle md:items-center md:justify-between border-2 border-slate-200 shadow-md">
 		
-		<div></div>
+		<div>
+			{#if selectedSKU.id in basketStore.basket.items}
+				<div class="text-lg flex flex-row gap-2 items-center px-2">
+					<p class="font-bold">{basketStore.basket.items[selectedSKU.id].quantity}</p>
+					<div class="flex flex-row gap-1.5">in
+					<ShoppingBasket stroke-width={1.25} /></div>
+				</div>
+			{/if}
+		</div>
 		
 		<div class="flex flex-row items-center h-full gap-4">
 			{#key selectedSKU.price}

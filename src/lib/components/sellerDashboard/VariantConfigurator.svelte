@@ -1,14 +1,16 @@
 
 <script>
 	import { run } from 'svelte/legacy';
-
-	
+	import { goto, pushState, replaceState } from '$app/navigation';
 	import { Badge } from '$lib/components/ui/badge/index.js';
+	import { page } from '$app/state';
 		import { Input } from '$lib/components/ui/input/index.js';
 		import { Cross, Plus, Trash2, X } from 'lucide-svelte';
 		import { Button } from '$lib/components/ui/button/index.js';
 	import {fly} from 'svelte/transition';
 	import {backOut} from 'svelte/easing';
+	import { browser } from '$app/environment';
+	import { onMount } from 'svelte';
 
 
 	let { variantOptions = $bindable({}), selectedOptions = $bindable({}),
@@ -97,6 +99,10 @@
 				onSelect(category, option);
 			}
 		}
+		
+		if (validation) {
+			goto(page.url.pathname+'?selected='+selectedProduct.id, {replaceState: true});
+		}
 	}
 
 	if (!configuring && validation) {
@@ -127,6 +133,32 @@
 	const removeCategory = (category) => {
 		delete variantOptions[category];
 	};
+	
+	$inspect(selectedProduct);
+	
+	onMount(() => {
+		// If editing, return
+		if (!validation) {
+			return;
+		}
+		
+		// Check if the page has a selected SKU in the URL
+		// Lets the user share a link to a specific product configuration, or navigate back to a previous configuration
+		if (page.url.searchParams.has('selected')) {
+			if (defaultOptions) {
+				// If the product has default options, it sets the options manually
+				selectedProduct = skus.find((sku) => sku.id === page.url.searchParams.get('selected'));
+				selectedOptions = {'Styles': selectedProduct.title};
+				
+			} else {
+				// If the product has selectable options, it sets the options based on the selected SKU's options
+				selectedOptions = (skus.find((sku) => sku.id === page.url.searchParams.get('selected')))?.options;
+				selectedProduct = selectSKUFromSelectedOptions(selectedOptions);
+				determineSelectableOptions();
+			}
+		}
+	});
+	
 	
 </script>
 
