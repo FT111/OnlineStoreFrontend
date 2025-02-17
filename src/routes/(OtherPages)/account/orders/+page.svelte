@@ -3,7 +3,16 @@
 	import Price from '$lib/components/price.svelte';
 	import DashboardPageLayout from '$lib/components/DashboardPageLayout.svelte';
 	import { Badge } from '$lib/components/ui/badge/index.js';
-	
+	import * as Tabs from "$lib/components/ui/tabs/index.js";
+	import DataTable from './data-table.svelte'
+	import { columns } from './columns.js';
+	import { Archive, Truck } from 'lucide-svelte';
+	import { flip } from 'svelte/animate';
+	import { crossfade } from 'svelte/transition';
+	import InputWithLabel from '$lib/components/InputWithLabel.svelte';
+	import { Input } from '$lib/components/ui/input/index.js';
+	const [send, receive] = crossfade({});
+
 	const mockOrders = [
 		{
 			id: 1,
@@ -156,78 +165,47 @@
 			addedAt: 12332543
 		}
 	]
+	let userSearch = $state('')
+	
+// 	Filter order's date, id and name by search term
+	let filteredOrders = $derived.by(()=>{
+		return mockOrders.filter((order) => {
+			return order.recipient.name.toLowerCase().includes(userSearch.toLowerCase()) || order.id.toString().includes(userSearch)
+				|| order.recipient.address.toLowerCase().includes(userSearch.toLowerCase())
+		})
+	})
 </script>
 
 <DashboardPageLayout>
 	{#snippet title()}
-		<h1 class="text-3xl font-semibold">Orders</h1>
+		Orders
 	{/snippet}
 	
 	{#snippet page()}
-		<Accordion.Root type="single" class="w-full" value="item-1">
-			<Accordion.Item value="item-1">
-				<Accordion.Trigger>Active Orders</Accordion.Trigger>
-				<Accordion.Content>
-					<div class="flex flex-col gap-2.5 size-full">
-					
-					{#each mockOrders.filter((order) => order.status !== 'Delivered') as order}
-						<div class="flex flex-col gap-2 pb-2 bg-muted rounded-xl p-2.5">
-							<div class="flex flex-row justify-between">
-								<p class="font-semibold">Order #{order.id}</p>
-								<p class="font-semibold">{order.status}</p>
-							</div>
-							<div class="flex flex-row gap-2">
-								{#each order.products as product}
-									<Badge class="flex flex-row gap-2.5">
-										<p>{product.title}</p>
-										<p>x{product.quantity}</p>
-									</Badge>
-								{/each}
-							</div>
-							<div class="flex flex-row justify-between">
-								<p class="font-semibold">Total</p>
-								<p class="font-semibold"><Price price={order.totalValue} /></p>
-							</div>
-							<div class="flex flex-col gap-1">
-								<p class="font-semibold">{order.recipient.name}</p>
-								<p>{order.recipient.address}</p>
-							</div>
-						</div>
-					{/each}
-					</div>
-					
-				</Accordion.Content>
-			</Accordion.Item>
-			<Accordion.Item value="item-2">
-				<Accordion.Trigger>Archived Orders</Accordion.Trigger>
-				<Accordion.Content>
-					{#each mockOrders.filter((order) => order.status === 'Delivered') as order}
-						<div class="flex flex-col gap-2 border-b border-slate-200 pb-2">
-							<div class="flex flex-row justify-between">
-								<p class="font-semibold">Order #{order.id}</p>
-								<p class="font-semibold">{order.status}</p>
-							</div>
-							<div class="flex flex-col gap-2">
-								{#each order.products as product}
-									<div class="flex flex-row justify-between">
-										<p>{product.title}</p>
-										<p>{product.quantity} x <Price price={product.price} /></p>
-									</div>
-								{/each}
-							</div>
-							<div class="flex flex-row justify-between">
-								<p class="font-semibold">Total</p>
-								<p class="font-semibold"><Price price={order.totalValue} /></p>
-							</div>
-							<div class="flex flex-col gap-1">
-								<p class="font-semibold">{order.recipient.name}</p>
-								<p>{order.recipient.address}</p>
-							</div>
-						</div>
-						{/each}
-				</Accordion.Content>
-			</Accordion.Item>
-		</Accordion.Root>
-		{/snippet}
+		<Tabs.Root value="active" class="w-full">
+		
+<!--	Table controls		-->
+			<div class="flex flex-row gap-4 items-center">
+				<Tabs.List class="md:w-fit">
+					<Tabs.Trigger value="active" class="group">
+						<Truck size={18} strokeWidth={1.25} />
+						<p class="group-data-[state=active]:scale-100 scale-0 group-data-[state=active]:w-14 w-0 transition-all duration-150">Active</p>
+					</Tabs.Trigger>
+					<Tabs.Trigger value="archive" class="group">
+						<p class="group-data-[state=active]:scale-100 scale-0 group-data-[state=active]:w-14 w-0 transition-all duration-150">Archive</p>
+						<Archive size={18} strokeWidth={1.25} />
+					</Tabs.Trigger>
+				</Tabs.List>
+					<Input label="Search" placeholder="Search orders" class="w-48 rounded-full" bind:value={userSearch} />
+			</div>
+			<Tabs.Content value="active">
+					<DataTable data={filteredOrders.filter((order) => order.status !== 'Delivered')} columns={columns} class="w-full" />
+			</Tabs.Content>
+			<Tabs.Content value="archive">
+				<DataTable data={filteredOrders.filter((order) => order.status === 'Delivered')} columns={columns} class="w-full" />
+			</Tabs.Content>
+		</Tabs.Root>
+		
+	{/snippet}
 	
 </DashboardPageLayout>
