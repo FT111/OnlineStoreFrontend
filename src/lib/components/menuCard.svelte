@@ -14,7 +14,7 @@
 
 
 <a class="rounded-xl hover:basis-4/12 basis-1/4 p-5 justify-end align-bottom grow border-2 border-slate-300 !hover:border-accent/60
-			hover:shadow-lg shadow-none
+	
  			hover:bg-opacity-90 transition-all duration-200 grid grid-cols-1 grid-rows-1 {className}" {...restProps} href={href}>
 	
 	<div class="w-full h-full" style="grid-column: 1;grid-row: 1">
@@ -33,7 +33,7 @@
 	</div>
 
 		
-		<div class="w-min flex justify-end align-bottom flex-col h-full" style="grid-column: 1;grid-row: 1">
-			{@render children?.()}
+		<div class="w-min flex justify-end align-bottom flex-col h-full text-lg " style="grid-column: 1;grid-row: 1">
+			<p class="text-xl">{@render children?.()}</p>
 		</div>
 </a>

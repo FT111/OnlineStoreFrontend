@@ -50,6 +50,10 @@
 	
 	onMount(() => {
 		registerListingView(listing);
+		
+		if (listing.skus?.length > 0) {
+			selectedSKU = listing.skus[0];
+		}
 	});
 	
 	$effect(() => {

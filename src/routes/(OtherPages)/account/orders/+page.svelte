@@ -186,17 +186,17 @@
 		
 <!--	Table controls		-->
 			<div class="flex flex-row gap-4 items-center">
-				<Tabs.List class="md:w-fit">
-					<Tabs.Trigger value="active" class="group">
+				<Tabs.List class="md:w-fit gap-0.5">
+					<Tabs.Trigger value="active" class="group ease-[cubic-bezier(0.680, -0.550, 0.265, 1.550)] data-[state=inactive]:hover:bg-slate-50">
 						<Truck size={18} strokeWidth={1.25} />
-						<p class="group-data-[state=active]:scale-100 scale-0 group-data-[state=active]:w-14 w-0 transition-all duration-150">Active</p>
+						<p class="group-data-[state=active]:scale-100 scale-0 group-data-[state=active]:w-14 w-0 transition-all duration-150 ease-[cubic-bezier(0.680, -0.550, 0.265, 1.550)]">Active</p>
 					</Tabs.Trigger>
-					<Tabs.Trigger value="archive" class="group">
-						<p class="group-data-[state=active]:scale-100 scale-0 group-data-[state=active]:w-14 w-0 transition-all duration-150">Archive</p>
+					<Tabs.Trigger value="archive" class="group ease-[cubic-bezier(0.680, -0.550, 0.265, 1.550)] data-[state=inactive]:hover:bg-slate-50">
+						<p class="group-data-[state=active]:scale-100 scale-0 group-data-[state=active]:w-14 w-0 transition-all duration-150 ease-[cubic-bezier(0.680, -0.550, 0.265, 1.550)]">Archive</p>
 						<Archive size={18} strokeWidth={1.25} />
 					</Tabs.Trigger>
 				</Tabs.List>
-					<Input label="Search" placeholder="Search orders" class="w-48 rounded-full" bind:value={userSearch} />
+					<Input label="Search" placeholder="Search orders" class="w-48 rounded-full bg-secondary text-secondary-foreground placeholder:text-opacity-60" bind:value={userSearch} />
 			</div>
 			<Tabs.Content value="active">
 					<DataTable data={filteredOrders.filter((order) => order.status !== 'Delivered')} columns={columns} class="w-full" />

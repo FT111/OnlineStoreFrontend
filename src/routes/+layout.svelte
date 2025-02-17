@@ -21,8 +21,9 @@
 	
 </script>
 
-
-{@render children?.()}
+<div class="selection:text-accent-foreground selection:bg-accent/70">
+	{@render children?.()}
+</div>
 
 
 <Toaster />
