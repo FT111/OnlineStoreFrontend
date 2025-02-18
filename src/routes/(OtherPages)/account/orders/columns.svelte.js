@@ -1,8 +1,9 @@
 import { createRawSnippet } from 'svelte';
 import { renderComponent, renderSnippet } from '$lib/components/ui/data-table/index.js';
 import DataTableActions from './data-table-actions.svelte';
+import DataTableSortableHeader from './data-table-sortable-header.svelte';
 
-export const columns = [
+export const columnsSvelte = [
 	{
 		accessorKey: 'id',
 		header: 'Order ID',
@@ -13,7 +14,15 @@ export const columns = [
 	},
 	{
 		accessorKey: 'addedAt',
-		header: 'Date',
+		header: ({ column }) => {
+			return renderComponent(DataTableSortableHeader, {
+				title: 'Date',
+				className: '',
+				onclick: () => {column.toggleSorting(column.getIsSorted() === "asc")},
+			})},
+		cell: ({ row }) => {
+			return new Date(row.getValue('addedAt')*1000).toLocaleDateString('en-GB');
+		},
 	},
 	{
 		'accessorKey': 'totalQuantity',
@@ -21,12 +30,13 @@ export const columns = [
 	},
 	{
 		accessorKey: 'totalValue',
-		header: () => {
-			const amountHeaderSnippet = createRawSnippet(() => ({
-				render: () => `<div class="text-right">Amount</div>`,
-			}));
-			return renderSnippet(amountHeaderSnippet, "");
-		},
+		header: ({column}) => {
+				return renderComponent(DataTableSortableHeader, {
+					title: 'Total',
+					className: 'flex flex-row self-end justify-end justify-self-end',
+					onclick: () => {column.toggleSorting(column.getIsSorted() === "asc")},
+				})},
+
 		cell: ({ row }) => {
 			const amountCellSnippet = createRawSnippet((getAmount) => {
 				const amount = getAmount();

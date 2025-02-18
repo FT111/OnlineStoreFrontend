@@ -3,7 +3,7 @@
 		createSvelteTable,
 		FlexRender,
 	} from "$lib/components/ui/data-table/index.js";
-	import { getCoreRowModel, getPaginationRowModel } from '@tanstack/table-core';
+	import { getCoreRowModel, getPaginationRowModel, getSortedRowModel } from '@tanstack/table-core';
 	import * as Table from "$lib/components/ui/table/index.js";
 	import { Button } from '$lib/components/ui/button/index.js';
 	
@@ -12,6 +12,7 @@
 		pageIndex: 0,
 		pageSize: 15,
 	});
+	let sorting = $state([]);
 	
 	const table = createSvelteTable({
 		columns,
@@ -19,9 +20,20 @@
 			return data;
 		},
 		getCoreRowModel: getCoreRowModel(),
+		getSortedRowModel: getSortedRowModel(),
+		onSortingChange: (updater) => {
+			if (typeof updater === "function") {
+				sorting = updater(sorting);
+			} else {
+				sorting = updater;
+			}
+		},
 		state: {
 			get pagination() {
 				return pagination;
+			},
+			get sorting() {
+				return sorting;
 			},
 		},
 		onPaginationChange: (updater) => {
