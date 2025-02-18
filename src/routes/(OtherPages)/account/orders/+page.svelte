@@ -5,13 +5,16 @@
 	import { Badge } from '$lib/components/ui/badge/index.js';
 	import * as Tabs from "$lib/components/ui/tabs/index.js";
 	import DataTable from './data-table.svelte'
-	import { columns } from './columns.js';
+	import { columnsSvelte } from './columns.svelte.js';
 	import { Archive, Truck } from 'lucide-svelte';
 	import { flip } from 'svelte/animate';
 	import { crossfade } from 'svelte/transition';
 	import InputWithLabel from '$lib/components/InputWithLabel.svelte';
+	import Dropdown from '$lib/components/dropdownBase.svelte';
+	import * as Command from '$lib/components/ui/command/index.js';
 	import { Input } from '$lib/components/ui/input/index.js';
 	const [send, receive] = crossfade({});
+	import { CircleDashed, Circle, CircleArrowRight, CircleCheck, X} from 'lucide-svelte';
 
 	const mockOrders = [
 		{
@@ -106,7 +109,7 @@
 					price: 200
 				}
 			],
-			totalValue: 300,
+			totalValue: 1199,
 			totalQuantity: 3,
 			recipient: {
 				name: 'Jane Doe',
@@ -131,7 +134,7 @@
 					price: 200
 				}
 			],
-			totalValue: 300,
+			totalValue: 13000,
 			totalQuantity: 3,
 			recipient: {
 				name: 'John Doe',
@@ -156,22 +159,47 @@
 					price: 200
 				}
 			],
-			totalValue: 300,
+			totalValue: 15000,
 			totalQuantity: 3,
 			recipient: {
 				name: 'Jane Doe',
 				address: '123 Fake St, Fakeville, FV1 2FV'
 			},
-			addedAt: 12332543
+			addedAt: 1533254300
 		}
 	]
+	
+	const statuses = [
+		{
+			title: 'None',
+			icon: X
+		},
+		{
+			title: 'Processing',
+			icon: CircleDashed
+		},
+		{
+			title: 'Dispatched',
+			icon: Circle
+		},
+		{
+			title: 'Out for delivery',
+			icon: CircleArrowRight
+		},
+		{
+			title: 'Delivered',
+			icon: CircleCheck
+		}
+	];
 	let userSearch = $state('')
+	let userStatusFilter = $state('None')
+	let statusComboboxState = $state(false)
 	
 // 	Filter order's date, id and name by search term
 	let filteredOrders = $derived.by(()=>{
 		return mockOrders.filter((order) => {
-			return order.recipient.name.toLowerCase().includes(userSearch.toLowerCase()) || order.id.toString().includes(userSearch)
-				|| order.recipient.address.toLowerCase().includes(userSearch.toLowerCase())
+			return (order.recipient.name.toLowerCase().includes(userSearch.toLowerCase()) || order.id.toString().includes(userSearch)
+				|| order.recipient.address.toLowerCase().includes(userSearch.toLowerCase())) && (userStatusFilter === 'None' || order.status === userStatusFilter)
 		})
 	})
 </script>
@@ -196,13 +224,26 @@
 						<Archive size={18} strokeWidth={1.25} />
 					</Tabs.Trigger>
 				</Tabs.List>
-					<Input label="Search" placeholder="Search orders" class="w-48 rounded-full bg-secondary text-secondary-foreground placeholder:text-opacity-60" bind:value={userSearch} />
+				<Input label="Search" placeholder="Search orders" class="w-48 rounded-full bg-secondary text-secondary-foreground placeholder:text-opacity-60" bind:value={userSearch} />
+				<Dropdown title="Filter by status" value={userStatusFilter} bind:open={statusComboboxState} class="max-w-48 rounded-full bg-secondary text-secondary-foreground">
+					{#each statuses as status}
+						{@const Icon = status.icon}
+						<Command.Item
+							value={status.title}
+							onSelect={() => {statusComboboxState=false;userStatusFilter=status.title}}>
+							<div class="flex flex-row gap-2 items-center">
+								<Icon size={18} strokeWidth={1.25} />
+								<p>{status.title}</p>
+							</div>
+						</Command.Item>
+					{/each}
+				</Dropdown>
 			</div>
 			<Tabs.Content value="active">
-					<DataTable data={filteredOrders.filter((order) => order.status !== 'Delivered')} columns={columns} class="w-full" />
+					<DataTable data={filteredOrders.filter((order) => order.status !== 'Delivered')} columns={columnsSvelte} class="w-full" />
 			</Tabs.Content>
 			<Tabs.Content value="archive">
-				<DataTable data={filteredOrders.filter((order) => order.status === 'Delivered')} columns={columns} class="w-full" />
+				<DataTable data={filteredOrders.filter((order) => order.status === 'Delivered')} columns={columnsSvelte} class="w-full" />
 			</Tabs.Content>
 		</Tabs.Root>
 		

@@ -52,22 +52,24 @@
 		<Popover.Content class="w-[210px] p-0">
 			<Command.Root>
 				<Command.Input placeholder="{subtitle}..." />
-				<Command.Empty>No {title} found.</Command.Empty>
-				<Command.Group>
-					{#each options as option}
-						<Command.Item
-						  class="aria-selected:text-white transition-all duration-100"
-						  value={option}
-						  onSelect={(currentValue) => {
-								  value = currentValue;
-									clickAction();
-								  closeAndFocusTrigger();
-	            }}
-						>
-							{option}
-						</Command.Item>
-					{/each}
-				</Command.Group>
+				<Command.List>
+					<Command.Empty>No {title} found.</Command.Empty>
+					<Command.Group>
+						{#each options as option}
+							<Command.Item
+								class="aria-selected:text-white transition-all duration-100"
+								value={option}
+								onSelect={(currentValue) => {
+										value = currentValue;
+										clickAction();
+										closeAndFocusTrigger();
+								}}
+							>
+								{option}
+							</Command.Item>
+						{/each}
+					</Command.Group>
+				</Command.List>
 			</Command.Root>
 		</Popover.Content>
 </Popover.Root>
