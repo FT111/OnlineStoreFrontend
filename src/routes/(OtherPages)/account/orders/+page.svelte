@@ -6,7 +6,7 @@
 	import * as Tabs from "$lib/components/ui/tabs/index.js";
 	import DataTable from './data-table.svelte'
 	import { columnsSvelte } from './columns.svelte.js';
-	import { Archive, Truck } from 'lucide-svelte';
+	import { Archive, Check, Truck } from 'lucide-svelte';
 	import { flip } from 'svelte/animate';
 	import { crossfade } from 'svelte/transition';
 	import InputWithLabel from '$lib/components/InputWithLabel.svelte';
@@ -15,6 +15,10 @@
 	import { Input } from '$lib/components/ui/input/index.js';
 	const [send, receive] = crossfade({});
 	import { CircleDashed, Circle, CircleArrowRight, CircleCheck, X} from 'lucide-svelte';
+	import { Label } from 'bits-ui';
+	import * as Dialog from '$lib/components/ui/dialog/index.js';
+	import { Button } from '$lib/components/ui/button/index.js';
+	import SKUrow from '$lib/components/sales/SKUrow.svelte';
 
 	const mockOrders = [
 		{
@@ -191,6 +195,9 @@
 			icon: CircleCheck
 		}
 	];
+	
+	let selectedOrder = $state({})
+	
 	let userSearch = $state('')
 	let userStatusFilter = $state('None')
 	let statusComboboxState = $state(false)
@@ -203,6 +210,32 @@
 		})
 	})
 </script>
+
+<Dialog.Root>
+	<Dialog.Content class="sm:max-w-[425px]">
+		<Dialog.Header>
+			<Dialog.Title>Order #{selectedOrder.id}</Dialog.Title>
+			<Dialog.Description>
+				View order details
+			</Dialog.Description>
+		</Dialog.Header>
+		<div class="flex flex-col gap-4">
+			<div class="flex flex-col gap-2.5">
+				{#each selectedOrder.products as product}
+					<SKUrow product={product} quantityChange={false} />
+				{/each}
+			</div>
+			<div class="grid grid-cols-4 items-center gap-4">
+				<Label for="username" class="text-right">Username</Label>
+				<Input id="username" value="@peduarte" class="col-span-3" />
+			</div>
+		</div>
+		<Dialog.Footer>
+			<Button type="submit">Save changes</Button>
+		</Dialog.Footer>
+	</Dialog.Content>
+</Dialog.Root>
+
 
 <DashboardPageLayout>
 	{#snippet title()}
@@ -230,11 +263,17 @@
 						{@const Icon = status.icon}
 						<Command.Item
 							value={status.title}
-							onSelect={() => {statusComboboxState=false;userStatusFilter=status.title}}>
+							onSelect={() => {statusComboboxState=false;userStatusFilter=status.title}}
+							class="{status.title===userStatusFilter && 'bg-secondary'} flex flex-row justify-between"
+						>
 							<div class="flex flex-row gap-2 items-center">
 								<Icon size={18} strokeWidth={1.25} />
 								<p>{status.title}</p>
 							</div>
+							
+							{#if status.title === userStatusFilter}
+								<Check size={18} strokeWidth={1.25} />
+							{/if}
 						</Command.Item>
 					{/each}
 				</Dropdown>
