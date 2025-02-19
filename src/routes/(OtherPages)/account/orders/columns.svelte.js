@@ -2,6 +2,7 @@ import { createRawSnippet } from 'svelte';
 import { renderComponent, renderSnippet } from '$lib/components/ui/data-table/index.js';
 import DataTableActions from './data-table-actions.svelte';
 import DataTableSortableHeader from './data-table-sortable-header.svelte';
+import openRowDetail from './+page.svelte';
 
 export const columnsSvelte = [
 	{

@@ -15,10 +15,12 @@
 	import { Input } from '$lib/components/ui/input/index.js';
 	const [send, receive] = crossfade({});
 	import { CircleDashed, Circle, CircleArrowRight, CircleCheck, X} from 'lucide-svelte';
-	import { Label } from 'bits-ui';
 	import * as Dialog from '$lib/components/ui/dialog/index.js';
 	import { Button } from '$lib/components/ui/button/index.js';
 	import SKUrow from '$lib/components/sales/SKUrow.svelte';
+	import { page } from '$app/state';
+	import { pushState } from '$app/navigation';
+	import { onMount } from 'svelte';
 
 	const mockOrders = [
 		{
@@ -196,7 +198,17 @@
 		}
 	];
 	
-	let selectedOrder = $state({})
+	let selectedOrderID = $derived(page.state.selectedOrder)
+	let selectedOrder = $derived.by(()=>{
+		return mockOrders.find((order) => order.id === selectedOrderID)
+	})
+	let detailViewOpen = $derived(page.state.detailViewOpen)
+	const updatePageState = () => {
+		pushState('', {
+			selectedOrder: selectedOrderID,
+			detailViewOpen: !detailViewOpen
+		})
+	}
 	
 	let userSearch = $state('')
 	let userStatusFilter = $state('None')
@@ -211,7 +223,7 @@
 	})
 </script>
 
-<Dialog.Root>
+<Dialog.Root open={detailViewOpen} onOpenChange={updatePageState}>
 	<Dialog.Content class="sm:max-w-[425px]">
 		<Dialog.Header>
 			<Dialog.Title>Order #{selectedOrder.id}</Dialog.Title>
@@ -221,12 +233,11 @@
 		</Dialog.Header>
 		<div class="flex flex-col gap-4">
 			<div class="flex flex-col gap-2.5">
-				{#each selectedOrder.products as product}
-					<SKUrow product={product} quantityChange={false} />
-				{/each}
+				<!--{#each selectedOrder.products as product}-->
+				<!--	<SKUrow product={product} quantityChange={false} />-->
+				<!--{/each}-->
 			</div>
 			<div class="grid grid-cols-4 items-center gap-4">
-				<Label for="username" class="text-right">Username</Label>
 				<Input id="username" value="@peduarte" class="col-span-3" />
 			</div>
 		</div>
@@ -279,7 +290,7 @@
 				</Dropdown>
 			</div>
 			<Tabs.Content value="active">
-					<DataTable data={filteredOrders.filter((order) => order.status !== 'Delivered')} columns={columnsSvelte} class="w-full" />
+					<DataTable data={filteredOrders.filter((order) => order.status !== 'Delivered')} columns={columnsSvelte} class="w-full"  />
 			</Tabs.Content>
 			<Tabs.Content value="archive">
 				<DataTable data={filteredOrders.filter((order) => order.status === 'Delivered')} columns={columnsSvelte} class="w-full" />
