@@ -22,159 +22,8 @@
 	import { pushState } from '$app/navigation';
 	import { onMount } from 'svelte';
 	import { browser } from '$app/environment';
-
-	const mockOrders = [
-		{
-			id: 1,
-			status: 'Out for delivery',
-			products: [
-				{
-					id: 1,
-					title: 'Product 1',
-					quantity: 1,
-					price: 100
-				},
-				{
-					id: 2,
-					title: 'Product 2',
-					quantity: 2,
-					price: 200
-				}
-			],
-			totalValue: 300,
-			totalQuantity: 3,
-			recipient: {
-				name: 'John Doe',
-				address: '123 Fake St, Fakeville, FV1 2FV'
-			},
-			addedAt: 12332543
-		},
-		{
-			id: 2,
-			status: 'Delivered',
-			products: [
-				{
-					id: 3,
-					title: 'Product 3',
-					quantity: 1,
-					price: 100
-				},
-				{
-					id: 4,
-					title: 'Product 4',
-					quantity: 2,
-					price: 200
-				}
-			],
-			totalValue: 300,
-			totalQuantity: 3,
-			recipient: {
-				name: 'Jane Doe',
-				address: '123 Fake St, Fakeville, FV1 2FV'
-			},
-			addedAt: 12332543
-		},
-		{
-			id: 3,
-			status: 'Out for delivery',
-			products: [
-				{
-					id: 5,
-					title: 'Product 5',
-					quantity: 1,
-					price: 100
-				},
-				{
-					id: 6,
-					title: 'Product 6',
-					quantity: 2,
-					price: 200
-				}
-			],
-			totalValue: 300,
-			totalQuantity: 3,
-			recipient: {
-				name: 'John Doe',
-				address: '123 Fake St, Fakeville, FV1 2FV'
-			},
-			addedAt: 12332543
-		},
-		{
-			id: 4,
-			status: 'Processing',
-			products: [
-				{
-					id: 7,
-					title: 'Product 7',
-					quantity: 1,
-					price: 100
-				},
-				{
-					id: 8,
-					title: 'Product 8',
-					quantity: 2,
-					price: 200
-				}
-			],
-			totalValue: 1199,
-			totalQuantity: 3,
-			recipient: {
-				name: 'Jane Doe',
-				address: '123 Fake St, Fakeville, FV1 2FV'
-			},
-			addedAt: 12332543
-		},
-		{
-			id: 5,
-			status: 'Delivered',
-			products: [
-				{
-					id: 9,
-					title: 'Product 9',
-					quantity: 1,
-					price: 100
-				},
-				{
-					id: 10,
-					title: 'Product 10',
-					quantity: 2,
-					price: 200
-				}
-			],
-			totalValue: 13000,
-			totalQuantity: 3,
-			recipient: {
-				name: 'John Doe',
-				address: '123 Fake St, Fakeville, FV1 2FV'
-			},
-			addedAt: 12332543
-		},
-		{
-			id: 6,
-			status: 'Processing',
-			products: [
-				{
-					id: 11,
-					title: 'Product 11',
-					quantity: 1,
-					price: 100
-				},
-				{
-					id: 12,
-					title: 'Product 12',
-					quantity: 2,
-					price: 200
-				}
-			],
-			totalValue: 15000,
-			totalQuantity: 3,
-			recipient: {
-				name: 'Jane Doe',
-				address: '123 Fake St, Fakeville, FV1 2FV'
-			},
-			addedAt: 1533254300
-		}
-	]
+	import OrderDetailDialog from '$lib/components/sellerDashboard/orderDetailDialog.svelte';
+	
 	
 	const statuses = [
 		{
@@ -203,7 +52,10 @@
 	
 	let selectedOrderID = $derived(page.state.selectedOrder)
 	let selectedOrder = $derived.by(()=>{
-		return mockOrders.find((order) => order.id === selectedOrderID)
+		if (!browser) {
+			return
+		}
+		return data.orders.sales.find((order) => order.id === selectedOrderID)
 	})
 	let detailViewOpen = $derived(page.state.detailViewOpen)
 	const updatePageState = () => {
@@ -219,40 +71,14 @@
 	
 // 	Filter order's date, id and name by search term
 	let filteredOrders = $derived.by(()=>{
-			if (!browser) {
-				return []
-			}
-		return data.orders.sales.filter((order) => {
-			return (order.recipient.username.toLowerCase().includes(userSearch.toLowerCase()) || order.id.toString().includes(userSearch)
-				&& (userStatusFilter === 'None' || order.status === userStatusFilter))
+		return data.orders?.sales?.filter((order) => {
+			return (order.id.toString().includes(userSearch) || order.name.toLowerCase().includes(userSearch.toLowerCase())) && (userStatusFilter === 'None' || order.status === userStatusFilter)
 		})
 	})
+	
 </script>
 
-<Dialog.Root open={detailViewOpen} onOpenChange={updatePageState}>
-	<Dialog.Content class="sm:max-w-[425px]">
-		<Dialog.Header>
-			<Dialog.Title>Order #{selectedOrder.id}</Dialog.Title>
-			<Dialog.Description>
-				View order details
-			</Dialog.Description>
-		</Dialog.Header>
-		<div class="flex flex-col gap-4">
-			<div class="flex flex-col gap-2.5">
-				<!--{#each selectedOrder.products as product}-->
-				<!--	<SKUrow product={product} quantityChange={false} />-->
-				<!--{/each}-->
-			</div>
-			<div class="grid grid-cols-4 items-center gap-4">
-				<Input id="username" value="@peduarte" class="col-span-3" />
-			</div>
-		</div>
-		<Dialog.Footer>
-			<Button type="submit">Save changes</Button>
-		</Dialog.Footer>
-	</Dialog.Content>
-</Dialog.Root>
-
+<OrderDetailDialog detailViewOpen={detailViewOpen} selectedOrder={selectedOrder} updatePageState={updatePageState} />
 
 <DashboardPageLayout>
 	{#snippet title()}
