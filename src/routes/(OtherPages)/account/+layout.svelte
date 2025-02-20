@@ -107,7 +107,7 @@ let selectedClasses = ' !bg-slate-200/70 pl-5 ';
 			</div>
 		
 		</Sidebar.Content>
-	
+	<Sidebar.Rail />
 	</Sidebar.Root>
 	
 	<Sidebar.Inset>

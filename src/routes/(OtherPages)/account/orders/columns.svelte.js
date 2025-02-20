@@ -10,7 +10,7 @@ export const columnsSvelte = [
 		header: 'Order ID',
 	},
 	{
-		'accessorKey': 'recipient.name',
+		'accessorKey': 'recipient.username',
 		'header': 'Recipient',
 	},
 	{
@@ -26,11 +26,11 @@ export const columnsSvelte = [
 		},
 	},
 	{
-		'accessorKey': 'totalQuantity',
+		'accessorKey': 'quantity',
 		'header': 'Quantity',
 	},
 	{
-		accessorKey: 'totalValue',
+		accessorKey: 'value',
 		header: ({column}) => {
 				return renderComponent(DataTableSortableHeader, {
 					title: 'Total',
@@ -48,7 +48,7 @@ export const columnsSvelte = [
 
 			return renderSnippet(
 				amountCellSnippet,
-				(row.getValue('totalValue') / 100).toLocaleString('en-GB', {
+				(row.getValue('value') / 100).toLocaleString('en-GB', {
 					style: 'currency',
 					currency: 'GBP',
 				})

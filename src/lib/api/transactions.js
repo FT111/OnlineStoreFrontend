@@ -1,4 +1,4 @@
-import { POST } from '$lib/api/core.js';
+import { GET, POST } from '$lib/api/core.js';
 
 export const enrichBasket = async (basket) => {
 	return POST('transactions/basket/enrich', JSON.stringify(basket))
@@ -12,6 +12,16 @@ export const enrichBasket = async (basket) => {
 
 export const submitCheckout = async (checkout) => {
 	return POST('transactions/checkout', JSON.stringify(checkout))
+		.then((response) => {
+			return response;
+		})
+		.catch((error) => {
+			console.error(error);
+		});
+}
+
+export const getUserOrders = async (id) => {
+	return GET(`users/${id}/orders`)
 		.then((response) => {
 			return response;
 		})

@@ -21,6 +21,7 @@
 	import { page } from '$app/state';
 	import { pushState } from '$app/navigation';
 	import { onMount } from 'svelte';
+	import { browser } from '$app/environment';
 
 	const mockOrders = [
 		{
@@ -198,6 +199,8 @@
 		}
 	];
 	
+	let { data = {orders: []} } = $props();
+	
 	let selectedOrderID = $derived(page.state.selectedOrder)
 	let selectedOrder = $derived.by(()=>{
 		return mockOrders.find((order) => order.id === selectedOrderID)
@@ -216,9 +219,12 @@
 	
 // 	Filter order's date, id and name by search term
 	let filteredOrders = $derived.by(()=>{
-		return mockOrders.filter((order) => {
-			return (order.recipient.name.toLowerCase().includes(userSearch.toLowerCase()) || order.id.toString().includes(userSearch)
-				|| order.recipient.address.toLowerCase().includes(userSearch.toLowerCase())) && (userStatusFilter === 'None' || order.status === userStatusFilter)
+			if (!browser) {
+				return []
+			}
+		return data.orders.sales.filter((order) => {
+			return (order.recipient.username.toLowerCase().includes(userSearch.toLowerCase()) || order.id.toString().includes(userSearch)
+				&& (userStatusFilter === 'None' || order.status === userStatusFilter))
 		})
 	})
 </script>
@@ -289,12 +295,14 @@
 					{/each}
 				</Dropdown>
 			</div>
+			{#if browser}
 			<Tabs.Content value="active">
 					<DataTable data={filteredOrders.filter((order) => order.status !== 'Delivered')} columns={columnsSvelte} class="w-full"  />
 			</Tabs.Content>
 			<Tabs.Content value="archive">
 				<DataTable data={filteredOrders.filter((order) => order.status === 'Delivered')} columns={columnsSvelte} class="w-full" />
 			</Tabs.Content>
+				{/if}
 		</Tabs.Root>
 		
 	{/snippet}
