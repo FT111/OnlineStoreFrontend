@@ -8,6 +8,18 @@ export const columnsSvelte = [
 	{
 		accessorKey: 'id',
 		header: 'Order ID',
+		cell: ({ row }) => {
+			const idCell = createRawSnippet((getID) => {
+				const id = getID();
+				return {
+					render: () => `<div class="text-left w-fit tracking-tight font-mono text-xs text-muted-foreground">${id}</div>`,
+				};
+			});
+			return renderSnippet(
+				idCell,
+				(row.getValue('id'))
+			)
+		}
 	},
 	{
 		'accessorKey': 'recipient.username',

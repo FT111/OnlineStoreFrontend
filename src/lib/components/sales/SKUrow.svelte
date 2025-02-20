@@ -8,7 +8,7 @@
 	import { Minus, Plus } from 'lucide-svelte';
 	import { Button } from '$lib/components/ui/button/index.js';
 
-	let { product, increaseQuantityCallback, decreaseQuantityCallback, mutableQuantity, ...restProps } = $props();
+	let { product, increaseQuantityCallback, decreaseQuantityCallback, mutableQuantity=true, ...restProps } = $props();
 	let desiredProductQuantity = $state(product.quantity);
 	
 	const handleQuantityChange = () => {
