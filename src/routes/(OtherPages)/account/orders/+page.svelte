@@ -22,31 +22,9 @@
 	import { pushState } from '$app/navigation';
 	import { onMount } from 'svelte';
 	import { browser } from '$app/environment';
+	import { orderStatuesNullable } from '$lib/constants.svelte.js';
 	import OrderDetailDialog from '$lib/components/sellerDashboard/orderDetailDialog.svelte';
 	
-	
-	const statuses = [
-		{
-			title: 'None',
-			icon: X
-		},
-		{
-			title: 'Processing',
-			icon: CircleDashed
-		},
-		{
-			title: 'Dispatched',
-			icon: Circle
-		},
-		{
-			title: 'Out for delivery',
-			icon: CircleArrowRight
-		},
-		{
-			title: 'Delivered',
-			icon: CircleCheck
-		}
-	];
 	
 	let { data = {orders: []} } = $props();
 	
@@ -102,7 +80,7 @@
 				</Tabs.List>
 				<Input label="Search" placeholder="Search orders" class="w-48 rounded-full bg-secondary text-secondary-foreground placeholder:text-opacity-60" bind:value={userSearch} />
 				<Dropdown title="Filter by status" value={userStatusFilter} bind:open={statusComboboxState} class="max-w-48 rounded-full bg-secondary text-secondary-foreground">
-					{#each statuses as status}
+					{#each orderStatuesNullable as status}
 						{@const Icon = status.icon}
 						<Command.Item
 							value={status.title}
