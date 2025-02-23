@@ -12,6 +12,7 @@ import Dropdown from '$lib/components/DropdownBase.svelte';
 import * as Command from '$lib/components/ui/command/index.js';
 import { CircleDashed, Circle, CircleArrowRight, CircleCheck, X} from 'lucide-svelte';
 import { orderStatuses as statuses} from '$lib/constants.svelte.js';
+import { updateOrder } from '$lib/api/transactions.js';
 
 let { detailViewOpen, selectedOrder, updatePageState } = $props()
 let selectedTab = $state('Products')
@@ -74,11 +75,14 @@ $inspect(selectedOrder, updatedOrder, isOrderUpdated)
 				</Sidebar.Root>
 				
 <!--		Content		-->
-				<div class="flex h-[500px] flex-1 flex-col overflow-hidden">
+				<form class="flex h-[500px] flex-1 flex-col overflow-hidden" onsubmit={updateOrder(selectedOrder.id, selectedOrder).then((updatedOrder)=>{
+					selectedOrder = updatedOrder.data;
+					updatedOrder = selectedOrder;
+				})}>
 					<header class="flex flex-row w-full h-fit bg-white/30 backdrop-blur-2xl p-4 gap-2.5 items-center">
 						<p class="text-sm text-muted-foreground">{selectedTab}</p>
-							<Button size="sm" class="{isOrderUpdated && '!scale-100'} scale-0 rounded-3xl origin-left transition-all ease-in-out" onclick={() => {updatedOrder = selectedOrder}}>
-								<Save size={20} strokeWidth={1.25} /> Update
+							<Button type="submit" size="sm" class="{isOrderUpdated && '!scale-100'} scale-0 rounded-3xl origin-left transition-all ease-in-out" submit>
+								<Save size={20} strokeWidth={1.25}  /> Update
 							</Button>
 					</header>
 					
@@ -148,7 +152,7 @@ $inspect(selectedOrder, updatedOrder, isOrderUpdated)
 						</Tabs.Content>
 					</Tabs.Root>
 					
-				</div>
+				</form>
 			</Sidebar.Provider>
 	</Dialog.Content>
 </Dialog.Root>

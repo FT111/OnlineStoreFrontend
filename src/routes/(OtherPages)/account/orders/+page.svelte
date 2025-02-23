@@ -30,7 +30,7 @@
 	
 	let selectedOrderID = $derived(page.state.selectedOrder)
 	let selectedOrder = $derived.by(()=>{
-		if (!browser) {
+		if (!data.orders || !Object.keys(data.orders).length) {
 			return
 		}
 		return data.orders.sales.find((order) => order.id === selectedOrderID)
