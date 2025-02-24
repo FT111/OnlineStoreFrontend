@@ -14,23 +14,35 @@ import { CircleDashed, Circle, CircleArrowRight, CircleCheck, X} from 'lucide-sv
 import { orderStatuses as statuses} from '$lib/constants.svelte.js';
 import { updateOrder } from '$lib/api/transactions.js';
 
-let { detailViewOpen, selectedOrder, updatePageState } = $props()
+let { detailViewOpen, selectedOrder, updatePageState, refreshOrdersCallback } = $props()
 let selectedTab = $state('Products')
 let orderStatusSelectorState = $state(false);
-let updatedOrder = $state(selectedOrder);
-let isOrderUpdated = $derived.by(() => JSON.stringify(selectedOrder) !== JSON.stringify(updatedOrder));
-
+let newStatus = $state(selectedOrder?.status);
 $effect(() => {
-	updatedOrder = selectedOrder;
+	newStatus = selectedOrder?.status;
 })
 
-$inspect(selectedOrder, updatedOrder, isOrderUpdated)
+let updatedOrder = $derived({
+	...selectedOrder, status: newStatus
+														});
+let isOrderUpdated = $derived.by(() => JSON.stringify(selectedOrder) !== JSON.stringify(updatedOrder));
+
+const handleOrderUpdate = (e) => {
+	e.preventDefault();
+	updateOrder(updatedOrder.id, updatedOrder
+	).then((response) => {
+		refreshOrdersCallback();
+	}).catch((error) => {
+		console.error(error);
+	});
+}
+$inspect(selectedOrder, updatedOrder);
 </script>
 
 <Dialog.Root open={detailViewOpen} onOpenChange={()=>{updatePageState(); }}>
 	<Dialog.Content class="sm:max-w-[1000px] p-0 md:max-h-[500px] overflow-clip">
 		<Dialog.Header class="sr-only">
-			<Dialog.Title class="sr-only">Order #{selectedOrder.id}</Dialog.Title>
+			<Dialog.Title class="sr-only">Order #{selectedOrder?.id}</Dialog.Title>
 			<Dialog.Description>
 				View order details
 			</Dialog.Description>
@@ -75,10 +87,7 @@ $inspect(selectedOrder, updatedOrder, isOrderUpdated)
 				</Sidebar.Root>
 				
 <!--		Content		-->
-				<form class="flex h-[500px] flex-1 flex-col overflow-hidden" onsubmit={updateOrder(selectedOrder.id, selectedOrder).then((updatedOrder)=>{
-					selectedOrder = updatedOrder.data;
-					updatedOrder = selectedOrder;
-				})}>
+				<form class="flex h-[500px] flex-1 flex-col overflow-hidden" onsubmit={handleOrderUpdate}>
 					<header class="flex flex-row w-full h-fit bg-white/30 backdrop-blur-2xl p-4 gap-2.5 items-center">
 						<p class="text-sm text-muted-foreground">{selectedTab}</p>
 							<Button type="submit" size="sm" class="{isOrderUpdated && '!scale-100'} scale-0 rounded-3xl origin-left transition-all ease-in-out" submit>
@@ -105,7 +114,7 @@ $inspect(selectedOrder, updatedOrder, isOrderUpdated)
 										<Dropdown bind:open={orderStatusSelectorState} value={updatedOrder.status} class="max-w-48">
 												{#each statuses as status}
 													{@const Icon = status.icon}
-													<Command.Item value={status.title} onSelect={() => {orderStatusSelectorState=false;updatedOrder.status=status.title}} class="{status.title===updatedOrder.status && 'bg-secondary'} flex flex-row justify-between">
+													<Command.Item value={status.title} onSelect={() => {orderStatusSelectorState=false;newStatus=status.title}} class="{status.title===updatedOrder.status && 'bg-secondary'} flex flex-row justify-between">
 														<div class="flex flex-row gap-2 items-center">
 															<Icon size={18} strokeWidth={1.25} />
 															<p>{status.title}</p>

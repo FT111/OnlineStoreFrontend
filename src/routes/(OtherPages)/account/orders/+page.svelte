@@ -24,16 +24,18 @@
 	import { browser } from '$app/environment';
 	import { orderStatuesNullable } from '$lib/constants.svelte.js';
 	import OrderDetailDialog from '$lib/components/sellerDashboard/orderDetailDialog.svelte';
+	import { getUserOrders } from '$lib/api/transactions.js';
 	
 	
 	let { data = {orders: []} } = $props();
+	let orders = $state(data.orders)
 	
 	let selectedOrderID = $derived(page.state.selectedOrder)
 	let selectedOrder = $derived.by(()=>{
-		if (!data.orders || !Object.keys(data.orders).length) {
+		if (!orders || !Object.keys(orders).length) {
 			return
 		}
-		return data.orders.sales.find((order) => order.id === selectedOrderID)
+		return orders.sales.find((order) => order.id === selectedOrderID)
 	})
 	let detailViewOpen = $derived(page.state.detailViewOpen)
 	const updatePageState = () => {
@@ -49,14 +51,25 @@
 	
 // 	Filter order's date, id and name by search term
 	let filteredOrders = $derived.by(()=>{
-		return data.orders?.sales?.filter((order) => {
+		return orders.sales?.filter((order) => {
 			return (order.id.toString().includes(userSearch) || order.name.toLowerCase().includes(userSearch.toLowerCase())) && (userStatusFilter === 'None' || order.status === userStatusFilter)
 		})
 	})
 	
+	const refreshOrders = () => {
+		// Fetch orders
+		
+		getUserOrders(data.user.id).then((response) => {
+			orders = response.data
+		}).catch((error) => {
+			console.error(error)
+		})
+	}
+	
 </script>
 
-<OrderDetailDialog detailViewOpen={detailViewOpen} selectedOrder={selectedOrder} updatePageState={updatePageState} />
+<OrderDetailDialog detailViewOpen={detailViewOpen} selectedOrder={selectedOrder}
+									 updatePageState={updatePageState} refreshOrdersCallback={refreshOrders} />
 
 <DashboardPageLayout>
 	{#snippet title()}
