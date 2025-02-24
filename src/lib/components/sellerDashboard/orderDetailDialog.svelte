@@ -13,6 +13,8 @@ import * as Command from '$lib/components/ui/command/index.js';
 import { CircleDashed, Circle, CircleArrowRight, CircleCheck, X} from 'lucide-svelte';
 import { orderStatuses as statuses} from '$lib/constants.svelte.js';
 import { updateOrder } from '$lib/api/transactions.js';
+import * as AlertDialog from "$lib/components/ui/alert-dialog/index.js";
+
 
 let { detailViewOpen, selectedOrder, updatePageState, refreshOrdersCallback } = $props()
 let selectedTab = $state('Products')
@@ -111,21 +113,57 @@ $inspect(selectedOrder, updatedOrder);
 										<Card.Title>
 											Order Status
 										</Card.Title>
-										<Dropdown bind:open={orderStatusSelectorState} value={updatedOrder.status} class="max-w-48">
-												{#each statuses as status}
-													{@const Icon = status.icon}
-													<Command.Item value={status.title} onSelect={() => {orderStatusSelectorState=false;newStatus=status.title}} class="{status.title===updatedOrder.status && 'bg-secondary'} flex flex-row justify-between">
-														<div class="flex flex-row gap-2 items-center">
-															<Icon size={18} strokeWidth={1.25} />
-															<p>{status.title}</p>
-														</div>
-														
-														{#if status.title === updatedOrder.status}
-															<Check size={18} strokeWidth={1.25} />
-														{/if}
-													</Command.Item>
-												{/each}
-										</Dropdown>
+										{#if selectedOrder.status === 'Cancelled'}
+											<p class="text-xl text-destructive text-right leading-5 font-medium">Cancelled
+											<br /><span class="text-xs text-foreground font-normal">The recipient has been refunded.</span>
+											</p>
+										{:else}
+										<div class="flex flex-row gap-2 items-center">
+											<Dropdown bind:open={orderStatusSelectorState} value={updatedOrder.status} class="max-w-48">
+													{#each statuses as status}
+														{@const Icon = status.icon}
+														<Command.Item value={status.title} onSelect={() => {orderStatusSelectorState=false;newStatus=status.title}} class="{status.title===updatedOrder.status && 'bg-secondary'} flex flex-row justify-between">
+															<div class="flex flex-row gap-2 items-center">
+																<Icon size={18} strokeWidth={1.25} />
+																<p>{status.title}</p>
+															</div>
+															
+															{#if status.title === updatedOrder.status}
+																<Check size={18} strokeWidth={1.25} />
+															{/if}
+														</Command.Item>
+													{/each}
+											</Dropdown>
+											
+<!--									Cancellation dialog		-->
+											<AlertDialog.Root>
+												<AlertDialog.Trigger>
+													<Button variant="destructive" size="sm" >
+														Cancel
+													</Button>
+												</AlertDialog.Trigger>
+												<AlertDialog.Content>
+													<AlertDialog.Header>
+														<AlertDialog.Title>Are you absolutely sure?</AlertDialog.Title>
+														<AlertDialog.Description>
+															Cancelling an order is irreversible. The buyer will be refunded and the order will be marked as cancelled, then archived after 30 days.
+														</AlertDialog.Description>
+													</AlertDialog.Header>
+													<AlertDialog.Footer>
+														<form onsubmit={(e)=>{
+														newStatus = 'Cancelled';
+														handleOrderUpdate(e);
+														}}>
+															<AlertDialog.Cancel type="button">Back</AlertDialog.Cancel>
+															<AlertDialog.Action type="submit">
+																Cancel order
+															</AlertDialog.Action>
+														</form>
+													</AlertDialog.Footer>
+												</AlertDialog.Content>
+											</AlertDialog.Root>
+										</div>
+											{/if}
 									</Card.Content>
 								</Card.Root>
 									

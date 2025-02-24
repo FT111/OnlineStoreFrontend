@@ -34,3 +34,13 @@ export const orderStatuesNullable = [
 	},
 	...orderStatuses
 ]
+
+export const orderStatusesCancellable = [
+	...orderStatuses,
+	{
+		title: 'Cancelled',
+		icon: X,
+		colour: 'red-700',
+		text: 'white'
+	}
+]

@@ -3,7 +3,7 @@ import { renderComponent, renderSnippet } from '$lib/components/ui/data-table/in
 import DataTableActions from './data-table-actions.svelte';
 import DataTableSortableHeader from './data-table-sortable-header.svelte';
 import openRowDetail from './+page.svelte';
-import { orderStatuses } from '$lib/constants.svelte.js';
+import { orderStatuses, orderStatusesCancellable } from '$lib/constants.svelte.js';
 
 export const columnsSvelte = [
 	{
@@ -74,7 +74,7 @@ export const columnsSvelte = [
 		cell: ({ row }) => {
 			const cellSnippet = createRawSnippet((getStatus) => {
 				const status = getStatus();
-				const statusData = orderStatuses.find((s) => s.title === status);
+				const statusData = orderStatusesCancellable.find((s) => s.title === status);
 				const Icon = statusData.icon;
 
 				return {
