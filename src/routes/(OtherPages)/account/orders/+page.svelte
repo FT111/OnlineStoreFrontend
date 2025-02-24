@@ -22,7 +22,7 @@
 	import { pushState } from '$app/navigation';
 	import { onMount } from 'svelte';
 	import { browser } from '$app/environment';
-	import { orderStatuesNullable } from '$lib/constants.svelte.js';
+	import { orderStatuesNullable, orderStatuses } from '$lib/constants.svelte.js';
 	import OrderDetailDialog from '$lib/components/sellerDashboard/orderDetailDialog.svelte';
 	import { getUserOrders } from '$lib/api/transactions.js';
 	
@@ -125,3 +125,10 @@
 	{/snippet}
 	
 </DashboardPageLayout>
+
+<!--this is to get tailwind to work, ignore-->
+<div class="hidden">
+	<div class="bg-sky-700"></div>
+	<div class="bg-green-600"></div>
+	<div class="bg-emerald-800"></div>
+</div>

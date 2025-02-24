@@ -3,6 +3,7 @@ import { renderComponent, renderSnippet } from '$lib/components/ui/data-table/in
 import DataTableActions from './data-table-actions.svelte';
 import DataTableSortableHeader from './data-table-sortable-header.svelte';
 import openRowDetail from './+page.svelte';
+import { orderStatuses } from '$lib/constants.svelte.js';
 
 export const columnsSvelte = [
 	{
@@ -70,6 +71,22 @@ export const columnsSvelte = [
 	{
 		accessorKey: 'status',
 		header: 'Status',
+		cell: ({ row }) => {
+			const cellSnippet = createRawSnippet((getStatus) => {
+				const status = getStatus();
+				const statusData = orderStatuses.find((s) => s.title === status);
+				const Icon = statusData.icon;
+
+				return {
+					render: () => `<div class='flex flex-row items-center p-1.5 px-2.5 text-sm rounded-full bg-${statusData.colour}'>
+						<span class='${statusData.text ? `text-${statusData.text}` : ''}'>${status}</span>
+					</div>`
+				}})
+			return renderSnippet(
+				cellSnippet,
+				(row.getValue('status'))
+			)
+		}
 	},
 	{
 		id: "actions",
