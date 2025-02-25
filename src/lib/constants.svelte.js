@@ -1,4 +1,4 @@
-import { Circle, CircleArrowRight, CircleCheck, CircleDashed, X } from 'lucide-svelte';
+import { Circle, CircleArrowRight, CircleCheck, CircleDashed, CircleX, X } from 'lucide-svelte';
 
 export const orderStatuses = [
 	{
@@ -26,21 +26,22 @@ export const orderStatuses = [
 	}
 ]
 
+
+export const orderStatusesCancellable = [
+	...orderStatuses,
+	{
+		title: 'Cancelled',
+		icon: CircleX,
+		colour: 'rose-800',
+		text: 'white'
+	}
+]
+
 export const orderStatuesNullable = [
 	{
 		title: 'None',
 		icon: X,
 		colour: 'transparent',
 	},
-	...orderStatuses
-]
-
-export const orderStatusesCancellable = [
-	...orderStatuses,
-	{
-		title: 'Cancelled',
-		icon: X,
-		colour: 'red-700',
-		text: 'white'
-	}
+	...orderStatusesCancellable
 ]

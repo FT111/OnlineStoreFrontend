@@ -14,10 +14,12 @@ import { CircleDashed, Circle, CircleArrowRight, CircleCheck, X} from 'lucide-sv
 import { orderStatuses as statuses} from '$lib/constants.svelte.js';
 import { updateOrder } from '$lib/api/transactions.js';
 import * as AlertDialog from "$lib/components/ui/alert-dialog/index.js";
+import { replaceState } from '$app/navigation';
+import { page } from '$app/state';
 
 
 let { detailViewOpen, selectedOrder, updatePageState, refreshOrdersCallback } = $props()
-let selectedTab = $state('Products')
+let selectedTab = $derived(page.state.detailViewPage);
 let orderStatusSelectorState = $state(false);
 let newStatus = $state(selectedOrder?.status);
 $effect(() => {
@@ -38,6 +40,10 @@ const handleOrderUpdate = (e) => {
 		console.error(error);
 	});
 }
+
+const setPage = (page) => {
+	replaceState('', {selectedOrder: selectedOrder.id, detailViewOpen: true, detailViewPage: page});
+}
 $inspect(selectedOrder, updatedOrder);
 </script>
 
@@ -57,7 +63,7 @@ $inspect(selectedOrder, updatedOrder);
 							<Sidebar.GroupContent>
 								<Sidebar.Menu>
 									<Sidebar.MenuItem>
-										<Sidebar.MenuButton onclick={()=>{selectedTab='Products'}} class="{selectedTab==='Products' && 'bg-slate-200 hover:bg-slate-200'} transition-all">
+										<Sidebar.MenuButton onclick={()=>{setPage('Products')}} class="{selectedTab==='Products' && 'bg-slate-200 hover:bg-slate-200'} transition-all">
 											<Package size={20} strokeWidth={1.25} />
 											<span>
 												Products
@@ -65,7 +71,7 @@ $inspect(selectedOrder, updatedOrder);
 										</Sidebar.MenuButton>
 									</Sidebar.MenuItem>
 									<Sidebar.MenuItem>
-										<Sidebar.MenuButton onclick={()=>{selectedTab='Details'}} class="{selectedTab==='Details' && 'bg-slate-200 hover:bg-slate-200'} transition-all">
+										<Sidebar.MenuButton onclick={()=>{setPage('Details')}} class="{selectedTab==='Details' && 'bg-slate-200 hover:bg-slate-200'} transition-all">
 											<ReceiptText size={20} strokeWidth={1.25} />
 											<span>
 												Details
@@ -97,7 +103,7 @@ $inspect(selectedOrder, updatedOrder);
 							</Button>
 					</header>
 					
-					<Tabs.Root bind:value={selectedTab} class="overflow-y-auto">
+					<Tabs.Root value={selectedTab} class="overflow-y-auto">
 						<Tabs.Content value="Products" class="overflow-y-auto">
 							<div class="flex flex-1 flex-col gap-0.5 overflow-y-auto pb-4">
 									{#each updatedOrder.skus as product}
@@ -118,51 +124,55 @@ $inspect(selectedOrder, updatedOrder);
 											<br /><span class="text-xs text-foreground font-normal">The recipient has been refunded.</span>
 											</p>
 										{:else}
-										<div class="flex flex-row gap-2 items-center">
-											<Dropdown bind:open={orderStatusSelectorState} value={updatedOrder.status} class="max-w-48">
-													{#each statuses as status}
-														{@const Icon = status.icon}
-														<Command.Item value={status.title} onSelect={() => {orderStatusSelectorState=false;newStatus=status.title}} class="{status.title===updatedOrder.status && 'bg-secondary'} flex flex-row justify-between">
-															<div class="flex flex-row gap-2 items-center">
-																<Icon size={18} strokeWidth={1.25} />
-																<p>{status.title}</p>
-															</div>
-															
-															{#if status.title === updatedOrder.status}
-																<Check size={18} strokeWidth={1.25} />
-															{/if}
-														</Command.Item>
-													{/each}
-											</Dropdown>
-											
-<!--									Cancellation dialog		-->
-											<AlertDialog.Root>
-												<AlertDialog.Trigger>
-													<Button variant="destructive" size="sm" >
-														Cancel
-													</Button>
-												</AlertDialog.Trigger>
-												<AlertDialog.Content>
-													<AlertDialog.Header>
-														<AlertDialog.Title>Are you absolutely sure?</AlertDialog.Title>
-														<AlertDialog.Description>
-															Cancelling an order is irreversible. The buyer will be refunded and the order will be marked as cancelled, then archived after 30 days.
-														</AlertDialog.Description>
-													</AlertDialog.Header>
-													<AlertDialog.Footer>
-														<form onsubmit={(e)=>{
-														newStatus = 'Cancelled';
-														handleOrderUpdate(e);
-														}}>
-															<AlertDialog.Cancel type="button">Back</AlertDialog.Cancel>
-															<AlertDialog.Action type="submit">
-																Cancel order
-															</AlertDialog.Action>
-														</form>
-													</AlertDialog.Footer>
-												</AlertDialog.Content>
-											</AlertDialog.Root>
-										</div>
+											<div class="flex flex-col gap-1 items-end">
+												<div class="flex flex-row gap-2 items-center">
+													<Dropdown bind:open={orderStatusSelectorState} value={updatedOrder.status} class="max-w-48">
+															{#each statuses as status}
+																{@const Icon = status.icon}
+																<Command.Item value={status.title} onSelect={() => {orderStatusSelectorState=false;newStatus=status.title}} class="{status.title===updatedOrder.status && 'bg-secondary'} flex flex-row justify-between">
+																	<div class="flex flex-row gap-2 items-center">
+																		<Icon size={18} strokeWidth={1.25} />
+																		<p>{status.title}</p>
+																	</div>
+																	
+																	{#if status.title === updatedOrder.status}
+																		<Check size={18} strokeWidth={1.25} />
+																	{/if}
+																</Command.Item>
+															{/each}
+													</Dropdown>
+													
+		<!--									Cancellation dialog		-->
+													<AlertDialog.Root>
+														<AlertDialog.Trigger>
+															<Button variant="destructive" size="sm" >
+																Cancel
+															</Button>
+														</AlertDialog.Trigger>
+														<AlertDialog.Content>
+															<AlertDialog.Header>
+																<AlertDialog.Title>Are you absolutely sure?</AlertDialog.Title>
+																<AlertDialog.Description>
+																	Cancelling an order is irreversible. The buyer will be refunded and the order will be marked as cancelled, then archived after 30 days.
+																</AlertDialog.Description>
+															</AlertDialog.Header>
+															<AlertDialog.Footer>
+																<form onsubmit={(e)=>{
+																newStatus = 'Cancelled';
+																handleOrderUpdate(e);
+																}}>
+																	<AlertDialog.Cancel type="button">Back</AlertDialog.Cancel>
+																	<AlertDialog.Action type="submit">
+																		Cancel order
+																	</AlertDialog.Action>
+																</form>
+															</AlertDialog.Footer>
+														</AlertDialog.Content>
+													</AlertDialog.Root>
+												</div>
+												
+												<p class="text-xs text-muted-foreground">Last updated in {new Date(selectedOrder?.updatedAt *1000).getFullYear() }</p>
+											</div>
 											{/if}
 									</Card.Content>
 								</Card.Root>

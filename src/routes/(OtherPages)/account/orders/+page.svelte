@@ -48,6 +48,7 @@
 	let userSearch = $state('')
 	let userStatusFilter = $state('None')
 	let statusComboboxState = $state(false)
+	let currentTimestamp = $state(Math.floor(Date.now() / 1000))
 	
 // 	Filter order's date, id and name by search term
 	let filteredOrders = $derived.by(()=>{
@@ -68,7 +69,7 @@
 	
 </script>
 
-<OrderDetailDialog detailViewOpen={detailViewOpen} selectedOrder={selectedOrder}
+<OrderDetailDialog detailViewOpen={detailViewOpen} selectedOrder={selectedOrder} selectedPage="Details"
 									 updatePageState={updatePageState} refreshOrdersCallback={refreshOrders} />
 
 <DashboardPageLayout>
@@ -114,10 +115,12 @@
 			</div>
 			{#if browser}
 			<Tabs.Content value="active">
-					<DataTable data={filteredOrders.filter((order) => order.status !== 'Delivered')} columns={columnsSvelte} class="w-full"  />
+					<DataTable data={filteredOrders.filter((order) => (order.status !== 'Delivered' || order.status !== 'Cancelled')
+					&& order.updatedAt >= (currentTimestamp-(30*24*60*60)))} columns={columnsSvelte} class="w-full"  />
 			</Tabs.Content>
 			<Tabs.Content value="archive">
-				<DataTable data={filteredOrders.filter((order) => order.status === 'Delivered')} columns={columnsSvelte} class="w-full" />
+				<DataTable data={filteredOrders.filter((order) => (order.status === 'Delivered' || order.status === 'Cancelled') &&
+				order.updatedAt < (currentTimestamp-(24*30*60*60)))} columns={columnsSvelte} class="w-full" />
 			</Tabs.Content>
 				{/if}
 		</Tabs.Root>
@@ -131,4 +134,5 @@
 	<div class="bg-sky-700"></div>
 	<div class="bg-green-600"></div>
 	<div class="bg-emerald-800"></div>
+	<div class="bg-rose-800"></div>
 </div>
