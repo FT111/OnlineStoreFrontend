@@ -91,7 +91,7 @@ export const columnsSvelte = [
 	{
 		id: "actions",
 		cell: ({ row }) => {
-			return renderComponent(DataTableActions, { id: row.getValue('id') });
+			return renderComponent(DataTableActions, { id: row.getValue('id'),recipient: row.original.recipient});
 		},
 	},
 ]

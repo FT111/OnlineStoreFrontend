@@ -5,7 +5,7 @@
 	import { Clipboard, ClipboardPlus } from 'lucide-svelte';
 	import { goto, pushState } from '$app/navigation';
 
-	let { id } = $props();
+	let { id, recipient } = $props();
 </script>
 
 <DropdownMenu.Root>
@@ -31,10 +31,18 @@
 			</DropdownMenu.Item>
 		</DropdownMenu.Group>
 		<DropdownMenu.Separator />
-		<DropdownMenu.Item>View customer profile</DropdownMenu.Item>
+		<DropdownMenu.Item onclick={()=>{goto(`/users/${recipient.id}`)}}>View customer profile</DropdownMenu.Item>
 		<DropdownMenu.Item onclick={()=>{pushState('', {
 			selectedOrder: id,
-			detailViewOpen: true
+			detailViewOpen: true,
+			detailViewPage: 'Details'
 		})}}>View order details</DropdownMenu.Item>
+		<DropdownMenu.Item
+		onclick={()=>{pushState('', {
+			selectedOrder: id,
+			detailViewOpen: true,
+			detailViewPage: 'Products'
+		})}}
+		>View order products</DropdownMenu.Item>
 	</DropdownMenu.Content>
 </DropdownMenu.Root>
