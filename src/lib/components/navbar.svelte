@@ -88,10 +88,16 @@
 											<DropdownMenu.Shortcut>⇧⌘P</DropdownMenu.Shortcut>
 										</DropdownMenu.Item>
 									</a>
-									<a href="/sales/orders">
+									<a href="/account/orders">
 										<DropdownMenu.Item>
 											<span>Orders</span>
 											<DropdownMenu.Shortcut>⌘B</DropdownMenu.Shortcut>
+										</DropdownMenu.Item>
+									</a>
+									<a href="/account">
+										<DropdownMenu.Item>
+											<span>My account</span>
+											<DropdownMenu.Shortcut>⌘,</DropdownMenu.Shortcut>
 										</DropdownMenu.Item>
 									</a>
 								</DropdownMenu.Group>
@@ -115,7 +121,7 @@
 										</a>
 								</DropdownMenu.Group>
 								<DropdownMenu.Separator />
-								<DropdownMenu.Item>
+								<DropdownMenu.Item onclick={()=>{logout(); goto('/')}}>
 									<span>Log out</span>
 									<DropdownMenu.Shortcut>⇧⌘Q</DropdownMenu.Shortcut>
 								</DropdownMenu.Item>
