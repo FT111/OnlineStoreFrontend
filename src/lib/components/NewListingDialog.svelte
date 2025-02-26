@@ -22,7 +22,7 @@ let openState = $state(false);
 	<Dialog.Content class="p-0 w-11/12 sm:w-1/3 h-48">
 		<div class="flex flex-row h-full">
 			<!--						-->
-			<a onclick={()=>{openState=false}} href="/account/listings/new" class="basis-1/2 gap-2 p-5 border-r border-r-1 flex flex-col items-center justify-center hover:bg-slate-50 transition-all">
+			<a onclick={()=>{openState=false}} href="/sales/listings/new" class="basis-1/2 gap-2 p-5 border-r border-r-1 flex flex-col items-center justify-center hover:bg-slate-50 transition-all">
 				<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-9">
 					<path stroke-linecap="round" stroke-linejoin="round" d="M5.25 7.5A2.25 2.25 0 0 1 7.5 5.25h9a2.25 2.25 0 0 1 2.25 2.25v9a2.25 2.25 0 0 1-2.25 2.25h-9a2.25 2.25 0 0 1-2.25-2.25v-9Z" />
 				</svg>
@@ -35,7 +35,7 @@ let openState = $state(false);
 			</a>
 			
 			<!--						-->
-			<a onclick={()=>{openState=false}} href="/account/listings/new" class="basis-1/2 gap-2 p-5 flex flex-col items-center justify-center hover:bg-slate-50 transition-all">
+			<a onclick={()=>{openState=false}} href="/sales/listings/new" class="basis-1/2 gap-2 p-5 flex flex-col items-center justify-center hover:bg-slate-50 transition-all">
 				<SlidersHorizontal size={28} strokeWidth={2} />
 				
 				Variation listing

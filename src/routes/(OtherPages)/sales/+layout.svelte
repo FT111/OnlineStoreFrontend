@@ -76,11 +76,11 @@ let selectedClasses = ' !bg-slate-200/70 pl-5 ';
 			
 			<div class="flex flex-col gap-1.5">
 				<div class="flex flex-col gap-1">
-					<Button id="dashboard" href="/account/dashboard" class="{selectedPage==='dashboard'&&selectedClasses} {buttonClasses}"
+					<Button id="dashboard" href="/sales/dashboard" class="{selectedPage==='dashboard'&&selectedClasses} {buttonClasses}"
 									variant="secondary"><LayoutDashboard size={20} strokeWidth={1.25} />Overview</Button>
-					<Button id="listings" href="/account/listings" class="{selectedPage==='listings'&&selectedClasses} {buttonClasses}"
+					<Button id="listings" href="/sales/listings" class="{selectedPage==='listings'&&selectedClasses} {buttonClasses}"
 									variant="secondary"><LayoutList size={20} strokeWidth={1.25} />Listings</Button>
-					<Button id="orders" href="/account/orders" class="{selectedPage==='orders'&&selectedClasses} {buttonClasses}"
+					<Button id="orders" href="/sales/orders" class="{selectedPage==='orders'&&selectedClasses} {buttonClasses}"
 									variant="secondary"><Truck size={20} strokeWidth={1.25} />Orders</Button>
 				</div>
 				<Separator />
@@ -99,7 +99,7 @@ let selectedClasses = ' !bg-slate-200/70 pl-5 ';
 				
 				<div class="flex flex-col gap-1 px-2 w-full">
 					{#each data.userListings as listing}
-						<Button data-sveltekit-preload-data="tap" variant="link" href={`/account/listings/${listing.id}`} class="flex flex-row overflow-hidden px-0 p-0 py-0 h-fit justify-between">
+						<Button data-sveltekit-preload-data="tap" variant="link" href={`/sales/listings/${listing.id}`} class="flex flex-row overflow-hidden px-0 p-0 py-0 h-fit justify-between">
 							<p>{listing.title}</p>
 						</Button>
 					{/each}

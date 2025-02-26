@@ -54,7 +54,7 @@
 					formState = 'success';
 
 					setTimeout(() => {
-						goto(`/account/listings/${data.data.id}`);
+						goto(`/sales/listings/${data.data.id}`);
 					}, 1000);
 				}
 			}).catch((error) => {

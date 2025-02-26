@@ -65,7 +65,7 @@
 									<Table.Cell>{listing.sales}</Table.Cell>
 									<Table.Cell class="text-right"><Price price={listing.basePrice} /></Table.Cell>
 									<Table.Cell class="flex flex-row gap-2 justify-end">
-										<a href={`/account/listings/${listing.id}`}>
+										<a href={`/sales/listings/${listing.id}`}>
 											<Button variant="ghost">Edit</Button>
 										</a>
 										<Button variant="destructive">Delete</Button>

@@ -21,7 +21,8 @@ export const handle = async ({ event, request, resolve }) => {
 	if (event.locals.user) {
 		return resolve(event);
 	}
-	if (event.url.pathname.startsWith('/account')) {
+	if (event.url.pathname.startsWith('/sales') ||
+		event.url.pathname.startsWith('/checkout')) {
 		return redirect(302,'/login');
 	}
 

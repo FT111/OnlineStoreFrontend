@@ -88,10 +88,12 @@
 											<DropdownMenu.Shortcut>⇧⌘P</DropdownMenu.Shortcut>
 										</DropdownMenu.Item>
 									</a>
-									<DropdownMenu.Item>
-										<span>Orders</span>
-										<DropdownMenu.Shortcut>⌘B</DropdownMenu.Shortcut>
-									</DropdownMenu.Item>
+									<a href="/sales/orders">
+										<DropdownMenu.Item>
+											<span>Orders</span>
+											<DropdownMenu.Shortcut>⌘B</DropdownMenu.Shortcut>
+										</DropdownMenu.Item>
+									</a>
 								</DropdownMenu.Group>
 								<DropdownMenu.Separator />
 								<DropdownMenu.Group>
@@ -101,14 +103,16 @@
 											<DropdownMenu.Item>
 												<span>Dashboard</span>
 											</DropdownMenu.Item>
-											<a href="/account/listings">
+											<a href="/sales/listings">
 												<DropdownMenu.Item>
 													<span>Listings</span>
 												</DropdownMenu.Item>
 											</a>
+									<a href="/sales/orders">
 											<DropdownMenu.Item>
-												<span>Sales</span>
+												<span>Orders</span>
 											</DropdownMenu.Item>
+										</a>
 								</DropdownMenu.Group>
 								<DropdownMenu.Separator />
 								<DropdownMenu.Item>

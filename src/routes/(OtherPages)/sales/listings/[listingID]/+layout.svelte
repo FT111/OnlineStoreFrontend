@@ -88,7 +88,7 @@
 	<!--				Main listing card -->
 					<div class="flex-col flex gap-2.5 w-fit h-fit p-4 rounded-l-2xl bg-amber-50">
 						<p>Listing</p>
-						<a href="/account/listings/{currentListing.id}">
+						<a href="/sales/listings/{currentListing.id}">
 							<Card.Root  class="w-56 border-slate-700 h-36 border-[1.5px] hover:border-accent/60 scale-105 transition-all justify-between flex flex-col">
 								<div>
 									<Card.Header class="p-3.5 pb-0.5 w-full">
@@ -121,7 +121,7 @@
 								<div></div>
 							{:else}
 								{#each currentListing.skus as sku}
-									<a href={`/account/listings/${currentListing.id}/${sku.id}`}>
+									<a href={`/sales/listings/${currentListing.id}/${sku.id}`}>
 										<Card.Root class="w-48 h-32 justify-between flex flex-col hover:border-accent transition-all hover:brightness-125
 															{typeof(selectedVariant)==='object' ? selectedVariant.id===sku.id ? ' border-slate-800 border-2 ' : '' : ''}">
 											<Card.Header class="p-3.5 line-clamp-2">
@@ -190,7 +190,7 @@
 							{/if}
 							
 						<!--	Add new variant card -->
-							<a href={`/account/listings/${currentListing.id}/new`}>
+							<a href={`/sales/listings/${currentListing.id}/new`}>
 								<Card.Root class="w-48 h-32 flex flex-col border-2 border-dashed bg-emerald-50/40 items-center justify-center
 												  hover:border-solid hover:bg-emerald-100 hover:border-emerald-500 transition-all group
 												{selectedVariant==='new' ? 'border-emerald-500 border-solid' : ''}">
