@@ -6,7 +6,7 @@
 	import * as Tabs from "$lib/components/ui/tabs/index.js";
 	import DataTable from './data-table.svelte'
 	import { columnsSvelte } from './columns.svelte.js';
-	import { Archive, Truck } from 'lucide-svelte';
+	import { Archive, Check, Truck } from 'lucide-svelte';
 	import { flip } from 'svelte/animate';
 	import { crossfade } from 'svelte/transition';
 	import InputWithLabel from '$lib/components/InputWithLabel.svelte';
@@ -15,194 +15,62 @@
 	import { Input } from '$lib/components/ui/input/index.js';
 	const [send, receive] = crossfade({});
 	import { CircleDashed, Circle, CircleArrowRight, CircleCheck, X} from 'lucide-svelte';
-
-	const mockOrders = [
-		{
-			id: 1,
-			status: 'Out for delivery',
-			products: [
-				{
-					id: 1,
-					title: 'Product 1',
-					quantity: 1,
-					price: 100
-				},
-				{
-					id: 2,
-					title: 'Product 2',
-					quantity: 2,
-					price: 200
-				}
-			],
-			totalValue: 300,
-			totalQuantity: 3,
-			recipient: {
-				name: 'John Doe',
-				address: '123 Fake St, Fakeville, FV1 2FV'
-			},
-			addedAt: 12332543
-		},
-		{
-			id: 2,
-			status: 'Delivered',
-			products: [
-				{
-					id: 3,
-					title: 'Product 3',
-					quantity: 1,
-					price: 100
-				},
-				{
-					id: 4,
-					title: 'Product 4',
-					quantity: 2,
-					price: 200
-				}
-			],
-			totalValue: 300,
-			totalQuantity: 3,
-			recipient: {
-				name: 'Jane Doe',
-				address: '123 Fake St, Fakeville, FV1 2FV'
-			},
-			addedAt: 12332543
-		},
-		{
-			id: 3,
-			status: 'Out for delivery',
-			products: [
-				{
-					id: 5,
-					title: 'Product 5',
-					quantity: 1,
-					price: 100
-				},
-				{
-					id: 6,
-					title: 'Product 6',
-					quantity: 2,
-					price: 200
-				}
-			],
-			totalValue: 300,
-			totalQuantity: 3,
-			recipient: {
-				name: 'John Doe',
-				address: '123 Fake St, Fakeville, FV1 2FV'
-			},
-			addedAt: 12332543
-		},
-		{
-			id: 4,
-			status: 'Processing',
-			products: [
-				{
-					id: 7,
-					title: 'Product 7',
-					quantity: 1,
-					price: 100
-				},
-				{
-					id: 8,
-					title: 'Product 8',
-					quantity: 2,
-					price: 200
-				}
-			],
-			totalValue: 1199,
-			totalQuantity: 3,
-			recipient: {
-				name: 'Jane Doe',
-				address: '123 Fake St, Fakeville, FV1 2FV'
-			},
-			addedAt: 12332543
-		},
-		{
-			id: 5,
-			status: 'Delivered',
-			products: [
-				{
-					id: 9,
-					title: 'Product 9',
-					quantity: 1,
-					price: 100
-				},
-				{
-					id: 10,
-					title: 'Product 10',
-					quantity: 2,
-					price: 200
-				}
-			],
-			totalValue: 13000,
-			totalQuantity: 3,
-			recipient: {
-				name: 'John Doe',
-				address: '123 Fake St, Fakeville, FV1 2FV'
-			},
-			addedAt: 12332543
-		},
-		{
-			id: 6,
-			status: 'Processing',
-			products: [
-				{
-					id: 11,
-					title: 'Product 11',
-					quantity: 1,
-					price: 100
-				},
-				{
-					id: 12,
-					title: 'Product 12',
-					quantity: 2,
-					price: 200
-				}
-			],
-			totalValue: 15000,
-			totalQuantity: 3,
-			recipient: {
-				name: 'Jane Doe',
-				address: '123 Fake St, Fakeville, FV1 2FV'
-			},
-			addedAt: 1533254300
-		}
-	]
+	import * as Dialog from '$lib/components/ui/dialog/index.js';
+	import { Button } from '$lib/components/ui/button/index.js';
+	import SKUrow from '$lib/components/sales/SKUrow.svelte';
+	import { page } from '$app/state';
+	import { pushState } from '$app/navigation';
+	import { onMount } from 'svelte';
+	import { browser } from '$app/environment';
+	import { orderStatuesNullable, orderStatuses } from '$lib/constants.svelte.js';
+	import OrderDetailDialog from '$lib/components/sellerDashboard/orderDetailDialog.svelte';
+	import { getUserOrders } from '$lib/api/transactions.js';
 	
-	const statuses = [
-		{
-			title: 'None',
-			icon: X
-		},
-		{
-			title: 'Processing',
-			icon: CircleDashed
-		},
-		{
-			title: 'Dispatched',
-			icon: Circle
-		},
-		{
-			title: 'Out for delivery',
-			icon: CircleArrowRight
-		},
-		{
-			title: 'Delivered',
-			icon: CircleCheck
+	
+	let { data = {orders: []} } = $props();
+	let orders = $state(data.orders)
+	
+	let selectedOrderID = $derived(page.state.selectedOrder)
+	let selectedOrder = $derived.by(()=>{
+		if (!orders || !Object.keys(orders).length) {
+			return
 		}
-	];
+		return orders.sales.find((order) => order.id === selectedOrderID)
+	})
+	let detailViewOpen = $derived(page.state.detailViewOpen)
+	const updatePageState = () => {
+		pushState('', {
+			selectedOrder: selectedOrderID,
+			detailViewOpen: !detailViewOpen
+		})
+	}
+	
 	let userSearch = $state('')
 	let userStatusFilter = $state('None')
 	let statusComboboxState = $state(false)
+	let currentTimestamp = $state(Math.floor(Date.now() / 1000))
 	
 // 	Filter order's date, id and name by search term
 	let filteredOrders = $derived.by(()=>{
-		return mockOrders.filter((order) => {
-			return (order.recipient.name.toLowerCase().includes(userSearch.toLowerCase()) || order.id.toString().includes(userSearch)
-				|| order.recipient.address.toLowerCase().includes(userSearch.toLowerCase())) && (userStatusFilter === 'None' || order.status === userStatusFilter)
+		return orders.sales?.filter((order) => {
+			return (order.id.toString().includes(userSearch) || order.name.toLowerCase().includes(userSearch.toLowerCase())) && (userStatusFilter === 'None' || order.status === userStatusFilter)
 		})
 	})
+	
+	const refreshOrders = () => {
+		// Fetch orders
+		
+		getUserOrders(data.user.id).then((response) => {
+			orders = response.data
+		}).catch((error) => {
+			console.error(error)
+		})
+	}
+	
 </script>
+
+<OrderDetailDialog detailViewOpen={detailViewOpen} selectedOrder={selectedOrder} selectedPage="Details"
+									 updatePageState={updatePageState} refreshOrdersCallback={refreshOrders} />
 
 <DashboardPageLayout>
 	{#snippet title()}
@@ -226,27 +94,45 @@
 				</Tabs.List>
 				<Input label="Search" placeholder="Search orders" class="w-48 rounded-full bg-secondary text-secondary-foreground placeholder:text-opacity-60" bind:value={userSearch} />
 				<Dropdown title="Filter by status" value={userStatusFilter} bind:open={statusComboboxState} class="max-w-48 rounded-full bg-secondary text-secondary-foreground">
-					{#each statuses as status}
+					{#each orderStatuesNullable as status}
 						{@const Icon = status.icon}
 						<Command.Item
 							value={status.title}
-							onSelect={() => {statusComboboxState=false;userStatusFilter=status.title}}>
+							onSelect={() => {statusComboboxState=false;userStatusFilter=status.title}}
+							class="{status.title===userStatusFilter && 'bg-secondary'} flex flex-row justify-between"
+						>
 							<div class="flex flex-row gap-2 items-center">
 								<Icon size={18} strokeWidth={1.25} />
 								<p>{status.title}</p>
 							</div>
+							
+							{#if status.title === userStatusFilter}
+								<Check size={18} strokeWidth={1.25} />
+							{/if}
 						</Command.Item>
 					{/each}
 				</Dropdown>
 			</div>
+			{#if browser}
 			<Tabs.Content value="active">
-					<DataTable data={filteredOrders.filter((order) => order.status !== 'Delivered')} columns={columnsSvelte} class="w-full" />
+					<DataTable data={filteredOrders.filter((order) => (order.status !== 'Delivered' || order.status !== 'Cancelled')
+					&& order.updatedAt >= (currentTimestamp-(30*24*60*60)))} columns={columnsSvelte} class="w-full"  />
 			</Tabs.Content>
 			<Tabs.Content value="archive">
-				<DataTable data={filteredOrders.filter((order) => order.status === 'Delivered')} columns={columnsSvelte} class="w-full" />
+				<DataTable data={filteredOrders.filter((order) => (order.status === 'Delivered' || order.status === 'Cancelled') &&
+				order.updatedAt < (currentTimestamp-(24*30*60*60)))} columns={columnsSvelte} class="w-full" />
 			</Tabs.Content>
+				{/if}
 		</Tabs.Root>
 		
 	{/snippet}
 	
 </DashboardPageLayout>
+
+<!--this is to get tailwind to work, ignore-->
+<div class="hidden">
+	<div class="bg-sky-700"></div>
+	<div class="bg-green-600"></div>
+	<div class="bg-emerald-800"></div>
+	<div class="bg-rose-800"></div>
+</div>
