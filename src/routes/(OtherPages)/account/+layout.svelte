@@ -34,7 +34,7 @@
 </script>
 
 <Sidebar.Provider>
-	<Sidebar.Root class="mt-16  z-10 bg-sidebar">
+	<Sidebar.Root variant="inset" class="mt-16  z-10 bg-sidebar">
 		<Sidebar.Header>
 			<Sidebar.Menu>
 				<Sidebar.MenuItem class="text-sm flex flex-row items-center text-neutral-500 gap-1">
@@ -98,5 +98,7 @@
 		<Sidebar.Rail />
 	</Sidebar.Root>
 	
-	{@render children?.()}
+	<Sidebar.Inset >
+		{@render children?.()}
+	</Sidebar.Inset>
 </Sidebar.Provider>
