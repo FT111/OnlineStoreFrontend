@@ -1,6 +1,7 @@
 
 import { GET, POST, PUT } from './core.js';
 import { invalidateAll } from '$app/navigation';
+import { toast } from 'svelte-sonner';
 
 
 export const token = () => {
@@ -12,12 +13,14 @@ export const token = () => {
 
 
 export const login = async (email, password) => {
-	const response = await POST('auth/token/', JSON.stringify({'email': email, 'password': password}));
+	const response = await POST('auth/token/', JSON.stringify({'email': email, 'password': password}))
+		.then((response) => {
+			if (response.detail) {
+				toast.error(response.detail[0]?.ctx?.reason || response.detail[0]?.msg || response.detail);
+			}
+			return response;
+		})
 	document.cookie = `token=${response.data.token}; path=/;`;
-
-	if (!response.data.token) {
-		new Error('Login failed');
-	}
 	return true;
 }
 

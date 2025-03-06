@@ -53,13 +53,22 @@ export const POST = async (endpoint, data = null, credentialsOpt='omit') => {
 		body: data ? data : null, // If data is not provided, send null
 		credentials: 'include',
 
-	}).then((response) => response.json()
+	}).catch((error) => {
+		console.log('Error: ', error);
+		return error
+	}).then((response) => {console.log(response);return response.json()
 		.then((data) => {
-			return data;
+			console.log('Data: ', data);
+			if (!response.ok) {
+				return data
+			}
+			return data
 		}).catch((error) => {
-			return error;
+			return error
 		}
-		));
+		);
+	}
+	);
 }
 
 export const PUT = async (endpoint, data, token=null, credentialsOpt='omit') => {

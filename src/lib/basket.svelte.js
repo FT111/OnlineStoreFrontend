@@ -96,6 +96,10 @@ const createBasket = () => {
 		addSKU,
 		removeSKU,
 		loadBasketContent,
+		clearBasket() {
+			basket = { items: {}, total: 0, value: 0 };
+			saveBasketLocally();
+		}
 	}
 
 }
