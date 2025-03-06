@@ -36,13 +36,13 @@
 			selectedOrder: id,
 			detailViewOpen: true,
 			detailViewPage: 'Details'
-		})}}>View order details</DropdownMenu.Item>
+		})}}>Order details</DropdownMenu.Item>
 		<DropdownMenu.Item
 		onclick={()=>{pushState('', {
 			selectedOrder: id,
 			detailViewOpen: true,
 			detailViewPage: 'Products'
 		})}}
-		>View order products</DropdownMenu.Item>
+		>Order products</DropdownMenu.Item>
 	</DropdownMenu.Content>
 </DropdownMenu.Root>

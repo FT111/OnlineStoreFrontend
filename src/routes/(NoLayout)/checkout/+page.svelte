@@ -7,7 +7,7 @@
 	import Price from '$lib/components/price.svelte';
 	import { Button } from '$lib/components/ui/button/index.js';
 	import { ArrowLeft, Check, CheckCircle, CreditCard, Edit2, Plus } from 'lucide-svelte';
-	import { afterNavigate, beforeNavigate } from '$app/navigation';
+	import { afterNavigate, beforeNavigate, goto } from '$app/navigation';
 	import InputWithLabel from '$lib/components/InputWithLabel.svelte';
 	import { fly } from 'svelte/transition';
 	import { Payment, validateCardNumber } from '$lib/payments.svelte.js';
@@ -17,9 +17,16 @@
 	import * as Dialog from '$lib/components/ui/dialog/index.js';
 	import PaymentMethodSelector from '$lib/components/sales/PaymentMethodSelector.svelte';
 	import { submitCheckout } from '$lib/api/transactions.js';
+	import * as Tooltip from '$lib/components/ui/tooltip/index.js';
+	import { onMount } from 'svelte';
 
 	const { data } = $props()
 	let previousPage = $state('/')
+	let transactionForm = $state(null)
+	let isDeliveryDetailsValid = $state(false)
+	onMount(() => {
+		isDeliveryDetailsValid = transactionForm.checkValidity()
+	})
 	
 	let shipmentSellers = $derived.by(()=> {
 		return Object.values(basketStore.basket.items).map((item) => item.listing.ownerUser)
@@ -51,13 +58,16 @@
 		const formData = new FormData(form)
 		transaction.deliveryDetails = Object.fromEntries(formData)
 		
-		if (!transaction.paymentDetails.set) {
+		if (!transaction.paymentDetails.set || !isDeliveryDetailsValid) {
 			toast.error('Please enter your payment information')
 			return
 		}
 		transaction.basket = basketStore.basket
 		
 		await submitCheckout(transaction)
+		
+		basketStore.clearBasket()
+		await goto('/')
 		
 	}
 </script>
@@ -75,7 +85,7 @@
 	<div class="flex md:flex-row flex-col w-full h-[90vh]" >
 		<div class="basis-1/2 flex-col flex md:items-end items-center p-6 overflow-y-scroll">
 			<div class="md:w-3/4 flex flex-col w-fit gap-2.5">
-				<form id="transactionForm" class="group flex flex-col gap-2.5 " onsubmit={(e)=>{handleFinishAndPay(e)}}>
+				<form bind:this={transactionForm} id="transactionForm" class="group flex flex-col gap-2.5 " onsubmit={(e)=>{handleFinishAndPay(e)}} onchange={()=>{isDeliveryDetailsValid = transactionForm.checkValidity()}}>
 					<div class="text-2xl flex flex-row gap-2.5 items-center">
 						<h3>Delivery</h3>
 						<Check class="group-has-[:invalid]:scale-0 scale-100 transition-all duration-150 origin-left opacity-70 ease-in-out" />
@@ -148,8 +158,24 @@
 							{/if}
 							•
 							<p>Total includes VAT</p></div>
-						{#if !transaction.paymentDetails.set}
-							<Button size="lg" class="w-full p-2.5 shadow-xl disabled" variant="default" type="submit" form="transactionForm" disabled>Finish and Pay</Button>
+						{#if !transaction.paymentDetails.set || !isDeliveryDetailsValid}
+
+							<Tooltip.Provider>
+								<Tooltip.Root delayDuration={1} open={true}>
+									<Tooltip.Trigger>
+										<Button size="lg" class="w-full p-2.5 shadow-xl disabled" variant="default" type="submit" form="transactionForm" disabled>Finish and Pay</Button>
+									</Tooltip.Trigger>
+									<Tooltip.Content>
+										<p>
+											{#if !transaction.paymentDetails.set}
+												Please enter your payment details
+											{:else}
+												Please enter your delivery details
+											{/if}
+										</p>
+									</Tooltip.Content>
+								</Tooltip.Root>
+							</Tooltip.Provider>
 						{:else}
 						<Button size="lg" class="w-full p-2.5 shadow-xl { transaction.paymentDetails.set || 'disabled'}" variant="default" type={ transaction.paymentDetails.set ? 'submit' : 'disabled'}
 										form="transactionForm">Finish and Pay</Button>

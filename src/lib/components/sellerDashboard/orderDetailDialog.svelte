@@ -171,7 +171,9 @@ $inspect(selectedOrder, updatedOrder);
 													</AlertDialog.Root>
 												</div>
 												
-												<p class="text-xs text-muted-foreground">Last updated in {new Date(selectedOrder?.updatedAt *1000).getFullYear() }</p>
+												<p class="text-xs text-muted-foreground">Last updated on {new Date(selectedOrder?.updatedAt *1000).toLocaleDateString(
+													'en-GB', { year: 'numeric', month: 'long', day: 'numeric' }
+												)}</p>
 											</div>
 											{/if}
 									</Card.Content>
