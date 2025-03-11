@@ -30,7 +30,7 @@ export const signUp = async (username, name, email, password) => {
 	const lastName = nameSplit[nameSplit.length - 1];
 
 	const body = JSON.stringify({'username': username, 'firstName': firstName,
-																							'surname': lastName, 'email': email, 'password': password});
+																							'surname': lastName, 'emailAddress': email, 'password': password});
 	console.log(body);
 	const response = await PUT('users/', body);
 
