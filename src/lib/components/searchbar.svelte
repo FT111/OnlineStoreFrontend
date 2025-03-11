@@ -1,23 +1,24 @@
 <script>
+	import { Button } from '$lib/components/ui/button/index.js';
+	import { Input } from '$lib/components/ui/input/index.js';
+	import { browser } from '$app/environment';
 
 	const searchListings = (query) => {
 		window.location.replace(`/listings?query=${query}`);
 	}
-
 	
+
+	let { class: className = undefined} = $props();
 	
-		
-
-	import { Button } from '$lib/components/ui/button/index.js';
-	import { Input } from '$lib/components/ui/input/index.js';
-	/**
-	 * @typedef {Object} Props
-	 * @property {any} [class]
-	 * @property {string} [searchQuery]
-	 */
-
-	/** @type {Props} */
-	let { class: className = undefined, searchQuery = $bindable('') } = $props();
+	let searchQuery = $state('');
+	$effect(
+		() => {
+			sessionStorage.setItem('searchQuery', searchQuery);
+		}
+	)
+	if (browser) {
+		searchQuery = sessionStorage.getItem('searchQuery') || '';
+	}
 
 </script>
 

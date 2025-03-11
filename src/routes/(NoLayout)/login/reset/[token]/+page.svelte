@@ -22,6 +22,11 @@
 			return;
 		}
 		
+		if (password.length < 8) {
+			toast.error('Password must be at least 8 characters long')
+			return;
+		}
+		
 		await resetPassword(data.token, password).then((data) =>
 		{
 			if (Object.keys(data).includes('data')) {

@@ -16,15 +16,6 @@
 		import NewListingDialog from '$lib/components/NewListingDialog.svelte';
 		import { goto } from '$app/navigation';
 
-	/**
-	 * @typedef {Object} Props
-	 * @property {any} navElement
-	 * @property {any} searchElement
-	 * @property {boolean} [hideSearch]
-	 * @property {any} user
-	 */
-
-	/** @type {Props} */
 	let {
 		navElement = $bindable(),
 		searchElement = $bindable(),

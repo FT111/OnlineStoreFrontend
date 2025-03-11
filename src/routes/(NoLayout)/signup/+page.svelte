@@ -10,40 +10,26 @@
 	import { goto, invalidateAll } from '$app/navigation';
 		import { Label } from '$lib/components/ui/dropdown-menu/index.js';
 	import { toast } from 'svelte-sonner';
-
 	
-	let passwordInput = $state();
-	let passwordConfirmInput = $state();
-	
-	// Passwords matching?
-
-
-	let email = $state();
+	let emailAddress = $state();
 	let password = $state();
 	let username = $state();
 	let confirmPassword = $state();
 	let name = $state();
-	let signInFormElement = $state();
-	let submitBtnElement = $state();
 	let signIn = $state();
 
 	async function handleSignUp() {
-		console.log('Signing up');
 		if (confirmPassword !== password) {
 			toast.error('Passwords do not match');
-			
 			throw Error('Passwords do not match');
 			}
 	  
 		if (password.length < 8) {
 			toast.error('Password must be at least 8 characters long');
-			
 			throw Error('Password must be at least 8 characters long');
 		}
-	 
 		
-		
-		await signUp(username, name, email, password).then((response) => {
+		await signUp(username, name, emailAddress, password).then((response) => {
 			if (response) {
 				console.log('Signed up');
 				window.location.href = '/';
@@ -70,7 +56,7 @@
 			<form bind:this={signInFormElement} onsubmit={(event)=>{signIn(event, true)}} class="flex flex-col gap-4 md:w-5/6 w-full">
 				<Input bind:value={name} type="text" required placeholder="Your first and last name" name="name" />
 				<Input bind:value={username} type="text" required placeholder="Username" name="username" />
-				<Input bind:value={email} type="email" required placeholder="Email" name="email" />
+				<Input bind:value={emailAddress} type="email" required placeholder="Email" name="email" />
 				<Input bind:this={passwordInput} bind:value={password} type="password" required placeholder="Password" name="password"  />
 				<Input bind:this={passwordConfirmInput} bind:value={confirmPassword} type="password" required placeholder="Confirm Password" name="passwordConfirm" />
 				

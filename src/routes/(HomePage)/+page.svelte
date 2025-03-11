@@ -70,12 +70,12 @@
 <Navbar bind:navElement={navElement} bind:searchElement={navSearch} hideSearch={true} user={data.user} />
 
 <main>
-	<div class="flex flex-col -gap-5 bg-muted rounded-b-3xl">
+	<div class="flex flex-col -gap-5 bg-muted rounded-b-3xl mb-2">
 		<div class="w-full z-10 basis-4/5" bind:this={searchHero}>
 			<SearchHero searchSuggestions={fetchCategories} bind:searchElement={heroSearchBar} />
 		</div>
 		
-		<div class="z-0 w-full h-[40vh] bg-muted p-6 text-primary-foreground text-3xl font-semibold">
+		<div class="z-0 w-full md:h-[40vh] bg-muted p-6 text-primary-foreground text-3xl font-semibold">
 			<div class="flex md:flex-row flex-col h-full w-full content-stretch items-stretch gap-6 flex-grow flex-1 transition-all">
 				<MenuCard href="/listings" class="bg-emerald-600">
 					Recently Viewed
@@ -83,7 +83,7 @@
 				<MenuCard class="bg-yellow-600">
 					Trending Offers
 				</MenuCard>
-				<div class="flex flex-col h-full flex-1 grow gap-6 basis-1/4 hover:basis-4/12 transition-all">
+				<div class="flex flex-col h-full flex-1 grow gap-6 basis-1/4 transition-all">
 					<MenuCard class="bg-cyan-700">
 						Categories
 					</MenuCard>
