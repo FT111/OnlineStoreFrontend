@@ -58,7 +58,7 @@
 	})
 	
 	const refreshOrders = () => {
-		// Fetch orders
+		// Fetch purchases
 		
 		getUserOrders(data.user.id).then((response) => {
 			orders = response.data
