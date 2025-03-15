@@ -5,6 +5,7 @@
 	import { fly } from 'svelte/transition';
 	import { backOut, expoOut } from 'svelte/easing';
 	import { onMount } from 'svelte';
+	import { flip } from 'svelte/animate';
 	import { Minus, Plus } from 'lucide-svelte';
 	import { Button } from '$lib/components/ui/button/index.js';
 

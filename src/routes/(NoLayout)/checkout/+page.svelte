@@ -44,7 +44,8 @@
 		previousPage = from?.url.pathname!=='/checkout' ? from?.url.pathname || previousPage : '/'
 	})
 	beforeNavigate((navigation)=>{
-		if (window.confirm('Are you sure you want to leave?' +
+		// Prevents the user from leaving the page if the basket is not empty (completed purchase)
+		if (!basketStore.basket.length || window.confirm('Are you sure you want to leave?' +
 			' \n Your unsaved details will be lost.')) {
 		} else {
 			navigation.cancel()
@@ -84,8 +85,8 @@
 	
 	<div class="flex md:flex-row flex-col w-full h-[90vh]" >
 		<div class="basis-1/2 flex-col flex md:items-end items-center p-6 overflow-y-scroll">
-			<div class="md:w-3/4 flex flex-col w-fit gap-2.5">
-				<form bind:this={transactionForm} id="transactionForm" class="group flex flex-col gap-2.5 " onsubmit={(e)=>{handleFinishAndPay(e)}} onchange={()=>{isDeliveryDetailsValid = transactionForm.checkValidity()}}>
+			<div class="md:w-3/4 flex flex-col w-fit gap-5">
+				<form bind:this={transactionForm} id="transactionForm" class="group flex flex-col gap-2 " onsubmit={(e)=>{handleFinishAndPay(e)}} onchange={()=>{isDeliveryDetailsValid = transactionForm.checkValidity()}}>
 					<div class="text-2xl flex flex-row gap-2.5 items-center">
 						<h3>Delivery</h3>
 						<Check class="group-has-[:invalid]:scale-0 scale-100 transition-all duration-150 origin-left opacity-70 ease-in-out" />
@@ -180,6 +181,15 @@
 						<Button size="lg" class="w-full p-2.5 shadow-xl { transaction.paymentDetails.set || 'disabled'}" variant="default" type={ transaction.paymentDetails.set ? 'submit' : 'disabled'}
 										form="transactionForm">Finish and Pay</Button>
 							{/if}
+						<p class="text-[0.7rem] text-muted-foreground">
+							By clicking 'Finish and Pay', you agree to share your delivery address, email address and name with the relevant sellers.
+							<br />
+							Payment details are only shared with the relevant payment processor.
+							<br />
+							Orders are fulfilled by sellers and individually refundable within 14 days of purchase.
+							<br />
+							Sellers have the right to cancel an order and refund payment.
+						</p>
 					</div>
 <!--			Background		-->
 					<div class="size-full backdrop-blur-2xl h-56 bottom-0"

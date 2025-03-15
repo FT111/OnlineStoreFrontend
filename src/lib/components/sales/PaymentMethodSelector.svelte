@@ -136,7 +136,7 @@
 					<InputWithLabel value={transaction.paymentDetails.cardExpiration} form="paymentMethodDialogForm" name="cardExpiration" label="Expiry date" placeholder="XX/XX"
 													minlength="5" maxlength="5" required>Expiry date</InputWithLabel>
 					<InputWithLabel value={transaction.paymentDetails.cardCVV} form="paymentMethodDialogForm" name="cardCVV" label="CVV"
-													placeholder="2 or 3 character CVV" maxlength="3" minlength="2" type="text" inputmode="numeric" pattern="[0-9]*" required>CVV</InputWithLabel>
+													placeholder="2 or 3 character CVV" maxlength="4" minlength="3" type="text" inputmode="numeric" pattern="[0-9]*" required>CVV</InputWithLabel>
 				</div>
 			</div>
 			<Dialog.Footer>

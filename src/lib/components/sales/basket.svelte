@@ -7,7 +7,9 @@ import { basketStore } from '$lib/basket.svelte.js';
 import { Skeleton } from '$lib/components/ui/skeleton/index.js';
 import * as Popover from "$lib/components/ui/popover";
 import { page  } from '$app/state';
+import {flip} from 'svelte/animate';
 import SkuRow from '$lib/components/sales/SKUrow.svelte';
+import { backOut } from 'svelte/easing';
 
 
 let basketOpen = $state(false);
@@ -42,19 +44,20 @@ $inspect(basketStore.basket);
 				{#if Object.keys(basketStore.basket.items).length === 0}
 					<p class="text-center">Your basket is empty</p>
 				{:else}
-				{#each Object.values(basketStore.basket.items) as product}
-					{#if product.sku && product.listing}
-					
-						<SkuRow product={product} increaseQuantityCallback={()=>{basketStore.addSKU(product.sku)}}
-										decreaseQuantityCallback={()=>{basketStore.removeSKU(product.sku)}} />
-					{:else}
-						<div class="flex flex-col h-28 mx-3 rounded-2xl gap-2 p-2.5
-									 transition-all duration-75  outline-1 outline
-									outline-transparent bg-slate-50 hover:bg-slate-100">
-							<Skeleton width="20" height="5" />
-							<Skeleton width="16" height="3" />
+				{#each Object.values(basketStore.basket.items) as product, index (product.sku?.id || index)}
+					<div animate:flip={{duration: 225, easing: backOut}}>
+						{#if product.sku && product.listing}
+							<SkuRow product={product} increaseQuantityCallback={()=>{basketStore.addSKU(product.sku)}}
+											decreaseQuantityCallback={()=>{basketStore.removeSKU(product.sku)}} />
+						{:else}
+							<div class="flex flex-col h-28 mx-3 rounded-2xl gap-2 p-2.5
+										 transition-all duration-75  outline-1 outline
+										outline-transparent bg-slate-50 hover:bg-slate-100">
+								<Skeleton width="20" height="5" />
+								<Skeleton width="16" height="3" />
+							</div>
+							{/if}
 						</div>
-						{/if}
 				{/each}
 					{/if}
 				{/if}

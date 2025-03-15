@@ -26,6 +26,7 @@
 	let navSearch = $state();
 	let searchHero = $state();
 	let heroSearchBar = $state();
+	let searchHidden = $state(false);
 
 	onMount(async () => {
 		const navObserver = new IntersectionObserver(
@@ -34,10 +35,12 @@
 					console.log('intersecting');
 					navElement.classList.remove(...navHeroClasses);
 					navElement.classList.add(...navPageClasses);
+					searchHidden = true;
 
 				} else {
 					console.log('not intersecting');
 					navElement.classList.remove(...navPageClasses);
+					searchHidden = false;
 					navElement.classList.add(...navHeroClasses);
 
 				}
@@ -67,7 +70,7 @@
 	
 </script>
 
-<Navbar bind:navElement={navElement} bind:searchElement={navSearch} hideSearch={true} user={data.user} />
+<Navbar bind:navElement={navElement} bind:searchElement={navSearch} hideSearch={searchHidden} user={data.user} />
 
 <main>
 	<div class="flex flex-col -gap-5 bg-muted rounded-b-3xl mb-2">
@@ -75,23 +78,23 @@
 			<SearchHero searchSuggestions={fetchCategories} bind:searchElement={heroSearchBar} />
 		</div>
 		
-		<div class="z-0 w-full md:h-[40vh] bg-muted p-6 text-primary-foreground text-3xl font-semibold">
+		<div class="z-0 w-full md:h-min bg-muted p-6 text-primary-foreground text-3xl font-semibold">
 			<div class="flex md:flex-row flex-col h-full w-full content-stretch items-stretch gap-6 flex-grow flex-1 transition-all">
-				<MenuCard href="/listings" class="bg-emerald-600">
+				<MenuCard href="/listings" class="bg-emerald-600/80 hover:backdrop-brightness-75 text-white">
 					Recently Viewed
 				</MenuCard>
-				<MenuCard class="bg-yellow-600">
+				<MenuCard class="bg-yellow-600/80 hover:backdrop-brightness-75 text-white">
 					Trending Offers
 				</MenuCard>
 				<div class="flex flex-col h-full flex-1 grow gap-6 basis-1/4 transition-all">
-					<MenuCard class="bg-cyan-700">
+					<MenuCard class="bg-cyan-700/80 hover:backdrop-brightness-75 text-white">
 						Categories
 					</MenuCard>
-					<MenuCard class="bg-sky-600">
+					<MenuCard class="bg-sky-600/80 hover:backdrop-brightness-75 text-white">
 						Top Categories
 					</MenuCard>
 				</div>
-				<MenuCard class="bg-primary basis-2/12" altArrow={true}>
+				<MenuCard class="bg-primary/80 hover:backdrop-brightness-75 text-white basis-2/12" altArrow={true}>
 					Your Basket
 				</MenuCard>
 

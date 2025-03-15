@@ -19,7 +19,7 @@
 	let {
 		navElement = $bindable(),
 		searchElement = $bindable(),
-		hideSearch = false,
+		hideSearch = true,
 		user
 	} = $props();
 	
@@ -27,6 +27,7 @@
 	if (hideSearch) {
 		hideClass = '-translate-y-32';
 	}
+	$inspect(hideClass);
 </script>
 
 
@@ -48,7 +49,7 @@
 		<div class="flex flex-row w-min sm:gap-6 gap-4 items-center">
 			
 			<NewListingDialog>
-				<Plus class="size-6 text-white " />
+				<Plus class="size-6 {hideSearch ? 'text-black' : 'text-white§'}" />
 			</NewListingDialog>
 			
 			<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6 hidden sm:block">

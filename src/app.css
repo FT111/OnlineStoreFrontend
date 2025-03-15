@@ -95,3 +95,7 @@ h1 {
     @apply bg-background text-foreground;
   }
 }
+
+* {
+  text-rendering: optimizeLegibility;
+}
