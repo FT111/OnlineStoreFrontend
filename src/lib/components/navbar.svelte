@@ -19,7 +19,7 @@
 	let {
 		navElement = $bindable(),
 		searchElement = $bindable(),
-		hideSearch = true,
+		hideSearch = false,
 		user
 	} = $props();
 	
@@ -27,7 +27,6 @@
 	if (hideSearch) {
 		hideClass = '-translate-y-32';
 	}
-	$inspect(hideClass);
 </script>
 
 
@@ -46,10 +45,14 @@
 				
 			</div>
 		
-		<div class="flex flex-row w-min sm:gap-6 gap-4 items-center">
+		<div class="flex flex-row w-min sm:gap-5 gap-4 items-center">
 			
 			<NewListingDialog>
-				<Plus class="size-6 {hideSearch ? 'text-black' : 'text-white§'}" />
+				<div class="flex flex-row gap-1.5 bg-background/15 items-center p-2 px-4 rounded-3xl hover:backdrop-brightness-125 transition-colors">
+					<Plus class="size-6 {hideSearch ? 'text-black' : 'text-white'}" />
+					Sell
+					
+				</div>
 			</NewListingDialog>
 			
 			<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6 hidden sm:block">
@@ -98,9 +101,11 @@
 									<DropdownMenu.GroupHeading>
 										<span>My Sales</span>
 									</DropdownMenu.GroupHeading>
-											<DropdownMenu.Item>
+									<a href="/sales/dashboard">
+									<DropdownMenu.Item>
 												<span>Dashboard</span>
 											</DropdownMenu.Item>
+									</a>
 											<a href="/sales/listings">
 												<DropdownMenu.Item>
 													<span>Listings</span>

@@ -1,7 +1,7 @@
 
 <script>
 	// This script is used to track the impression of listings on the page
-	// Placed between each row of listings in the ListingGrid component
+	// Placed with each listing component
 	
 	import { registerListingImpression } from '$lib/analytics/listings.js';
 	import { browser } from '$app/environment';

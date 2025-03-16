@@ -40,7 +40,9 @@
 	"type": "module",
 	"dependencies": {
 		"@tanstack/table-core": "^8.21.2",
+		"chart.js": "^4.4.8",
 		"cmdk-sv": "^0.0.18",
+		"sse.js": "^2.6.0",
 		"svelte-frappe-charts": "^1.10.0"
 	}
 }
