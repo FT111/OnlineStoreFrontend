@@ -5,24 +5,37 @@ import { onMount } from 'svelte';
 
 // SSE pushed live stats using sse.js polyfill
 
-let UpdateStream = $state()
-export let updateStreamData = $state({
-	data: {},
-	lastUpdate: 0
-})
-
+// To be updated to the object above from a component
+export let UpdateSteam = $state({
+	stream: null
+});
 
 export const createUpdateStream = (userID) => {
-	UpdateStream = new SSE(`${baseURL}users/${userID}/updates`, {
-		headers: {
-			Authorization: `Bearer ${token()}`
+	 const stream = new SSE(`${baseURL}users/${userID}/updates`,
+		{
+			withCredentials: true,
+			headers: {
+				'Authorization': `Bearer ${token()}`
+			}
 		}
-	});
+	);
 
-	UpdateStream.addEventListener('userStatsUpdate', (event) => {
-		console.log('User Stats Update:', event.data);
-		updateStreamData.data = JSON.parse(event.data.replace(/'/g, '"'));
-		updateStreamData.lastUpdate = new Date().getTime();
-	});
+	return {
+		get () {
+			return stream;
+		},
+		subscribe (callback) {
+			stream.onmessage = (event) => {
+				callback(JSON.parse(event.data));
+			};
+
+
+		}
+	}
 
 }
+
+export const updateStreamFactory = (userID) => {
+	UpdateSteam.stream = createUpdateStream(userID);
+}
+
