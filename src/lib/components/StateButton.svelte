@@ -90,7 +90,7 @@
 	
 	{:else if state === 'error'}
 		<div in:fly={{ y: 20, easing: backInOut, duration: 700 }} out:fly={{ y: 20, easing: backInOut, duration: 700 }} class="buttonState w-full justify-center flex flex-row h-full">
-			<X strokeWidth="1.25"  />
+			<X strokeWidth="1.5"  />
 		</div>
 	{/if}
 </Button>

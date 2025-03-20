@@ -26,7 +26,8 @@
 		import NewListingInfoCard from '$lib/components/sellerDashboard/NewListingInfoCard.svelte';
 		import { Textarea } from '$lib/components/ui/textarea/index.js';
 	import InputWithLabel from '$lib/components/InputWithLabel.svelte';
-	
+	import { toast } from 'svelte-sonner';
+
 		let formState = 'default';
 
 		let selectedCategory = $state();
@@ -44,9 +45,29 @@
 			subCategory: selectedSubcategory,
 			condition: selectedCondition
 		})
-		
+
+	const handleGetCategories = async () => {
+		const data = await fetchCategories();
+		selectedCategory = data.data[0].title;
+
+		return data;
+	}
+
+	const handleChangeCategory = async () => {
+			const data = await fetchCategory(selectedCategory)
+		console.log(data);
+			selectedSubcategory = data.data.subCategories[0].title;
+
+			return data;
+	}
 		
 		const newListingSubmission = async () => {
+			if (!selectedTitle || !selectedCategory || !selectedSubcategory || !selectedCondition) {
+				toast.error('Please fill in all fields');
+
+				throw new Error('Please fill in all fields');
+			}
+
 		  	formState = 'loading';
 			await newListing(formData).then((data) => {
 				console.log(data);
@@ -84,13 +105,13 @@
 						<form onsubmit={(event) => {submitFunc(event)}}>
 							<div class="flex flex-col gap-3.5 items-end">
 								<div class="flex flex-row gap-3.5 w-full items-end">
-									<InputWithLabel required bind:value={selectedTitle} max="40" label="Title" placeholder="What are you selling?">Title</InputWithLabel>
+									<InputWithLabel required bind:value={selectedTitle} maxlength="40" minlength="1" label="Title" placeholder="What are you selling?">Title</InputWithLabel>
 									
-									<div class="w-1/2">
+									<div class="w-52">
 										{#await fetchConditions()}
-										<DropdownWithLabel class="w-full" required title="What condition is it in?">Condition</DropdownWithLabel>
+										<DropdownWithLabel class="w-52 text-ellipsis" required title="What condition is it in?">Condition</DropdownWithLabel>
 										{:then conditions}
-										<DropdownWithLabel class="w-full" required options={conditions.data} title="What condition is it in?"
+										<DropdownWithLabel class="w-52 text-ellipsis" required options={conditions.data} title="What condition is it in?"
 										bind:value={selectedCondition}>Condition</DropdownWithLabel>
 										{:catch error}
 										<p>{error.message}</p>
@@ -98,11 +119,11 @@
 									</div>
 									
 								</div>
-								<Textarea bind:value={selectedDesc} max="100" class="h-28 text-wrap"  label="Description" placeholder="Describe your listing — Make sure to include keywords to appear in search results" />
+								<Textarea bind:value={selectedDesc} maxlength="100" class="h-28 text-wrap"  label="Description" placeholder="Describe your listing — Make sure to include keywords to appear in search results" />
 								
 								<div class="flex flex-row gap-3.5 w-full">
 									<div class="basis-1/2">
-										{#await fetchCategories()}
+										{#await handleGetCategories()}
 										<Dropdown required title="Category" />
 									{:then categories}
 										<Dropdown required options={categories.data.map(category => {return category.title})} title="Category" bind:value={selectedCategory}
@@ -113,9 +134,9 @@
 									</div>
 									
 									<div class="basis-1/2">
-									{#if true}
-										{#key formData.subCategory}
-											{#await fetchCategory(selectedCategory)}
+										{#if selectedCategory}
+										{#key formData.category}
+											{#await handleChangeCategory()}
 												<Dropdown required title="Subcategory" />
 											{:then categoryData}
 												<Dropdown required options={categoryData.data.subCategories.map(subcategory => {return subcategory.title})} title="Subcategory"
@@ -127,28 +148,6 @@
 									{/if}
 									</div>
 								</div>
-								
-	<!--							<button type="submit">-->
-	<!--								<Button class="grid grid-cols-1 grid-rows-1 text-md gap-0.5 hover:gap-2 transition-all origin-left w-32 ease-[cubic-bezier(0.64, 0.57, 0.67, 1.53)]-->
-	<!--												${formState==='success'? ' bg-emerald-700 ': formState==='loading' ? 'bg-slate-600':''}" variant="default" size="lg">-->
-	<!--									{#if formState === 'default'}-->
-	<!--										<div in:fly={{y:-20, easing: backInOut, duration: 700}} class="buttonState flex flex-row gap-0.5 hover:gap-2 transition-all origin-left w-32 ease-[cubic-bezier(0.64, 0.57, 0.67, 1.53)]">-->
-	<!--											Next <ArrowRight />-->
-	<!--										</div>-->
-	<!--									{:else if formState === 'loading'}-->
-	<!--										<div class="buttonState flex flex-row gap-0.5" in:fade={{duration: 700}} out:fly={{y:-20, easing: backInOut, duration: 700}}>-->
-	<!--											Submitting <Loader class="animate-spin" />-->
-	<!--										</div>-->
-	<!--									{:else if formState === 'success'}-->
-	<!--										<div in:fly={{ y: 20, easing: backInOut, duration: 700 }} out:fly={{ y: 20, easing: backInOut, duration: 700 }} class="buttonState flex flex-row gap-0.5" >-->
-	<!--											Success <Check />-->
-	<!--										</div>-->
-	<!--									{:else if formState === 'error'}-->
-	<!--										<div in:fly={{ y: 20, easing: backInOut, duration: 700 }} out:fly={{ y: 20, easing: backInOut, duration: 700 }} class="buttonState flex flex-row gap-0.5">-->
-	<!--											Error <Cross />-->
-	<!--										</div>-->
-	<!--									{/if}-->
-	<!--								</Button>-->
 								
 								<div class="w-28 text-md">
 									<StateButton text={false} authFunction={newListingSubmission} bind:onPress={submitFunc}>
