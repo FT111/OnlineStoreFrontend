@@ -28,13 +28,17 @@
 				return;
 			}
 			
-			
-			if (goHome) {
-				setTimeout(async () => {
-					await invalidateAll();
-					await goto('/');
-				}, 250);
-			}
+			dispatchEvent(
+				new Event(
+					'btnFinished',
+				)
+			)
+			// if (goHome) {
+			// 	setTimeout(async () => {
+			// 		await invalidateAll();
+			// 		await goto('/');
+			// 	}, 250);
+			// }
 		}).catch(() => {
 			state = 'error';
 			btnAnimationClasses = 'bg-red-700 text-slate-50 ';

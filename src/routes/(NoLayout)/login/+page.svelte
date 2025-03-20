@@ -11,6 +11,12 @@
 	import { backInOut } from 'svelte/easing';
 	import { requestPasswordReset } from '$lib/api/user.js';
 	import { toast } from 'svelte-sonner';
+	import { browser } from '$app/environment';
+	import { redirect } from '@sveltejs/kit';
+	import { page } from '$app/state';
+	import { goto } from '\$app/navigation';
+
+	let { data } = $props();
 	
 		
 	let email = $state();
@@ -20,7 +26,16 @@
 	let signIn = $state();
 	
 	let passwordResetOpenState = $state(false);
-	
+
+	if (browser) {
+		addEventListener('btnFinished',
+			()=>{
+			setTimeout(() => {
+				goto(`/${page.url.searchParams.get('src').slice(1) || ''}`);
+			}, 100);
+			})
+	}
+
 	async function handleLoginAttempt() {
 		return await login(email, password)
 	}
@@ -38,6 +53,10 @@
 		} else {
 			toast.error('Error occurred');
 		}
+	}
+
+	if (data.user && browser) {
+		goto(`/${page.url.searchParams.get('src').slice(1) || ''}`);
 	}
 </script>
 

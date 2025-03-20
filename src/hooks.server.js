@@ -1,6 +1,7 @@
 import { me } from '$lib/api/user.js';
 import { redirect } from '@sveltejs/kit';
 import { browser } from '$app/environment';
+import { goto } from '$app/navigation';
 
 export const handle = async ({ event, request, resolve }) => {
 
@@ -23,7 +24,8 @@ export const handle = async ({ event, request, resolve }) => {
 	if (event.url.pathname.startsWith('/sales') ||
 		event.url.pathname.startsWith('/account') ||
 		event.url.pathname.startsWith('/checkout')) {
-		return redirect(302,'/login');
+
+		redirect(302, `/login?src=${event.url.pathname + event.url.search}`);
 	}
 
 
