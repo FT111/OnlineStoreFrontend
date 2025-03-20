@@ -5,20 +5,28 @@
 	import { Button } from '$lib/components/ui/button/index.js';
 	import { Toaster } from '$lib/components/ui/sonner/index.js';
 	import '$lib/basket.svelte.js'
+	import { createUpdateStream } from '$lib/api/streams.svelte.js';
+	import { browser } from '$app/environment';
+	import UpdateStreamHandler from '$lib/components/analytics/UpdateStreamHandler.svelte';
+	import { goto } from '$app/navigation';
 	/**
 	 * @typedef {Object} Props
 	 * @property {import('svelte').Snippet} [children]
 	 */
 
 	/** @type {Props} */
-	let { children } = $props();
+	let { data, children } = $props();
 	let consentPopup = $state();
-	
+
 	onMount(() => {
 		checkConsent(consentPopup);
+
+		if (data.requiresAuth && !data.user) {
+			goto('/login');
+		}
 	});
-	
-	
+
+
 </script>
 
 <div class="selection:text-accent-foreground selection:bg-accent/70">
@@ -26,6 +34,7 @@
 </div>
 
 
+<UpdateStreamHandler user={data.user} />
 <Toaster />
 
 <!--Consent Popup-->
@@ -35,14 +44,14 @@
 			<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-10">
 				<path stroke-linecap="round" stroke-linejoin="round" d="M9.75 3.104v5.714a2.25 2.25 0 0 1-.659 1.591L5 14.5M9.75 3.104c-.251.023-.501.05-.75.082m.75-.082a24.301 24.301 0 0 1 4.5 0m0 0v5.714c0 .597.237 1.17.659 1.591L19.8 15.3M14.25 3.104c.251.023.501.05.75.082M19.8 15.3l-1.57.393A9.065 9.065 0 0 1 12 15a9.065 9.065 0 0 0-6.23-.693L5 14.5m14.8.8 1.402 1.402c1.232 1.232.65 3.318-1.067 3.611A48.309 48.309 0 0 1 12 21c-2.773 0-5.491-.235-8.135-.687-1.718-.293-2.3-2.379-1.067-3.61L5 14.5" />
 			</svg>
-			
+
 			<div class="flex flex-col gap-1">
 				<p class="text-lg font-light"><span class="font-bold">This website uses cookies</span>  <a href="/privacy-policy" class="text-accent">Learn more</a></p>
 				<p class="text-sm">We use cookies for <span class="font-semibold">analytics</span>, <span class="font-semibold">personalisation</span> and essential <span class="font-semibold">functionality</span>. You can decline optional cookies.</p>
-			
+
 			</div>
 		</div>
-		
+
 		<div class="flex flex-col sm:flex-row gap-4">
 			<Button onclick={() => giveConsent(consentPopup)} class="rounded-xl">Accept</Button>
 			<Button onclick={() => revokeConsent(consentPopup)} class="rounded-xl" variant="secondary">Decline</Button>
