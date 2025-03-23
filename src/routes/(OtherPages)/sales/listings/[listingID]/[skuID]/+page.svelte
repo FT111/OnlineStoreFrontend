@@ -2,7 +2,8 @@
 <script>
   	import { page } from '$app/state';
 	import SkuEditor from '$lib/components/sellerDashboard/SkuEditor.svelte';
-		import { selectedListing } from '$lib/account.svelte.js';
+	import { selectedListing } from '$lib/account.svelte.js';
+
 	let { data } = $props();
 	
 	let selectedSKU = $state();

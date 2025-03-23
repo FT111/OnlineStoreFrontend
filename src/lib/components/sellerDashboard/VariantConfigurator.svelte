@@ -10,6 +10,7 @@
 	import {fly} from 'svelte/transition';
 	import {backOut} from 'svelte/easing';
 	import { browser } from '$app/environment';
+	import { flip } from 'svelte/animate';
 	import { onMount } from 'svelte';
 
 
@@ -18,6 +19,7 @@
 		selectedProduct = $bindable({}),
 		validation = true,
 		defaultOptions = false,
+		onSelectCallback = () => {},
 		configuring = false } = $props();
 
 	let lastSelectedCategory = $state(Object.keys(variantOptions)[0]);
@@ -89,6 +91,7 @@
 	
 	const onSelect = (category, option) => {
 		selectedOptions[category] = option;
+		onSelectCallback(selectedOptions);
 		
 		if (!configuring && validation) {
 			lastSelectedCategory = category;
@@ -179,8 +182,8 @@
 				
 			</div>
 			<div class="flex flex-row flex-wrap relative rounded-t-2xl p-2 px-1 gap-2 w-full">
-				{#each variantOptions[category] as option}
-					<button in:fly={{x:-100, duration: 150, z:0}} out:fly={{x:-100, duration: 150, z: 0}} onclick={()=>{configuring ? removeOption(category, option) : onSelect(category, option)}} class="{selectedOptions[category]===option ? ' !bg-accent border-amber-900 ' : '' }
+				{#each variantOptions[category] as option (option)}
+					<button animate:flip={{duration: 150}} in:fly={{x:-100, duration: 150, z:0}} out:fly={{x:-100, duration: 150, z: 0}} onclick={()=>{configuring ? removeOption(category, option) : onSelect(category, option)}} class="{selectedOptions[category]===option ? ' !bg-accent border-amber-900 ' : '' }
 					{currentAvailableOptions[category].includes(option)||!validation ? '' : ' disabled !hover:bg-primary/60 !bg-primary/60 !cursor-default  '}
 					 bg-primary flex flex-row z-10 gap-1 h-8 items-center font-semibold text-xs text-primary-foreground border-2 border-transparent outline-none hover:bg-destructive justify-center min-w-16 w-fit p-2 px-3 rounded-3xl flex-shrink-0 transition-all duration-250 ease-in-out cursor-pointer">
 						{option}
@@ -208,7 +211,7 @@
 {#if configuring}
 	<form class="flex flex-row gap-1 w-fit bg-emerald-50 border-emerald-200 border border-1 rounded-3xl" onsubmit={(form)=>{addCategory(form)}}>
 		<label class="sr-only" for="categoryValue">Add an option category</label>
-		<Input minlength="1" name="categoryValue" class="min-w-32 w-48 h-10 p-2 px-3 rounded-3xl bg-emerald-50  border-none flex-shrink-0 transition-all duration-250 ease-in-out " placeholder="Add an option category" />
+		<input type="text" min="1" minlength="1" required name="categoryValue" class="min-w-32 text-sm rounded-r-none w-48 h-10 p-2 px-3 rounded-3xl bg-emerald-50  border-none flex-shrink-0 transition-all duration-250 ease-in-out " placeholder="Add an option category" />
 		<button class="flex flex-row px-2 rounded-r-3xl bg-emerald-200 text-black items-center justify-center hover:brightness-75 transition-all size-10" type="submit">
 			<Plus size={20} strokeWidth={1.25} />
 		</button>

@@ -10,7 +10,7 @@
 	import { baseURL } from '$lib/api/core.js';
 		import { onMount } from 'svelte';
 		import { newSKU, updateSKU } from '$lib/api/listings.js';
-		import { Box, HelpCircle, ImagePlus, Save } from 'lucide-svelte';
+	import { Box, HelpCircle, ImagePlus, Save, TriangleAlert } from 'lucide-svelte';
 		import { afterNavigate, beforeNavigate, invalidate, invalidateAll, onNavigate } from '$app/navigation';
 		import VariantConfigurator from '$lib/components/sellerDashboard/VariantConfigurator.svelte';
 		import * as Tooltip from "$lib/components/ui/tooltip";
@@ -26,7 +26,9 @@
 	  	images: [],
 	  options: {},
 	  
-	}), listingVariantOptions = {} } = $props();
+	}), listingVariantOptions = {}
+	} = $props();
+
 	let initialSKU = $state(JSON.parse(JSON.stringify(sku)));
 	$inspect(sku);
 	
@@ -44,13 +46,19 @@
 
 
 	let edited = $derived(JSON.stringify(sku) !== JSON.stringify(initialSKU)); // if sku is edited, edited state is true
+	let canSave = $state(true);
+	$inspect(sku.options);
 	let dropLabel = $state();
 	let saveBtn = $state();
 
 	const repSert = (listingID, sku) => async (e) => {
 		e.preventDefault();
 		console.log('Saving SKU');
-		
+		verifySKUConflicts(sku.options);
+		if (!canSave) {
+			return;
+		}
+
 		// If the sku is being edited, update it. Otherwise, create a new one
 		if (editing) {
 			await updateSKU(listingID, sku).then(() => {
@@ -68,6 +76,28 @@
 		
 		dispatchEvent(new CustomEvent('skuSaved'));
 	};
+
+	const verifySKUConflicts = (options) => {
+		let conflict = false;
+		console.log('i')
+		if (sku.options) {
+			selectedListing.listing.skus.forEach((existingSKU) => {
+				console.log(existingSKU.options, options);
+				if ((JSON.stringify(existingSKU.options) === JSON.stringify(options) || existingSKU.title === sku.title)  && existingSKU.id !== sku.id ) {
+					conflict = true;
+				}
+
+			})
+			canSave = !conflict;
+		}
+	}
+
+	$effect(() => {
+		if (sku.title) {
+			verifySKUConflicts(sku.options);
+		}
+	})
+
 
 	const selectImage = (e) => {
 		const file = e.target.files[0];
@@ -156,17 +186,25 @@
 	<div class="basis-1/2 bg-slate-50 rounded-2xl h-full p-5 space-y-1.5 md:order-1 order-first">
 		{#key sku.id}
 		<form onsubmit={repSert(page.params.listingID, sku)}>
-			<div class="p-1 flex flex-row gap-2 items-center">Details
+			<div class="p-1 flex flex-row gap-2 h-10 items-center">Details
+				{#if canSave}
 				<Button bind:this={saveBtn} class=" rounded-full transition-all gap-1.5 origin-left {edited ? 'scale-100': ' scale-0 '}" type="submit" size="sm">
-					<Save size={20} strokeWidth={1.25} />Save</Button>
+					<Save size={20} strokeWidth={1.25} />Save
+				</Button>
+					{:else}
+					<div class="flex flex-row gap-1.5 items-center bg-destructive/10 text-foreground px-3.5 rounded-full h-10 text-sm">
+						<TriangleAlert strokeWidth={1.5} size={18} />
+						Conflicts with existing variation
+					</div>
+				{/if}
 			</div>
 			
 			<div class="flex flex-col gap-3 items-end">
 				<InputWithLabel maxlength="30" min="1" label="Title" bind:value={sku.title} placeholder="Enter a short, descriptive title" >Title</InputWithLabel>
 				<div class="flex flex-row gap-3 w-full grow">
-					<InputWithLabel min="1" required label="Price" bind:value={sku.price} type="number" placeholder="How much?">Price</InputWithLabel>
-					<InputWithLabel max="99" min="0" label="Discount" bind:value={sku.discount} type="number" placeholder="How much off?" >Discount % (Optional)</InputWithLabel>
-					<InputWithLabel min="0" required label="Quantity" bind:value={sku.stock} type="number" placeholder="How many?" >Quantity</InputWithLabel>
+					<InputWithLabel minlength="1" required label="Price" bind:value={sku.price} type="number" placeholder="How much?">Price</InputWithLabel>
+					<InputWithLabel maxlength="99" minlength="0" label="Discount" bind:value={sku.discount} type="number" placeholder="How much off?" >Discount % (Optional)</InputWithLabel>
+					<InputWithLabel minlength="0" required label="Quantity" bind:value={sku.stock} type="number" placeholder="How many?" >Quantity</InputWithLabel>
 				</div>
 				
 				<div class="p-1 flex flex-row gap-1 items-center self-start">Option Selection
@@ -175,7 +213,7 @@
 			</div>
 			
 		</form>
-			<VariantConfigurator variantOptions={listingVariantOptions} bind:selectedOptions={sku.options}  validation={false}/>
+			<VariantConfigurator variantOptions={listingVariantOptions} bind:selectedOptions={sku.options} onSelectCallback={verifySKUConflicts}  validation={false}/>
 			{/key}
 	</div>
 
