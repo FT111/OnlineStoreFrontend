@@ -51,6 +51,19 @@
 	let dropLabel = $state();
 	let saveBtn = $state();
 
+
+	const getPrice = () => {
+		return sku.price / 100;
+	};
+	const updatePrice = (val) => {
+		if (val === '' || isNaN(val)) {
+			sku.price = 0;
+			return;
+		}
+
+		sku.price = Math.round(Number(val) * 100);
+	};
+
 	const repSert = (listingID, sku) => async (e) => {
 		e.preventDefault();
 		console.log('Saving SKU');
@@ -79,17 +92,26 @@
 
 	const verifySKUConflicts = (options) => {
 		let conflict = false;
-		console.log('i')
-		if (sku.options) {
-			selectedListing.listing.skus.forEach((existingSKU) => {
-				console.log(existingSKU.options, options);
-				if ((JSON.stringify(existingSKU.options) === JSON.stringify(options) || existingSKU.title === sku.title)  && existingSKU.id !== sku.id ) {
-					conflict = true;
-				}
+		selectedListing.listing.skus.forEach((existingSKU) => {
+			// If the checked SKU is the current SKU, skip it
+			if (existingSKU.id === sku.id) {
+				return;
+			}
 
-			})
-			canSave = !conflict;
-		}
+			if (existingSKU.title === sku.title) {
+				conflict = true;
+			}
+
+			// If no options, don't check them
+			if (Object.keys(options).length === 0) {
+				return;
+			}
+			if ((JSON.stringify(existingSKU.options) === JSON.stringify(options))  && existingSKU.id !== sku.id ) {
+				conflict = true;
+			}
+
+		})
+		canSave = !conflict;
 	}
 
 	$effect(() => {
@@ -202,7 +224,8 @@
 			<div class="flex flex-col gap-3 items-end">
 				<InputWithLabel maxlength="30" min="1" label="Title" bind:value={sku.title} placeholder="Enter a short, descriptive title" >Title</InputWithLabel>
 				<div class="flex flex-row gap-3 w-full grow">
-					<InputWithLabel minlength="1" required label="Price" bind:value={sku.price} type="number" placeholder="How much?">Price</InputWithLabel>
+					<InputWithLabel minlength="1" maxlength="10" bind:value={()=> getPrice(), updatePrice} pattern="/^\d*\.?\d*$/"
+													required label="Price" type="text" placeholder="How much?">Price</InputWithLabel>
 					<InputWithLabel maxlength="99" minlength="0" label="Discount" bind:value={sku.discount} type="number" placeholder="How much off?" >Discount % (Optional)</InputWithLabel>
 					<InputWithLabel minlength="0" required label="Quantity" bind:value={sku.stock} type="number" placeholder="How many?" >Quantity</InputWithLabel>
 				</div>
