@@ -2,6 +2,7 @@ import { baseURL } from '$lib/api/core.js';
 import { token } from '$lib/api/authentication.js';
 import { SSE } from 'sse.js';
 import { onMount } from 'svelte';
+import { toast } from 'svelte-sonner';
 
 // SSE pushed live stats using sse.js polyfill
 
@@ -24,5 +25,11 @@ export const createUpdateStream = (userID) => {
 		updateStreamData.data = JSON.parse(event.data.replace(/'/g, '"'));
 		updateStreamData.lastUpdate = new Date().getTime();
 	});
+
+	UpdateStream.addEventListener('sale',
+		(event) => {
+			toast.success('New sale!');
+		}
+		)
 
 }

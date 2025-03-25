@@ -11,6 +11,7 @@
 		"format": "prettier --write ."
 	},
 	"devDependencies": {
+		"@internationalized/date": "^3.7.0",
 		"@lucide/svelte": "^0.483.0",
 		"@melt-ui/svelte": "latest",
 		"@sveltejs/adapter-auto": "^3.0.0",
@@ -44,6 +45,7 @@
 		"chart.js": "^4.4.8",
 		"cmdk-sv": "^0.0.18",
 		"sse.js": "^2.6.0",
-		"svelte-frappe-charts": "^1.10.0"
+		"svelte-frappe-charts": "^1.10.0",
+		"svelte-heatmap": "^1.0.2"
 	}
 }
