@@ -20,6 +20,7 @@
 
 	let { data } = $props();
 	let listing = $derived(data.listing)
+
 	let selectedSKU = $state({
 		price: 0,
 		id: 0

@@ -2,7 +2,7 @@
 	import { run } from 'svelte/legacy';
 
 
-	import { ArrowDown, ArrowUp, Box, Info, Plus, TriangleAlert, Truck } from 'lucide-svelte';
+	import { ArrowDown, ArrowUp, Box, CircleArrowOutUpRight, Info, Plus, TriangleAlert, Truck } from 'lucide-svelte';
 	import { page } from '$app/state';
 
 	import DashboardPageLayout from '$lib/components/DashboardPageLayout.svelte';
@@ -67,12 +67,22 @@
 	{#snippet header()}
 		<p >Editing {selectedVariant!== 'not selected' ? currentListing.title : ''}</p>
 	{/snippet}
-	{#snippet title()}
-		<h1 >
-			{selectedVariant==='new' ? 'New Product' :
-			(selectedVariant=== 'not selected') ? currentListing.title :
-			selectedVariant ? selectedVariant.title : currentListing.title}
-		</h1>
+	{#snippet title(isSidebarOpen)}
+		<div class="flex flex-row justify-between pr-4">
+			<h1 >
+				{selectedVariant==='new' ? 'New Product' :
+				(selectedVariant=== 'not selected') ? currentListing.title :
+				selectedVariant ? selectedVariant.title : currentListing.title}
+			</h1>
+
+			{#if currentListing.public}
+				<a href="/listings/{currentListing.id}" class="flex flex-row justify-center px-3.5 p-1 gap-1.5 items-center {isSidebarOpen && 'translate-x-14'}
+				 																								rounded-3xl bg-accent/10 text-xs font-medium hover:bg-accent/25 transition-all">
+					<CircleArrowOutUpRight size={14} strokeWidth={1.5} />
+					View Listing
+				</a>
+			{/if}
+		</div>
 	{/snippet}
 	
 	{#snippet page()}
@@ -89,7 +99,8 @@
 					<div class="flex-col flex gap-2.5 w-fit h-fit p-4 rounded-l-2xl bg-amber-50">
 						<p>Listing</p>
 						<a href="/sales/listings/{currentListing.id}">
-							<Card.Root  class="w-56 border-slate-700 h-36 border-[1.5px] hover:border-accent/60 scale-105 transition-all justify-between flex flex-col">
+							<Card.Root  class="w-56 border-slate-200 h-36 border-[1.5px] hover:border-accent/60 scale-105 transition-all
+																{!selectedVariant.id && '!border-slate-700'}		justify-between flex flex-col">
 								<div>
 									<Card.Header class="p-3.5 pb-0.5 w-full">
 										<p class="overflow-hidden text-wrap">{currentListing.title}</p>
@@ -122,15 +133,15 @@
 							{:else}
 								{#each currentListing.skus as sku}
 									<a href={`/sales/listings/${currentListing.id}/${sku.id}`}>
-										<Card.Root class="w-48 h-32 justify-between flex flex-col hover:border-accent transition-all hover:brightness-125
+										<Card.Root class="w-44 h-32 justify-between flex flex-col hover:border-accent transition-all hover:brightness-125
 															{typeof(selectedVariant)==='object' ? selectedVariant.id===sku.id ? ' border-slate-800 border-2 ' : '' : ''}">
-											<Card.Header class="p-3.5 line-clamp-2">
+											<Card.Header class="p-3.5 text-sm line-clamp-2">
 												<p>{sku.title}</p>
 											</Card.Header>
 											<Card.Description class="px-3.5 p-4 self-end text-black bg-none pt-0 pb-2">
 												<div class="flex flex-col items-end justify-end">
 													{#key sku.price}
-														<Price price={sku.price} />
+														<Price small price={sku.price} />
 													{/key}
 													
 													<div class="flex flex-row gap-2">
@@ -191,7 +202,7 @@
 							
 						<!--	Add new variant card -->
 							<a href={`/sales/listings/${currentListing.id}/new`}>
-								<Card.Root class="w-48 h-32 flex flex-col border-2 border-dashed bg-emerald-50/40 items-center justify-center
+								<Card.Root class="w-44 h-32 flex flex-col border-2 border-dashed bg-emerald-50/40 items-center justify-center
 												  hover:border-solid hover:bg-emerald-100 hover:border-emerald-500 transition-all group
 												{selectedVariant==='new' ? 'border-emerald-500 border-solid' : ''}">
 									<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"

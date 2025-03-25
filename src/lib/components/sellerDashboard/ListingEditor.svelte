@@ -217,7 +217,8 @@
 						</div>
 					</div>
 				</div>
-					<p class="text-sm font-light text-muted-foreground self-start">If variants, the listing's least expensive variation will be shown as the base price</p>
+					<p class="text-sm font-light text-muted-foreground self-start">If multiple product variants are added, the listing's least expensive variation will be shown as the base price and image</p>
+				</div>
 			</form>
 	</div>
 		{/key}

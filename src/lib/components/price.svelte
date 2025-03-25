@@ -7,7 +7,7 @@
 	let priceInteger = $derived(Math.floor(price/100));
 	let priceDecimal = $derived((price/100 - priceInteger).toFixed(2).slice(2));
 	let smallClass = $derived(small ? "!text-base" : "");
-	let smallDecimalClass = $derived(small ? "!text-xs" : "");
+	let smallDecimalClass = $derived(small ? "!text-xs" : "!text-base");
 </script>
 
 

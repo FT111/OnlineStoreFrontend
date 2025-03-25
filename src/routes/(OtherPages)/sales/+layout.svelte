@@ -26,8 +26,8 @@ let selectedClasses = ' !bg-slate-200/70 pl-5 ';
 
 <Sidebar.Provider>
 	<Sidebar.Root variant="inset" class="mt-14  z-10 bg-sidebar">
-		<Sidebar.Header>
-			<Sidebar.Menu>
+		<Sidebar.Header class="z-10">
+			<Sidebar.Menu class="z-10">
 				<Sidebar.MenuItem class="text-sm flex flex-row items-center text-neutral-500 gap-1">
 					<Sidebar.Trigger class="-ml-1 size-8 hover:bg-secondary hover:text-secondary-foreground" />
 					<p class="font-medium">Seller Dashboard</p>

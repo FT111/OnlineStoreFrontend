@@ -106,7 +106,7 @@
 					{:else}
 						<div class="flex flex-col gap-0 w-full justify-end text-right">
 							{#if listing.multipleSKUs === true}
-								<p class="text-sm font-bold">Starting at</p>
+								<p class="text-sm font-bold">{listing.hasDiscount ? 'Discounted •' : ''} Starting at</p>
 							{:else}
 								<br>
 							{/if}

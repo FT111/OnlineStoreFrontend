@@ -32,9 +32,8 @@
 
 	let current = today(getLocalTimeZone());
 	const timePeriods = [
-		{ value: '1d', label: 'Today', start: current, end: current },
 		{ value: '7d', label: 'Last 2 weeks', start: current.subtract({days: 14}),
-			end: current },
+			end: current, live: true },
 		{ value: 'custom', label: 'Custom' },
 	]
 	let selectedTimePeriodValue = $state('7d');
@@ -112,7 +111,12 @@
 						<Select.Group>
 							{#each timePeriods as period (period.value)}
 								<Select.Item value={period.value} label={period.label}
-								>{period.label}</Select.Item
+								class="flex group flex-row justify-between gap-1">
+									{period.label}
+									{#if period.live}
+										<div class="group-data-[highlighted]:text-accent-foreground text-accent text-xs font-semibold">Live</div>
+									{/if}
+								</Select.Item
 								>
 							{/each}
 						</Select.Group>
