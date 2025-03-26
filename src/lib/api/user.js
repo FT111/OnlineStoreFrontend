@@ -16,3 +16,7 @@ export const requestPasswordReset = async (email) => {
 export const resetPassword = async (token, password) => {
 	return POST(`users/resetPassword`, JSON.stringify({'token': token, 'password': password}));
 }
+
+export const getStatistics = async (start, end) => {
+	return GET(`users/me/statistics/${start}/${end}`);
+}
