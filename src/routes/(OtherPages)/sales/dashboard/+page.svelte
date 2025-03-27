@@ -19,6 +19,7 @@
 
 
 	let { data } = $props();
+	let saveBtn = $state();
 
 	let currentTimestamp = $state(new Date().getTime());
 	setInterval(() => {

@@ -67,7 +67,7 @@
 					<Badge class=" h-8">Joined {new Date(data.profileUser.joinedAt*1000).toDateString()}</Badge>
 					<Badge class=" h-8">Rated {profileUser.rating} stars</Badge>
 					<Badge class="min-w-20 h-8 justify-center">{data.profileUser.listingIDs.length} Listings</Badge>
-					<Badge class=" h-8">{data.profileUser.sales} Sales</Badge>
+					<Badge class=" h-8">{data.profileUser.sales} Sale{data.profileUser.sales>1 ? 's' : ''}</Badge>
 				</div>
 
 <!--				Action Buttons	-->

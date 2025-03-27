@@ -6,13 +6,23 @@
 	import { orderStatusesCancellable } from '$lib/constants.svelte.js';
 	import * as Card from '$lib/components/ui/card/index.js';
 	import Price from '$lib/components/price.svelte';
+	import * as AlertDialog from "$lib/components/ui/alert-dialog/index.js";
 	import Image from '$lib/components/image.svelte';
 	import * as Tooltip from '$lib/components/ui/tooltip/index.js';
 	import { goto } from '$app/navigation';
+	import { Button } from '$lib/components/ui/button/index.js';
+	import { updateOrder } from '$lib/api/transactions.js';
 	
 	const { data } = $props();
 	let purchases = {};
-	
+
+	let selectedOrder = $state({
+		id: null,
+		seller: null,
+		title: null,
+	});
+	let DeletionDialogOpenState = $state(false);
+
 	// // Purchases aggregate multiple orders using purchaseID
 	if (!data.orders || Object.keys(data.orders).length > 0) {
 		purchases = data.orders.purchases.reduce((acc, order) => {
@@ -25,6 +35,27 @@
 		}, {});
 	}
 </script>
+
+
+<AlertDialog.Root bind:open={DeletionDialogOpenState}>
+	<AlertDialog.Content>
+		<AlertDialog.Header>
+			<AlertDialog.Title>Are you absolutely sure?</AlertDialog.Title>
+			<AlertDialog.Description>
+				This action cannot be undone. This order will be cancelled and you will be refunded.
+			</AlertDialog.Description>
+		</AlertDialog.Header>
+		<AlertDialog.Footer>
+			<AlertDialog.Cancel>Back</AlertDialog.Cancel>
+			<AlertDialog.Action onclick={
+			async()=>{selectedOrder.status = 'Cancelled';selectedOrder.seller.joinedAt=Math.round(selectedOrder.seller.joinedAt); await updateOrder(selectedOrder.id,selectedOrder).then(()=>{DeletionDialogOpenState=false}).catch((error) => {toast.error(error);});}
+			}
+			>Cancel order</AlertDialog.Action>
+		</AlertDialog.Footer>
+	</AlertDialog.Content>
+</AlertDialog.Root>
+
+
 
 <DashboardPageLayout>
 	{#snippet title()}
@@ -39,26 +70,30 @@
 				{@const purchaseDateFromTimeStamp = new Date(orders[0].addedAt * 1000)}
 				{@const purchaseDate = purchaseDateFromTimeStamp.toLocaleDateString('en-GB', { year: 'numeric', month: 'long', day: 'numeric' })}
 				{@const purchaseTotalValue = orders.reduce((acc, order) => acc + order.value, 0)}
-				<div class="flex flex-col rounded-xl p-4 gap-1">
+				<div class="flex flex-col rounded-xl p-2 gap-1">
 					<div class="flex flex-row justify-between px-2.5 items-center">
-						<h2 class="text-md">Purchase made on {purchaseDate} <span class="text-muted-foreground">• Arriving in {orders.length} shipment{orders.length!==1 ? 's': ''}</span></h2>
+						<h2 class="text-md">Purchase made on {purchaseDate} <span class="text-muted-foreground"> {orders.length!==1 ? `• Arriving in ${orders.length} shipments` : ''}</span></h2>
 						<Price price={purchaseTotalValue} />
 					</div>
 					
-					<div class="flex flex-col gap-0 border border-1 border-muted-foreground/20 rounded-2xl">
+					<div class="{orders.length>1 && 'p-2.5'} flex flex-col gap-3 border border-1 border-muted-foreground/20 rounded-2xl">
 					{#each orders as purchase, index}
 						{@const statusData = orderStatusesCancellable.find((status) => status.title === purchase.status)}
-						<Card.Root class="rounded-none border-1  {index===0 && 'rounded-t-2xl'} {index===orders.length-1 ? 'rounded-b-2xl pb-4' : ''} ">
-							<Card.Header>
-								<div class="flex flex-row justify-end">
-									<div class="flex flex-row gap-1.5">
+						<Card.Root class=" border-1 bg-slate-50  rounded-2xl pb-1.5">
+								<div class="flex flex-row justify-between px-6 pt-3.5 items-center">
+									<h3 class="text-xs font-medium">Shipment from
+										<Button class="px-1 text-sm" href="/users/{purchase.seller.id}" variant="link">{purchase.seller.username}</Button></h3>
+									<div class="flex flex-row gap-2.5 h-9">
+										{#if purchase.status !== 'Cancelled'}
+										<Button class="rounded-3xl h-full bg-opacity-60" onclick={()=>{selectedOrder=purchase;DeletionDialogOpenState=true}} variant="destructive">Cancel</Button>
+											{/if}
+
 										<div class='flex flex-row items-center p-1.5 px-2.5 text-sm rounded-full bg-{statusData.colour}'>
 											<span class={`${statusData.text ? `text-${statusData.text}` : ``}`}>{purchase.status}</span>
 										</div>
 									</div>
 								</div>
-							</Card.Header>
-							<Card.Content class="py-1">
+							<Card.Content class="py-2.5">
 								<ul class="flex flex-col gap-1 w-full">
 									{#each purchase.skus as sku}
 										<li class="flex flex-row gap-2 w-full">
