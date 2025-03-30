@@ -12,6 +12,8 @@
 	import { goto } from '$app/navigation';
 	import { Button } from '$lib/components/ui/button/index.js';
 	import { updateOrder } from '$lib/api/transactions.js';
+	import { Plus } from 'lucide-svelte';
+	import ReviewDialog from '$lib/components/sales/ReviewDialog.svelte';
 	
 	const { data } = $props();
 	let purchases = {};
@@ -21,7 +23,12 @@
 		seller: null,
 		title: null,
 	});
+	let selectedListing = $state({
+		id: null,
+		title: null,
+	});
 	let DeletionDialogOpenState = $state(false);
+	let ReviewDialogOpenState = $state(false);
 
 	// // Purchases aggregate multiple orders using purchaseID
 	if (!data.orders || Object.keys(data.orders).length > 0) {
@@ -47,7 +54,7 @@
 		</AlertDialog.Header>
 		<AlertDialog.Footer>
 			<AlertDialog.Cancel>Back</AlertDialog.Cancel>
-			<AlertDialog.Action onclick={
+			<AlertDialog.Action variant="destructive" onclick={
 			async()=>{selectedOrder.status = 'Cancelled';selectedOrder.seller.joinedAt=Math.round(selectedOrder.seller.joinedAt); await updateOrder(selectedOrder.id,selectedOrder).then(()=>{DeletionDialogOpenState=false}).catch((error) => {toast.error(error);});}
 			}
 			>Cancel order</AlertDialog.Action>
@@ -55,7 +62,7 @@
 	</AlertDialog.Content>
 </AlertDialog.Root>
 
-
+<ReviewDialog bind:open={ReviewDialogOpenState} selectedListing={selectedListing} />
 
 <DashboardPageLayout>
 	{#snippet title()}
@@ -85,7 +92,7 @@
 										<Button class="px-1 text-sm" href="/users/{purchase.seller.id}" variant="link">{purchase.seller.username}</Button></h3>
 									<div class="flex flex-row gap-2.5 h-9">
 										{#if purchase.status !== 'Cancelled'}
-										<Button class="rounded-3xl h-full bg-opacity-60" onclick={()=>{selectedOrder=purchase;DeletionDialogOpenState=true}} variant="destructive">Cancel</Button>
+										<Button class="rounded-3xl h-full bg-opacity-20 hover:text-destructive-foreground text-foreground" onclick={()=>{selectedOrder=purchase;DeletionDialogOpenState=true}} variant="destructive">Cancel</Button>
 											{/if}
 
 										<div class='flex flex-row items-center p-1.5 px-2.5 text-sm rounded-full bg-{statusData.colour}'>
@@ -107,8 +114,16 @@
 													<p class="text-xs">{sku.sku.title}</p>
 													<p class="text-xs">Quantity: {sku.quantity}</p>
 												</a>
-												
-												<Price price={sku.value} />
+												<div class="flex flex-row gap-2.5">
+													<Button class="rounded-full bg-emerald-200/40 border-0" variant="secondary" onclick={()=>{
+														selectedListing = sku;
+														ReviewDialogOpenState = true;
+													}}>
+														Add a review
+														<Plus size={20} strokeWidth={1.25} />
+													</Button>
+													<Price price={sku.value} />
+												</div>
 											</div>
 										</li>
 									{/each}

@@ -27,11 +27,11 @@
 		desiredProductQuantity = product.quantity;
 	})
 </script>
-<div in:fly={{y:50, duration: 200, easing:expoOut}} out:fly={{ y:-50, duration: 200, easing: expoOut, z: -10 }}>
+<div class="w-full flex flex-row" in:fly={{y:50, duration: 200, easing:expoOut}} out:fly={{ y:-50, duration: 200, easing: expoOut, z: -10 }}>
 						<div class="flex flex-row justify-between h-28 mx-3 rounded-2xl gap-4 p-2 align-middle
 									items-center transition-all duration-75 hover:outline-slate-300 outline-1 outline
-									outline-transparent bg-white hover:bg-slate-100" {...restProps} in:fly={{y:50, duration: 200, easing:expoOut}} out:fly={{ y:-50, duration: 200, easing: expoOut, z: -10 }}>
-							<a href="/listings/{product.listing.id}?selected={product.sku?.id}" class="flex flex-row gap-1 h-full w-72" >
+									outline-transparent bg-white hover:bg-slate-100 w-full " in:fly={{y:50, duration: 200, easing:expoOut}} out:fly={{ y:-50, duration: 200, easing: expoOut, z: -10 }}>
+							<a href="/listings/{product.listing.id}?selected={product.sku?.id}" class="flex flex-row gap-1 h-full max-w-72" >
 								<div class="w-24 aspect-square">
 									<Image src={product?.id} alt="Product " class="w-10 h-10" />
 								</div>
@@ -41,6 +41,7 @@
 								
 								</div>
 							</a>
+
 							
 							<div class="flex flex-row gap-1 items-center w-full justify-end">
 								{#key product.sku.id}
@@ -53,5 +54,5 @@
 									{/key}
 							</div>
 						</div>
-					
+
 					</div>
