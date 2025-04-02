@@ -71,3 +71,12 @@ export const fetchUserListings = async (userID, includePrivileged=false) => {
 export const fetchConditions = async () => {
 	return await GET('listings/conditions/');
 }
+
+export const submitListingReview = async (listingId, data) => {
+	const body = JSON.stringify(data)
+	return await POST(`listings/${listingId}/reviews`, body);
+}
+
+export const fetchListingReviews = async (listingId) => {
+	return await GET(`listings/${listingId}/reviews`);
+}

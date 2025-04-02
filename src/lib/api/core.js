@@ -60,14 +60,10 @@ export const POST = async (endpoint, data = null, credentialsOpt='omit') => {
 		.then((data) => {
 			console.log('Data: ', data);
 			if (!response.ok) {
-				return data
+				throw new Error(data.detail);
 			}
 			return data
-		}).catch((error) => {
-			return error
-		}
-		);
-	}
+		})}
 	);
 }
 
