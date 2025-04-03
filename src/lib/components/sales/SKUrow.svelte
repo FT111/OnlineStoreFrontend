@@ -48,7 +48,7 @@
 								<Price price={product.sku?.price} />
 									<div class="flex flex-col w-16 justify-center items-center">
 										<Button variant="ghost" size="sm" class="{mutableQuantity || 'hidden'} hover:bg-accent/20 hover:text-secondary-foreground" onclick={increaseQuantityCallback}><Plus size={20} strokeWidth={1.25}  /></Button>
-										{product.quantity}
+										{!mutableQuantity ? 'x' : ''} {product.quantity}
 										<Button variant="ghost" size="sm" class="{mutableQuantity || 'hidden'} hover:bg-accent/20 hover:text-secondary-foreground" onclick={decreaseQuantityCallback}><Minus size={20} strokeWidth={1.25}  /></Button>
 									</div>
 									{/key}

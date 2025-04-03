@@ -22,7 +22,7 @@
 	{#snippet page()}
 		<div  >
 			<Table.Root>
-				<Table.Caption>A list of your current listings.</Table.Caption>
+				<Table.Caption>Your current listings.</Table.Caption>
 				<Table.Header>
 					<Table.Row>
 						<Table.Head class="w-[100px]">Title</Table.Head>

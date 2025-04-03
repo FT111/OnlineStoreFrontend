@@ -47,7 +47,6 @@
 
 	let edited = $derived(JSON.stringify(sku) !== JSON.stringify(initialSKU)); // if sku is edited, edited state is true
 	let canSave = $state(true);
-	$inspect(sku.options);
 	let dropLabel = $state();
 	let saveBtn = $state();
 
@@ -66,7 +65,6 @@
 
 	const repSert = (listingID, sku) => async (e) => {
 		e.preventDefault();
-		console.log('Saving SKU');
 		verifySKUConflicts(sku.options);
 		if (!canSave) {
 			return;
@@ -83,8 +81,14 @@
 				initialSKU = sku
 			});
 		}
-		
-		selectedListing.listing.skus = selectedListing.listing.skus.map((s) => s.id === sku.id ? sku : s);
+
+		if (editing) {
+			// Replace the old sku with the new one
+			selectedListing.listing.skus = selectedListing.listing.skus.map((s) => s.id === sku.id ? sku : s);
+		} else {
+			// Add the new sku to the listing
+			selectedListing.listing.skus = [...selectedListing.listing.skus, sku];
+		}
 		initialSKU = JSON.parse(JSON.stringify(sku));
 		
 		dispatchEvent(new CustomEvent('skuSaved'));
@@ -224,7 +228,7 @@
 			<div class="flex flex-col gap-3 items-end">
 				<InputWithLabel maxlength="30" min="1" label="Title" bind:value={sku.title} placeholder="Enter a short, descriptive title" >Title</InputWithLabel>
 				<div class="flex flex-row gap-3 w-full grow">
-					<InputWithLabel minlength="1" maxlength="10" bind:value={()=> getPrice(), updatePrice} pattern="/^\d*\.?\d*$/"
+					<InputWithLabel minlength="1" maxlength="10" bind:value={()=> getPrice(), updatePrice}
 													required label="Price" type="text" placeholder="How much?">Price</InputWithLabel>
 					<InputWithLabel maxlength="99" minlength="0" label="Discount" bind:value={sku.discount} type="number" placeholder="How much off?" >Discount % (Optional)</InputWithLabel>
 					<InputWithLabel minlength="0" required label="Quantity" bind:value={sku.stock} type="number" placeholder="How many?" >Quantity</InputWithLabel>

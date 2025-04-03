@@ -26,7 +26,7 @@
 	let navSearch = $state();
 	let searchHero = $state();
 	let heroSearchBar = $state();
-	let searchHidden = $state(false);
+	let searchHidden = $state(true);
 
 	onMount(async () => {
 		const navObserver = new IntersectionObserver(

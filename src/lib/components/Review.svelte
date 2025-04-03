@@ -10,8 +10,8 @@
     let { review } = $props();
 </script>
 
-<div class="flex flex-col gap-0 p-4 py-2.5 h-40 bg-emerald-600/15 rounded-xl overflow-y-auto">
-				<div class="flex flex-row justify-between items-center bg-background/10 backdrop-blur-md sticky top-0 pb-1.5">
+<div class="flex flex-col gap-0 h-40 bg-emerald-600/15 rounded-xl overflow-y-auto">
+				<div class="px-4 pt-2 flex flex-row justify-between items-center bg-background/10 backdrop-blur-md sticky top-0 pb-1.5">
 					<div class="flex flex-row gap-2 items-center">
 						<a  href={`/users/${review.user.id}`}>
 							<Avatar.Root>
@@ -32,7 +32,7 @@
 						<p class="text-xs font-light">{new Date(review.addedAt*1000).toLocaleDateString("en-GB")}</p>
 					</div>
 				</div>
-				<p class="text-sm font-normal">{review.description}</p>
+				<p class="text-sm px-4 pb-4 font-normal">{review.description}</p>
 	
 			</div>
 

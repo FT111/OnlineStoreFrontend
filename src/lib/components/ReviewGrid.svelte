@@ -90,7 +90,7 @@
 		{/if}
 
 	<Collapsible.Content>
-		<div  transition:fly={{y:50, duration:100}} class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4 sm:p-0 p-2">
+		<div  transition:fly={{y:50, duration:100}} class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4  gap-4 sm:p-0 p-2">
 			<!-- Show rest when expanded -->
 			{#each reviews.slice(4) as review}
 				<Review {review}></Review>

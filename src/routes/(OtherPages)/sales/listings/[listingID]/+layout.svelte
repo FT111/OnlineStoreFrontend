@@ -26,6 +26,7 @@
 	let scrollDistance = $state(0); // For tracking scroll position of variant card container
 	let selectedVariant = $state('not selected');
 	let currentListing = $state(selectedListing.listing)
+	$inspect(currentListing);
 	
 	afterNavigate(() => {
 		currentListing = selectedListing.listing;
@@ -59,6 +60,8 @@
 			}, 100));
 		});
 	}
+
+
 
 </script>
 
@@ -146,13 +149,17 @@
 													
 													<div class="flex flex-row gap-2">
 <!--												Checks for sku option/listing option integrity		-->
-														{#if Object.keys(sku.options).length !== Object.keys(currentListing.skuOptions).length ||
-														Object.keys(sku.options).some(option => !currentListing.skuOptions[option].includes(sku.options[option]))
+														{#if
+															// Checks if the sku has more options than the listing
+															Object.keys(sku.options).length !== Object.keys(currentListing.skuOptions).length ||
+															// Checks if any of the options in the sku are not in the listing
+														Object.keys(sku.options).some(option => !currentListing.skuOptions[option]?.includes(sku.options[option]))
+															// Checks if any of the options in the listing are not in the sku
 														&& Object.keys(currentListing).length > 0}
 															<Tooltip.Provider>
 																<Tooltip.Root>
 																	<Tooltip.Trigger>
-																		<div class="flex flex-row gap-1 items-center bg-red-700 text-white rounded-3xl px-2 ">
+																		<div class="flex flex-row gap-1 items-center bg-red-700 text-white rounded-3xl px-2.5 ">
 																			<TriangleAlert size={18} strokeWidth={1.25} color="white" class="text-white stroke-white" />
 																		</div>
 																	</Tooltip.Trigger>

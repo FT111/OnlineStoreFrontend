@@ -28,7 +28,7 @@
 						borderColor: [
 							'rgba(200, 132, 1)',
 						],
-						borderWidth: 2.5
+						borderWidth: 1.5,
 					}]
 				},
 				options: {
@@ -59,7 +59,7 @@
 					},
 					elements: {
 						point: {
-							radius: 1
+							radius: 0.5
 						},
 						line: {
 							tension: 0.4,

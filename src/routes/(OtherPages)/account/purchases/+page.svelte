@@ -115,7 +115,7 @@
 													<p class="text-xs">Quantity: {sku.quantity}</p>
 												</a>
 												<div class="flex flex-row gap-2.5">
-													<Button class="rounded-full bg-emerald-200/40 border-0" variant="secondary" onclick={()=>{
+													<Button class="rounded-xl bg-emerald-200/40 border-0" variant="secondary" onclick={()=>{
 														selectedListing = sku;
 														ReviewDialogOpenState = true;
 													}}>

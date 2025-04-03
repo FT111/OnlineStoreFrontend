@@ -9,20 +9,24 @@ import { Sidebar } from 'lucide-svelte';
 	let sidebar = useSidebar();
 </script>
 
-<div class="pt-14 flex flex-col grow h-full">
-	<div class="w-full p-4 flex flex-col gap-0.5 justify-center basis-1/12">
+<div class="pt-14 flex flex-col grow h-full w-full">
+	<div class="w-full p-4 flex flex-col gap-0.5 justify-center basis-1/12 sticky top-14 bg-background/60 backdrop-blur-lg z-20">
 		<p class="text-sm font-medium">{@render header?.()}</p>
 		{#if title}
-			<div class="{sidebar.open && '-translate-x-14'} z-0 duration-200 ease-in-out transition-all flex flex-row gap-2.5">
+			<div class="{sidebar.open && '-translate-x-14'} z-0 duration-200 ease-in-out transition-all   w-full flex flex-row gap-4">
+				{#if !sidebar.open}
 				<Button variant="outline" onclick={() => sidebar.toggle()}
-								class="transition-all origin-left w-10 !p-2.5 hover:bg-secondary hover:text-secondary-foreground">
+								class="transition-all -z-10 origin-left w-10 !p-2.5 hover:bg-secondary hover:text-secondary-foreground">
 					<Sidebar/>
 				</Button>
-				<h1 class="font-semibold text-4xl text-primary">{@render title?.()}</h1>
+					{:else}
+					<div class="w-10 p-2.5"></div>
+					{/if}
+				<div class="font-medium w-full text-4xl text-primary">{@render title?.(sidebar.open)}</div>
 			</div>
 		{/if}
 	</div>
-	
+
 	<div class="p-3.5 pt-0  w-full basis-11/12">
 		{@render page?.()}
 	</div>

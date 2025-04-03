@@ -136,7 +136,7 @@
 
 
 
-
+			{#key dataSource.data}
 			<Card.Root class="rounded-2xl border-0 p-0 bg-slate-100 lg:col-span-1 lg:row-span-1">
 				<Card.Header class="flex flex-row justify-between">
 					<h1 class="text-xl">Impressions</h1>
@@ -191,8 +191,7 @@
 <!--			<Heatmap mapData={dataSource.data.sale?.events} />-->
 
 
-
-
+			{/key}
 
 		</div>
 	{/snippet}
