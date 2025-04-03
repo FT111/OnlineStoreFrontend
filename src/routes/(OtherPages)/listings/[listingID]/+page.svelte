@@ -12,11 +12,12 @@
 	import VariantConfigurator from '$lib/components/sellerDashboard/VariantConfigurator.svelte';
 	import { redirect } from '@sveltejs/kit';
 	import { basketStore } from '$lib/basket.svelte.js';
-	import { BadgeX, Check, Grid2x2X, ShoppingBasket } from 'lucide-svelte';
+	import { BadgeX, Check, Grid2x2X, ShoppingBasket, ShoppingCart } from 'lucide-svelte';
 	import { scale, fly } from 'svelte/transition';
 	import { onNavigate } from '$app/navigation';
 	import { registerListingView } from '$lib/analytics/listings.js';
 	import { onMount } from 'svelte';
+	import { toast } from 'svelte-sonner';
 
 	let { data } = $props();
 	let listing = $derived(data.listing)
@@ -69,6 +70,12 @@
 	});
 	
 	function handleAddToBasket() {
+		if (listing.ownerUser.id === data.user?.id) {
+			// Prevent adding the product to the basket if the user is the owner
+			toast.error('You cannot add your own listing to the basket.');
+			return;
+		}
+
 		'Handles adding the selected SKU to the basket'
 		basketStore.addSKU(selectedSKU).then(() => {
 			addProductButtonState = 'added';
@@ -169,7 +176,9 @@
 	
 	<div class="h-20"></div>
 	<!-- Reviews	-->
-	<ReviewGrid  />
+	 {#key listing}
+	<ReviewGrid {listing} />
+	{/key}
 </div>
 
 <!--		Basket options	-->
@@ -181,7 +190,7 @@
 				<div class="text-lg flex flex-row gap-2 items-center px-2">
 					<p class="font-bold">{basketStore.basket.items[selectedSKU.id].quantity}</p>
 					<div class="flex flex-row gap-1.5">in
-					<ShoppingBasket stroke-width={1.25} /></div>
+					<ShoppingCart stroke-width={1.25} /></div>
 				</div>
 			{/if}
 		</div>
