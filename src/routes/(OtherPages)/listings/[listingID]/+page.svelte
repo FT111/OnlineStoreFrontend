@@ -18,6 +18,7 @@
 	import { registerListingView } from '$lib/analytics/listings.js';
 	import { onMount } from 'svelte';
 	import { toast } from 'svelte-sonner';
+	import ListingGallery from '$lib/components/sales/ListingGallery.svelte';
 
 	let { data } = $props();
 	let listing = $derived(data.listing)
@@ -101,7 +102,8 @@
 	<div class="h-fit sm:h-[80vh] bg-muted/30 rounded-2xl flex flex-col sm:flex-row gap-5 p-5">
 	
 <!--	Images Container	-->
-			<Image src="https://via.placeholder.com/1000" alt="Listing Image" class="w-1/2 h-auto" />
+			<!-- <Image src="https://via.placeholder.com/1000" alt="Listing Image" class="w-1/2 h-auto" /> -->
+			 <ListingGallery listing={listing} {selectedSKU} />
 		
 <!--	Detail Container	-->
 		<div class="sm:basis-1/2 basis-1 sm:w-1/2 flex flex-col gap-4 flex-shrink-0 justify-between">
