@@ -20,7 +20,7 @@ export const login = async (email, password) => {
 			}
 			return response;
 		})
-	document.cookie = `token=${response.data.token}; path=/;`;
+	document.cookie = `token=${response.data.token}; path=/;expires=${new Date(Date.now() + 60 * 60 * 60 * 24 * 1000).toUTCString()}`;
 	return true;
 }
 

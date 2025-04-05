@@ -13,6 +13,7 @@
 	import { toast } from 'svelte-sonner';
 	import { browser } from '$app/environment';
 	import { redirect } from '@sveltejs/kit';
+	import { invalidateAll } from '$app/navigation'
 	import { page } from '$app/state';
 	import { goto } from '\$app/navigation';
 
@@ -30,8 +31,9 @@
 	if (browser) {
 		addEventListener('btnFinished',
 			()=>{
+			invalidateAll();
 			setTimeout(() => {
-				goto(`/${page.url.searchParams.get('src').slice(1) || ''}`);
+				goto(`/${page.url.searchParams.get('src')?.slice(1) || ''}`);
 			}, 100);
 			})
 	}
@@ -55,8 +57,10 @@
 		}
 	}
 
-	if (data.user && browser) {
-		goto(`/${page.url.searchParams.get('src').slice(1) || ''}`);
+	if (data.user && browser && page.url.searchParams.get('src')) {
+		goto(`/${page.url.searchParams.get('src')?.slice(1)}`);
+	} else if (data.user && browser) {
+		goto('/');
 	}
 </script>
 
