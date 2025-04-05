@@ -76,8 +76,8 @@
             
             <Dialog.Footer class="flex flex-col gap-2">
             <p class="text-xs text-muted-foreground flex flex-row gap-1 items-center">
-                <InfoIcon class="stroke-muted-foreground" />
-                Your review will be publicly visible to other users.</p>
+                <InfoIcon size={20} class="stroke-muted-foreground" />
+                Your review will be publicly visible to other users<br />and credited to your account.</p>
             <div class="flex flex-row gap-2 justify-end">
 
                 <Dialog.Close><Button variant="secondary">Cancel</Button></Dialog.Close>

@@ -66,7 +66,7 @@
 					<a  href={`/users/${listing.ownerUser.id}`}>
 						<Avatar.Root>
 							<Avatar.Image src={listing.ownerUser.profilePictureURL} alt='Avatar' />
-<!--							<Avatar.Fallback>{listing.ownerUser.username.slice(0,2).toUpperCase()}</Avatar.Fallback>-->
+							<Avatar.Fallback>{listing.ownerUser?.username?.slice(0,2)}</Avatar.Fallback>
 						</Avatar.Root>
 					</a>
 

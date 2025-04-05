@@ -35,7 +35,7 @@ let selectedClasses = ' !bg-slate-200/70 pl-5 ';
 				<Sidebar.MenuItem>
 						<DropdownMenu.Root>
 							<DropdownMenu.Trigger class="w-full">
-								<Card class="bg-slate-50 rounded-xl outline-slate-300 border-0 hover:outline-accent outline-1 hover:bg-orange-50/65
+								<Card class="bg-accent/15 rounded-xl outline-slate-300 border-0 hover:outline-accent outline-1 hover:bg-accent/20
 					transition-all shadow-none cursor-pointer p-1.5 px-2.5 flex flex-row gap-2 hover:outline-2 outline !duration-75
 					items-center justify-between w-full ">
 									<div class="flex flex-row gap-3 items-center w-full">

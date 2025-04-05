@@ -24,6 +24,7 @@
 		orientation = "horizontal",
 		class: className = undefined,
 		children,
+		selectedIndexStore = $bindable(0),
 		...rest
 	} = $props();
 	
@@ -34,7 +35,7 @@
 	const optionsStore = writable(opts);
 	const pluginStore = writable(plugins);
 	const scrollSnapsStore = writable([]);
-	const selectedIndexStore = writable(0);
+	selectedIndexStore = writable(0);
 	run(() => {
 		orientationStore.set(orientation);
 	});

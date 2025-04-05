@@ -2,16 +2,29 @@
 	import Image from "../image.svelte";
     import * as Carousel from "../ui/carousel/index.js";
     import { baseURL } from "$lib/api/core.js";
+	import { onMount } from "svelte";
+
+    let carouselRef = $state(null);
+
+
+    // onMount(()=>{
+    //     carouselRef.addEventListener("slidesInView", (e) => {
+    //         slide = carouselRef.slidesInView();
+    //     });
+    // })
 
 
     let { listing, selectedSKU } = $props();
 </script>
 
 <div class="size-full px-10">
-    <Carousel.Root  class="w-full" opts={{
+    <Carousel.Root 
+    bind:api={carouselRef}
+     class="w-full" opts={{
         'dragFree': false,
         'loop': true,
-        'slidesToScroll': 1
+        'slidesToScroll': 1,
+        'startIndex': 0,
         
         }}>
                 <Carousel.Content class="-ml-1 flex-1 grow size-full">
@@ -25,8 +38,8 @@
                                 loading="lazy"
                                 />
                     </Carousel.Item>    -->
-                    <p class="flex flex-col items-center justify-center w-full h-full text-base font-medium text-muted-foreground">
-                        No images provided.
+                    <p class="flex h-[80vh] flex-col items-center justify-center w-full text-base font-medium text-muted-foreground">
+                        No images provided
                     </p>
                     {:else}
                     {#each selectedSKU.images as imageHref}

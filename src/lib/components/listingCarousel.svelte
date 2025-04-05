@@ -29,7 +29,7 @@ let paddingClasses = compactLayout ? 'lg:px-14 lg:py-4 sm:p-4 ' : 'lg:p-20 lg:py
 
 
 <div class="flex flex-col gap-3 {paddingClasses} {className}">
-	<p class="text-4xl font-semibold">{title}</p>
+	<p class="text-4xl font-medium">{title}</p>
 	<Carousel.Root class="w-full" opts={{
   'dragFree': false,
   'loop': true,

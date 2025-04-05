@@ -34,7 +34,7 @@
 </script>
 
 <Sidebar.Provider>
-	<Sidebar.Root variant="inset" class="mt-16  z-10 bg-sidebar">
+	<Sidebar.Root variant="inset" class="mt-14  z-10 bg-sidebar">
 		<Sidebar.Header>
 			<Sidebar.Menu>
 				<Sidebar.MenuItem class="text-sm flex flex-row items-center text-neutral-500 gap-1">
@@ -44,7 +44,7 @@
 				<Sidebar.MenuItem>
 					<DropdownMenu.Root>
 						<DropdownMenu.Trigger class="w-full">
-							<Card class="bg-slate-50 rounded-xl outline-slate-300 border-0 hover:outline-accent outline-1 hover:bg-orange-50/65
+							<Card class="bg-slate-200 rounded-xl outline-slate-300 border-0 hover:outline-primary outline-1 hover:bg-slate-300
 					transition-all shadow-none cursor-pointer p-1.5 px-2.5 flex flex-row gap-2 hover:outline-2 outline !duration-75
 					items-center justify-between w-full ">
 								<div class="flex flex-row gap-3 items-center w-full">

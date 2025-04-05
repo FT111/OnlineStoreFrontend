@@ -68,7 +68,7 @@
 						>
 							<Avatar.Root>
 								<Avatar.Image src={user.profilePictureURL} alt="Avatar" />
-								<Avatar.Fallback class="bg-secondary text-primary">{user.username[0] + user.username[1]}</Avatar.Fallback>
+								<Avatar.Fallback class="">{user.username[0] + user.username[1]}</Avatar.Fallback>
 							</Avatar.Root>
 						</DropdownMenu.Trigger
 						>
