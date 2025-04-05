@@ -8,6 +8,7 @@
 	import { Badge } from "$lib/components/ui/badge/index.js";
 	import Listing from '$lib/components/listing.svelte';
 	import { onMount } from 'svelte';
+	import { baseURL } from '$lib/api/core.js';
 	
 	let { data } = $props();
 	const userID = $derived(data.profileUser.id);
@@ -34,9 +35,11 @@
 
 <div class="sm:px-8 px-0">
 	
-	<div class="flex flex-col w-full p-4 h-96 mt-20 overflow-hidden">
-		<div class="grow overflow-hidden h-96">
-			<img src={profileUser.bannerURL} alt="User Profile" class="w-full h-96 object-cover rounded-t-3xl" />
+	<div class="flex flex-col w-full p-4 min-h-96 mt-20">
+		<div class=" max-h-[300px] overflow-hidden">
+			{#if data.profileUser.bannerURL}
+				<img src={`${baseURL}static/user-profiles/${data.profileUser.bannerURL}`} alt="User Profile" height="300" width="1000" class="w-full object-cover rounded-t-3xl" />
+			{/if}
 		</div>
 		
 		<div class="grow bg-secondary/60 h-full rounded-b-3xl w-full p-6 flex sm:flex-col justify-center gap-4">
@@ -46,7 +49,7 @@
 				<div class="flex flex-row gap-3 items-center justify-center">
 					<Avatar.Root class="h-12 w-12">
 						<Avatar.Image src={data.profileUser.profilePictureURL} alt={data.profileUser.username} />
-						<Avatar.Fallback>{data.profileUser.username.slice(0,2)}</Avatar.Fallback>
+						<Avatar.Fallback>{data.profileUser?.username?.slice(0,2)}</Avatar.Fallback>
 					</Avatar.Root>
 					{#if data.profileUser}
 						<p class="text-4xl font-medium text-primary">{data.profileUser.username}</p>
@@ -60,14 +63,14 @@
 				</p>
 			</div>
 
-			<div class="items flex flex-row">
-				<div class="w-full h-fit gap-1.5 items-center !font-normal justify-center flex-row flex">
+			<div class="items flex flex-row !h-8">
+				<div class="w-full h-8 gap-1.5 items-center !font-normal justify-center flex-row flex">
 					<!--			Quick Info Row -->
 
 					<Badge class=" h-8">Joined {new Date(data.profileUser.joinedAt*1000).toDateString()}</Badge>
 					<Badge class=" h-8">Rated {profileUser.rating} stars</Badge>
-					<Badge class="min-w-20 h-8 justify-center">{data.profileUser.listingIDs.length} Listings</Badge>
-					<Badge class=" h-8">{data.profileUser.sales} Sale{data.profileUser.sales>1 ? 's' : ''}</Badge>
+					<Badge class="min-w-20 h-8 justify-center">{data.profileUser.listingIDs?.length} Listings</Badge>
+					<Badge class=" h-8">{data.profileUser.sales} Sale</Badge>
 				</div>
 
 <!--				Action Buttons	-->
@@ -90,16 +93,18 @@
 				</div>
 			</div>
 
-		<div class="h-52 rounded-xl flex flex-row p-4 gap-3.5">
-			<div class="rounded-3xl flex items-center p-2 px-4 min-w-24 text-center bg-accent/20 text-secondary-foreground font-medium">
+		<div class="h-10 rounded-xl flex flex-row p-4 gap-3.5">
+			<div class="rounded-3xl flex items-center p-2 h-10 px-4 min-w-24 text-center bg-accent/20 text-secondary-foreground font-medium">
 				{data.profileUser.username}'s Categories
 			</div>
 			{#if !listingsLoaded}
-				<div></div>
+				<Skeleton class="w-32 rounded-full h-10" />
+				<Skeleton class="w-32 rounded-full h-10" />
+
 			{:else}
 				{#if 'meta' in userListings}
 					{#each userListings.meta.topCategories as category}
-						<a href="/listings?category={category}&showCategoryHeader=true" class="h-full">
+						<a href="/listings?category={category}&showCategoryHeader=true" class="h-10">
 							<div class="rounded-3xl flex items-center p-0.5 px-3 min-w-24 text-center h-full bg-secondary text-secondary-foreground justify-center font-normal hover:brightness-105 ">
 								{category}
 							</div>
@@ -121,7 +126,9 @@
 {/if}
 
 <div class="sm:px-8 px-1 mt-16 bg-slate-50">
-	<h3 class="px-8 py-6 text-5xl font-bold">Listings</h3>
+	{#key data.user}
+	<h3 class="px-8 py-6 text-4xl font-medium">{data.profileUser.username}'s listings</h3>
+		{/key}
 	<div class="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 2xl:grid-cols-5 gap-3 w-full p-1 sm:p-4 md:p-8 md:px-6 !pt-0 justify-left">
 		{#if !listingsLoaded}
 			{#each Array.from({ length: 40 }) as _, i}
