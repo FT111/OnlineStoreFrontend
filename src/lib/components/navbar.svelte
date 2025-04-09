@@ -14,7 +14,7 @@
 	import { basketStore } from '$lib/basket.svelte.js';
 		import { Plus } from 'lucide-svelte';
 		import NewListingDialog from '$lib/components/NewListingDialog.svelte';
-		import { goto } from '$app/navigation';
+	import { goto, pushState } from '$app/navigation';
 
 	let {
 		navElement = $bindable(),
@@ -118,6 +118,13 @@
 										</a>
 								</DropdownMenu.Group>
 								<DropdownMenu.Separator />
+							<DropdownMenu.Group>
+								<DropdownMenu.Item onclick={()=>{pushState('', {settingsOpen: true})}}>
+										<span>Settings</span>
+										<DropdownMenu.Shortcut>⇧⌘Q</DropdownMenu.Shortcut>
+									</DropdownMenu.Item>
+							</DropdownMenu.Group>
+								<DropdownMenu.Seperator />
 								<DropdownMenu.Item onclick={()=>{logout(); goto('/')}}>
 									<span>Log out</span>
 									<DropdownMenu.Shortcut>⇧⌘Q</DropdownMenu.Shortcut>

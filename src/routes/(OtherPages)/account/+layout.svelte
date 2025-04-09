@@ -7,6 +7,7 @@
 	import { Button } from '$lib/components/ui/button/index.js';
 	import * as DropdownMenu from "$lib/components/ui/dropdown-menu";
 	import { page } from '$app/state';
+	import {pushState} from '$app/navigation';
 	import {
 		ChartSpline,
 		LayoutDashboard,
@@ -90,7 +91,7 @@
 									variant="secondary"><UserRoundPen size={20} strokeWidth={1.25} />Profile</Button>
 					<Button id="orders" href="/account/purchases" class="{selectedPage==='purchases'&&selectedClasses} {buttonClasses}"
 									variant="secondary"><ShoppingCart size={20} strokeWidth={1.25} />Purchases</Button>
-					<Button id="listings" href="/account/settings" class="{selectedPage==='settings'&&selectedClasses} {buttonClasses}"
+					<Button id="listings" onclick={()=>{pushState('', {settingsOpen: true})}} class="{selectedPage==='settings'&&selectedClasses} {buttonClasses}"
 									variant="secondary"><Settings2 size={20} strokeWidth={1.25} />Settings</Button>
 				</div>
 			</div>
