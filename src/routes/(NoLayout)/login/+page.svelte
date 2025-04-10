@@ -16,6 +16,7 @@
 	import { invalidateAll } from '$app/navigation'
 	import { page } from '$app/state';
 	import { goto } from '\$app/navigation';
+	import PasswordResetPopover from '$lib/components/PasswordResetPopover.svelte';
 
 	let { data } = $props();
 	
@@ -40,21 +41,6 @@
 
 	async function handleLoginAttempt() {
 		return await login(email, password)
-	}
-	
-	async function handlePasswordResetRequest(e) {
-		e.preventDefault();
-		passwordResetOpenState = false;
-		
-		const formData = new FormData(e.target);
-		const emailAddress = formData.get('emailAddress');
-		console.log(emailAddress);
-		const data =  await requestPasswordReset(emailAddress);
-		if (Object.keys(data).includes('data')) {
-			toast.success('Password reset email sent if the email exists');
-		} else {
-			toast.error('Error occurred');
-		}
 	}
 
 	if (data.user && browser && page.url.searchParams.get('src')) {
@@ -101,17 +87,11 @@
 							<path stroke-linecap="round" stroke-linejoin="round" d="M16.5 10.5V6.75a4.5 4.5 0 1 0-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 0 0 2.25-2.25v-6.75a2.25 2.25 0 0 0-2.25-2.25H6.75a2.25 2.25 0 0 0-2.25 2.25v6.75a2.25 2.25 0 0 0 2.25 2.25Z" />
 						</svg>
 					</StateButton>
-					<Popover.Root bind:open={passwordResetOpenState}>
-						<Popover.Trigger>
+
+					<PasswordResetPopover>
 						<Button variant="link" class="text-sm text-left text-muted-foreground p-0 py-0">Forgot your password?</Button>
-						</Popover.Trigger>
-						<Popover.Content>
-							<form class="flex flex-col gap-2.5 items-start" onsubmit={(e)=>handlePasswordResetRequest(e)}>
-								<Input minlength=1 type="email" required placeholder="Email" name="emailAddress" />
-								<Button submit variant="secondary" class="w-full" type="submit">Email me a password reset</Button>
-							</form>
-						</Popover.Content>
-					</Popover.Root>
+					</PasswordResetPopover>
+
 				</div>
 			</form>
 		
