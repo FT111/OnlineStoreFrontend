@@ -7,7 +7,7 @@
 	import InputWithLabel from '$lib/components/InputWithLabel.svelte';
 	import { Button } from '$lib/components/ui/button/index.js';
 	import { updateUser } from '$lib/api/user.js';
-	import { invalidateAll } from '$app/navigation';
+	import { invalidateAll, pushState } from '$app/navigation';
 	import { baseURL } from '$lib/api/core.js';
 
 	let { data } = $props();
@@ -137,7 +137,9 @@
 						placeholder="Enter your profile's	description"
 						>Description</InputWithLabel>
 
+				<p class="flex flex-row font-normal !text-muted-foreground !text-xs gap-1 items-center">Looking for account details? Head to <Button aria-label="Open settings dialog" class="!p-0 h-fit px-1 underline" variant="link" onclick={()=> pushState('', {settingsOpen: true})}>settings</Button></p>
 			</div>
+
 		</form>
 		{/snippet}
 	</DashboardPageLayout>

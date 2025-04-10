@@ -5,25 +5,25 @@
 	import Textarea from './ui/textarea/textarea.svelte';
 
 
-	let { label, value = $bindable(), children, class: className='', optional=false, area=false, ...rest } = $props();
-	
+	let { label, value = $bindable(), children, class: className='', description='', optional=false, area=false, ...rest } = $props();
+
 	let readonly = false;
 </script>
 
 
-<div class="flex flex-col gap-1.5 w-full h-full {className}" {...rest}>
-	<label class="flex flex-row justify-between text-xs px-2 font-normal text-slate-600">
+<div class="flex flex-col gap-1 w-full h-full {className}" {...rest}>
+	<label class="flex flex-row  justify-between text-xs px-1.5 font-medium text-slate-600">
 		{@render children?.()}
 		{#if optional}
-			<span class="text-slate-400">Optional</span>
+			<span class="text-slate-400 font-normal">Optional</span>
 		{/if}
 	</label>
-	
+
 	{#if !area}
 	<Input
 		id={label}
 		{...rest}
-		
+
 		bind:value
 		{readonly}
 		on:blur
@@ -63,5 +63,7 @@
 		on:input
 	/>
 	{/if}
+
+	<p class="text-muted-foreground font-light text-xs px-1.5">{description}</p>
 
 </div>
