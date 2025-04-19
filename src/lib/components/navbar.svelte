@@ -12,7 +12,7 @@
 	import Basket from '$lib/components/sales/basket.svelte';
 
 	import { basketStore } from '$lib/basket.svelte.js';
-		import { Plus } from 'lucide-svelte';
+	import { Plus, Settings } from 'lucide-svelte';
 		import NewListingDialog from '$lib/components/NewListingDialog.svelte';
 	import { goto, pushState } from '$app/navigation';
 
@@ -83,13 +83,13 @@
 											<DropdownMenu.Shortcut>⇧⌘P</DropdownMenu.Shortcut>
 										</DropdownMenu.Item>
 									</a>
-									<a href="/account/orders">
+									<a href="/account/purchases">
 										<DropdownMenu.Item>
-											<span>Orders</span>
+											<span>Purchases</span>
 											<DropdownMenu.Shortcut>⌘B</DropdownMenu.Shortcut>
 										</DropdownMenu.Item>
 									</a>
-									<a href="/account">
+									<a href="/account/profile">
 										<DropdownMenu.Item>
 											<span>My account</span>
 											<DropdownMenu.Shortcut>⌘,</DropdownMenu.Shortcut>
@@ -133,6 +133,10 @@
 						</DropdownMenu.Content>
 					</DropdownMenu.Root>
 						{:else}
+					<button class="p-0 size-8" aria-label="Open settings page" onclick={()=>{pushState('', {settingsOpen: true})}}>
+						<Settings stroke-width={1.25} size={20} />
+					</button>
+
 							<div class="flex flex-row gap-3">
 								<a href="/signup">
 									<Button variant="secondary">Sign up</Button>

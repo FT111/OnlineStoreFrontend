@@ -42,8 +42,12 @@ Page contents
  -->
 {#if data.user}
 <SettingsDialog user={data.user} />
-{/if}
-<UpdateStreamHandler user={data.user} />
+{:else}
+<SettingsDialog />
+	{/if}
+{#key data.user}
+	<UpdateStreamHandler user={data.user} />
+{/key}
 <Toaster />
 
 <!--

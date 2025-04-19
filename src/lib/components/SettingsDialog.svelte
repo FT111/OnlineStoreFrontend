@@ -19,18 +19,33 @@
 	import { toast } from 'svelte-sonner';
 	import PasswordResetPopover from '$lib/components/PasswordResetPopover.svelte';
 
-	let { user } = $props();
+	let { user = {
+		id: '',
+		username: '',
+		firstName: '',
+		surname: '',
+		emailAddress: '',
+		profilePictureURL: '',
+		addressLine1: '',
+		addressLine2: '',
+		city: '',
+		country: '',
+		postcode: ''
+	} } = $props();
 
-	const tabs = [
-		{
-			title: 'Account',
-			icon: User,
-		},
+	let tabs = [
 		{
 			title: 'Privacy',
 			icon: GlobeLock,
 		},
 	]
+	if (user.id) {
+		tabs.unshift({
+			title: 'Account',
+			icon: User,
+		});
+	}
+
 	let settingsOpen = $state(false);
 	let selectedTab = $derived(page.state.settingsPage || tabs[0].title);
 	let settings = $state({
@@ -112,6 +127,7 @@
 
 				<Sidebar.Footer>
 					<Sidebar.Menu>
+						{#if user.id}
 						<Sidebar.MenuItem>
 							<div class="text-lg flex flex-col gap-0.5 p-1.5 rounded-xl bg-accent/15">
 								<div class="flex flex-row gap-1.5 items-center">
@@ -124,6 +140,7 @@
 <!--								<span class="text-xs text-muted-foreground/70">id: {user.id}</span>-->
 							</div>
 						</Sidebar.MenuItem>
+							{/if}
 					</Sidebar.Menu>
 				</Sidebar.Footer>
 			</Sidebar.Root>
