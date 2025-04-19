@@ -9,6 +9,8 @@
 	import Listing from '$lib/components/listing.svelte';
 	import { onMount } from 'svelte';
 	import { baseURL } from '$lib/api/core.js';
+	import Review from '$lib/components/Review.svelte';
+	import ReviewGrid from '$lib/components/ReviewGrid.svelte';
 	
 	let { data } = $props();
 	const userID = $derived(data.profileUser.id);
@@ -70,7 +72,7 @@
 					<Badge class=" h-8">Joined {new Date(data.profileUser.joinedAt*1000).toDateString()}</Badge>
 					<Badge class=" h-8">Rated {profileUser.rating} stars</Badge>
 					<Badge class="min-w-20 h-8 justify-center">{data.profileUser.listingIDs?.length} Listings</Badge>
-					<Badge class=" h-8">{data.profileUser.sales} Sale</Badge>
+					<Badge class=" h-8">{data.profileUser.sales || 'No'} Sale{data.profileUser.sales>1 ? 's' : data.profileUser.sales===0 ? 's yet' : ''}</Badge>
 				</div>
 
 <!--				Action Buttons	-->
@@ -125,7 +127,13 @@
 	{/if}
 {/if}
 
-<div class="sm:px-8 px-1 mt-16 bg-slate-50">
+<div class="p-4 sm:px-16 mt-4 px-1">
+	{#if data.profileUser}
+	<ReviewGrid user={data.profileUser} />
+	{/if}
+</div>
+
+<div class="sm:px-8 px-1 mt-4 bg-slate-50">
 	{#key data.user}
 	<h3 class="px-8 py-6 text-4xl font-medium">{data.profileUser.username}'s listings</h3>
 		{/key}

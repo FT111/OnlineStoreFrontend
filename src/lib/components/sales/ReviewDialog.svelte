@@ -9,18 +9,28 @@
 	import { AppleIcon, InfoIcon } from "lucide-svelte";
 	import { submitListingReview } from "$lib/api/listings";
 	import { toast } from "svelte-sonner";
+	import * as Avatar from "../ui/avatar/index.js";
+	import { submitUserReview } from "$lib/api/user.js";
 
-    let { open = $bindable(), selectedListing } = $props();
+    let { open = $bindable(), selectedListing, selectedUser } = $props();
     
     let reviewData = $state({
-        listingID: selectedListing?.listing?.id,
+        // listingID: selectedListing?.listing?.id,
         rating: 5,
         description: "",
     });
+		$effect(() => {
+			if (selectedUser) {
+				reviewData.userID = selectedUser.id;
+			} else {
+				reviewData.listingID = selectedListing?.listing?.id;
+			}
+		})
 
     const handleReviewSubmission = (e) => {
         e.preventDefault();
-        reviewData.listingID = selectedListing?.listing?.id;
+
+				if (selectedListing.id) {
         submitListingReview(selectedListing.listing.id, reviewData)
             .then((response) => {
                 toast.success("Review submitted successfully", response);
@@ -29,6 +39,16 @@
             .catch((error) => {
                 toast.error("Error submitting review: " + error.message);
             });
+				} else {
+					submitUserReview(selectedUser.id, reviewData)
+						.then((response) => {
+								toast.success("Review submitted successfully", response);
+								open = false;
+						})
+						.catch((error) => {
+								toast.error("Error submitting review: " + error.message);
+						});
+				}
     };
 
 </script>
@@ -38,12 +58,25 @@
 		<Dialog.Header class="flex flex-col gap-2">
 			<Dialog.Title>Add a review for {selectedListing?.listing?.title}</Dialog.Title>
 			<Dialog.Description>
+				{#if selectedListing.id}
                 <div class="flex flex-row gap-2 text-black">   
                     <SkUrow
                         product={selectedListing}
                         mutableQuantity={false}
                     />
                     </div>
+					{:else}
+					<div class="text-lg flex flex-col gap-0.5 w-full py-4 p-1.5 rounded-xl bg-accent/15">
+						<div class="flex flex-row gap-1.5 items-center">
+							<Avatar.Root>
+								<Avatar.Image src={selectedUser?.profilePictureURL} alt="Avatar" />
+								<Avatar.Fallback class="">{selectedUser?.username[0] + selectedUser?.username[1]}</Avatar.Fallback>
+							</Avatar.Root>
+							{selectedUser?.username}
+						</div>
+						<!--								<span class="text-xs text-muted-foreground/70">id: {user.id}</span>-->
+					</div>
+					{/if}
 			</Dialog.Description>
 		</Dialog.Header>
 <!-- Body -->

@@ -27,6 +27,11 @@
 		id: null,
 		title: null,
 	});
+	let selectedUser = $state({
+		id: null,
+		username: null,
+	});
+
 	let DeletionDialogOpenState = $state(false);
 	let ReviewDialogOpenState = $state(false);
 
@@ -62,7 +67,7 @@
 	</AlertDialog.Content>
 </AlertDialog.Root>
 
-<ReviewDialog bind:open={ReviewDialogOpenState} selectedListing={selectedListing} />
+<ReviewDialog bind:open={ReviewDialogOpenState} {selectedListing} {selectedUser} />
 
 <DashboardPageLayout>
 	{#snippet title()}
@@ -83,17 +88,25 @@
 						<Price price={purchaseTotalValue} />
 					</div>
 					
-					<div class="{orders.length>1 && 'p-2.5'} flex flex-col gap-3 border border-1 border-muted-foreground/20 rounded-2xl">
+					<div class="{orders.length>1 && 'p-2.5 border border-1 border-muted-foreground/20'} flex flex-col gap-3  rounded-2xl">
 					{#each orders as purchase, index}
 						{@const statusData = orderStatusesCancellable.find((status) => status.title === purchase.status)}
-						<Card.Root class=" border-1 bg-slate-50  rounded-2xl pb-1.5">
+						<Card.Root class="  bg-cyan-500/5  rounded-2xl pb-1.5">
 								<div class="flex flex-row justify-between px-6 pt-3.5 items-center">
 									<h3 class="text-xs font-medium">Shipment from
 										<Button class="px-1 text-sm" href="/users/{purchase.seller.id}" variant="link">{purchase.seller.username}</Button></h3>
 									<div class="flex flex-row gap-2.5 h-9">
 										{#if purchase.status !== 'Cancelled'}
-										<Button class="rounded-3xl h-full bg-opacity-20 hover:text-destructive-foreground text-foreground" onclick={()=>{selectedOrder=purchase;DeletionDialogOpenState=true}} variant="destructive">Cancel</Button>
+										<Button class="rounded-xl h-full bg-opacity-20 hover:text-destructive-foreground text-foreground" onclick={()=>{selectedOrder=purchase;DeletionDialogOpenState=true}} variant="destructive">Cancel</Button>
 											{/if}
+										<Button class="rounded-xl bg-emerald-200/40 border-0" variant="secondary" onclick={()=>{
+														selectedUser = purchase.seller;
+														selectedListing = {id: null};
+														ReviewDialogOpenState = true;
+													}}>
+											Review seller
+											<Plus size={20} strokeWidth={1.25} />
+										</Button>
 
 										<div class='flex flex-row items-center p-1.5 px-2.5 text-sm rounded-full bg-{statusData.colour}'>
 											<span class={`${statusData.text ? `text-${statusData.text}` : ``}`}>{purchase.status}</span>
@@ -116,6 +129,7 @@
 												</a>
 												<div class="flex flex-row gap-2.5">
 													<Button class="rounded-xl bg-emerald-200/40 border-0" variant="secondary" onclick={()=>{
+														selectedUser = {id: null};
 														selectedListing = sku;
 														ReviewDialogOpenState = true;
 													}}>

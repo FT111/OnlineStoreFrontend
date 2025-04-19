@@ -2,27 +2,34 @@
 <script>
   import Review from './Review.svelte';
 
-	import * as Avatar from '$lib/components/ui/avatar/index.js';
+	import * as Avatar from '$lib/components/ui/avatar/index.js'
+	import { fetchUserReviews } from '$lib/api/user';
 	import { fetchListingReviews } from '$lib/api/listings';
 	import { toast } from 'svelte-sonner';
 	import { onMount } from 'svelte';
 	import * as Collapsible from '$lib/components/ui/collapsible/index.js';
 	import Button from './ui/button/button.svelte';
-	import { ChevronsDown, ChevronsUp, Plus } from 'lucide-svelte';
+	import { ChevronsDown, ChevronsUp, Info, Plus } from 'lucide-svelte';
 	import { fly } from 'svelte/transition';
+	import { flip } from 'svelte/animate';
 	import { backIn, backInOut, backOut, cubicInOut } from 'svelte/easing';
 
-	let { listing } = $props();
+	let { listing = null, user = null } = $props();
 	let reviews = $state([]);
 	let isReviewsOpen = $state(false);
-	$inspect(reviews);
-	$inspect(listing);
 
 	onMount(()=>{
 		if (listing) {
 			fetchListingReviews(listing.id)
 				.then((response) => {
-					console.log(response);
+					reviews = response.data;
+				})
+				.catch((error) => {
+					toast.error("Error fetching reviews: " + error.message);
+				});
+		} else if (user) {
+			fetchUserReviews(user.id)
+				.then((response) => {
 					reviews = response.data;
 				})
 				.catch((error) => {
@@ -30,6 +37,7 @@
 				});
 		}
 	})
+	$inspect(reviews)
 </script>
 
 
@@ -41,18 +49,22 @@
 			{:else}
 				<span class=" text-slate-800">No </span>
 			{/if}
-			Reviews {reviews.length===0 ? 'yet' : ''} •
+			Reviews {reviews.length===0 && (user?.rating===0|| listing?.rating===0)  ? 'yet' : ''} •
 			<p class="text-muted-foreground flex flex-row gap-1.5 items-center">
-			Rated <span class="text-muted-foreground flex flex-row gap-[0.25] items-center">{listing.rating}<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.75" stroke="currentColor" class="size-7 text-medium">
+			Rated <span class="text-muted-foreground flex flex-row gap-[0.25] items-center">{listing?.rating || user?.rating}<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.75" stroke="currentColor" class="size-7 text-medium">
 				<path stroke-linecap="round" stroke-linejoin="round" d="M11.48 3.499a.562.562 0 0 1 1.04 0l2.125 5.111a.563.563 0 0 0 .475.345l5.518.442c.499.04.701.663.321.988l-4.204 3.602a.563.563 0 0 0-.182.557l1.285 5.385a.562.562 0 0 1-.84.61l-4.725-2.885a.562.562 0 0 0-.586 0L6.982 20.54a.562.562 0 0 1-.84-.61l1.285-5.386a.562.562 0 0 0-.182-.557l-4.204-3.602a.562.562 0 0 1 .321-.988l5.518-.442a.563.563 0 0 0 .475-.345L11.48 3.5Z" />
 			</svg></span>  overall
 			</p>
 		</h3>
 
-		{#if reviews.length > 4}
 			<div class="flex flex-row gap-2 items-center">
+				<p class="text-muted-foreground flex flex-row items-center gap-1.5 transition-transform">
+					<Info class="text-muted-foreground" size={20} />
+					Only users with verified purchases can leave reviews
+				</p>
+		{#if reviews.length > 4}
 				{#if !isReviewsOpen}
-				<p class="!z-10" transition:fly={{x: 50, duration: 50, delay:0, easing: cubicInOut}}>{reviews.length-4} more</p>
+				<p class="!z-10" transition:fly={{x: 50, duration: 50, delay:0, easing: cubicInOut}}>• {reviews.length-4} more</p>
 				{/if}
 				
 				<Collapsible.Trigger>
@@ -72,8 +84,8 @@
 				</Button>
 				
 			</Collapsible.Trigger>
-		</div>
 		{/if}
+		</div>
 	</div>
 	<div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4 sm:p-0 p-2">
 		<!-- Show top 4 reviews -->
@@ -88,7 +100,6 @@
 			{reviews.length-4}
 		</Button>
 		{/if}
-
 	<Collapsible.Content>
 		<div  transition:fly={{y:50, duration:100}} class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4  gap-4 sm:p-0 p-2">
 			<!-- Show rest when expanded -->
@@ -108,3 +119,4 @@
 		</div>
 	</Collapsible.Content>
 </Collapsible.Root>
+
