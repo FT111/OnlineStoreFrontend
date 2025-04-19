@@ -28,7 +28,7 @@ $inspect(basketStore.basket);
 					</svg>
 				</div>
 	</Sheet.Trigger>
-	<Sheet.Content class="p-0 overflow-y-scroll h-full flex flex-col w-full bg-slate-100" width="64">
+	<Sheet.Content class="p-0 overflow-y-auto h-full flex flex-col w-full bg-slate-100" width="64">
 		<Sheet.Header class="sticky top-0 bg-none backdrop-blur-2xl z-10 flex flex-row items-center pr-6 justify-between">
 			<Sheet.Title class="p-8">Your Basket</Sheet.Title>
 			<Button variant="ghost" onclick={()=>{basketOpen=false}}>

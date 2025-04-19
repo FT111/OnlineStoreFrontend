@@ -14,7 +14,7 @@
 	import { RangeCalendar } from '$lib/components/ui/range-calendar/index.js';
 	import { Button } from '$lib/components/ui/button/index.js';
 	import { getLocalTimeZone, today } from "@internationalized/date";
-	import { getStatistics } from '$lib/api/user.js';
+	import { fetchStatistics } from '$lib/api/user.js';
 	import Heatmap from '$lib/components/sellerDashboard/charts/Heatmap.svelte';
 
 
@@ -57,7 +57,7 @@
 			dataSource = updateStreamData
 		}
 		else if (selectedPeriod.value === 'custom') {
-			dataSource = await getStatistics(customPeriod.start.toString(), customPeriod.end.toString())
+			dataSource = await fetchStatistics(customPeriod.start.toString(), customPeriod.end.toString())
 		}
 	}
 

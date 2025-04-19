@@ -84,7 +84,7 @@
 	</div>
 	
 	<div class="flex md:flex-row flex-col w-full h-[90vh]" >
-		<div class="basis-1/2 flex-col flex md:items-end items-center p-6 overflow-y-scroll">
+		<div class="basis-1/2 flex-col flex md:items-end items-center p-6 overflow-y-auto">
 			<div class="md:w-3/4 flex flex-col w-fit gap-5">
 				<form bind:this={transactionForm} id="transactionForm" class="group flex flex-col gap-2 " onsubmit={(e)=>{handleFinishAndPay(e)}} onchange={()=>{isDeliveryDetailsValid = transactionForm.checkValidity()}}>
 					<div class="text-2xl flex flex-row gap-2.5 items-center">
@@ -129,7 +129,7 @@
 			</div>
 		</div>
 		
-		<div class="basis-1/2 bg-secondary text-secondary-foreground flex flex-col items-start md:overflow-y-scroll ">
+		<div class="basis-1/2 bg-secondary text-secondary-foreground flex flex-col items-start md:overflow-y-auto ">
 			<div class="md:max-w-full flex flex-col w-full h-full gap-1.5">
 				<div class="p-6 pb-flex flex-col gap-1.5 sticky top-0 bg-secondary/80 backdrop-blur-2xl z-10 h-full w-full">
 					<h2 class="pb-0 z-10 text-2xl w-full text-left">Summary</h2>

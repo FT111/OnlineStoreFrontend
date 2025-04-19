@@ -130,7 +130,7 @@
 								You may need to scroll to see all variations.
 							</HelpTooltip></p>
 						<div class="flex flex-row justify-between gap-1 items-center w-full">
-						<div bind:this={variantCardContainer} class="flex flex-row gap-3 gap-y-2 h-36 flex-wrap overflow-y-scroll">
+						<div bind:this={variantCardContainer} class="flex flex-row gap-3 gap-y-2 h-36 flex-wrap overflow-y-auto">
 							{#if !currentListing.skus}
 								<div></div>
 							{:else}

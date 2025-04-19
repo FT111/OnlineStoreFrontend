@@ -62,7 +62,7 @@
 					navSearch.classList.add(...heroSearchClasses);
 				}
 			},
-			{ threshold: 0 }
+			{ threshold: 0.8 }
 		);
 
 		searchObserver.observe(heroSearchBar);
