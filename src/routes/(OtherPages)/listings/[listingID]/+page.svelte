@@ -65,6 +65,8 @@
 		if (basketStore.basket.items[selectedSKU.id]?.quantity >= selectedSKU.stock
 		|| selectedSKU.stock === 0) {
 			addProductButtonState = 'outOfStock';
+		} else if (!selectedSKU.id) {
+			addProductButtonState = 'outOfStock';
 		} else {
 			addProductButtonState = 'default';
 		}
@@ -110,24 +112,24 @@
 <!--		Top info	-->
 			<div class="flex flex-col gap-4 flex-shrink-0 ">
 	<!--			Quick Info Row -->
-				<div class="flex flex-row rounded-2xl bg-slate-100 border-4 border-slate-100 w-full h-20 ">
-					<div class="basis-1/5 h-full flex flex-col items-center flex-wrap align-middle justify-center">
+				<div class="flex flex-row gap-1.5 w-full h-20 ">
+					<div class="basis-1/5 h-full rounded-l-xl bg-cyan-500/15 flex flex-col items-center flex-wrap align-middle justify-center">
 						<p class="text-2xl font-bold">{listing.views}</p>
 						<p class="text-lg">views</p>
 					</div>
-					<div class="basis-1/5 h-full bg-zinc-50 rounded-2xl flex flex-col items-center flex-wrap align-middle justify-center">
+					<div class="basis-1/5 h-full   bg-cyan-500/15 flex flex-col items-center flex-wrap align-middle justify-center">
 						<p class="text-2xl font-bold">10+</p>
 						<p class="text-lg">sales</p>
 					</div>
-					<div class="basis-1/5 h-full flex flex-col  items-center flex-wrap align-middle justify-center">
+					<div class="basis-1/5 h-full  bg-cyan-500/15 flex flex-col  items-center flex-wrap align-middle justify-center">
 						<p class="text-2xl font-bold">{listing.rating}</p>
 						<p class="text-lg">rating</p>
 					</div>
-					<div class="basis-1/5 h-full bg-zinc-50 rounded-2xl  flex flex-col  items-center flex-wrap align-middle justify-center">
+					<div class="basis-1/5 h-full   bg-cyan-500/15   flex flex-col  items-center flex-wrap align-middle justify-center">
 						<p class="text-2xl font-bold">{selectedSKU.stock}</p>
 						<p class="text-lg">in stock</p>
 					</div>
-					<div class="basis-1/5 h-full flex flex-col items-center flex-wrap align-middle justify-center">
+					<div class="basis-1/5 h-full rounded-r-xl bg-cyan-500/15 flex flex-col items-center flex-wrap align-middle justify-center">
 						<p class="text-2xl font-bold">New</p>
 						<p class="text-lg">condition</p>
 					</div>
