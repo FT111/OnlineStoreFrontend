@@ -7,7 +7,7 @@ import { Card } from '$lib/components/ui/card/index.js';
 import { Button } from '$lib/components/ui/button/index.js';
 import * as DropdownMenu from "$lib/components/ui/dropdown-menu";
 import { page } from '$app/state';
-import { ChartSpline, LayoutDashboard, LayoutList, Plus, Truck } from 'lucide-svelte';
+	import { ChartSpline, LayoutDashboard, LayoutList, Plus, Truck, Wallet } from 'lucide-svelte';
 import NewListingDialog from '$lib/components/NewListingDialog.svelte';
 import { logout } from '$lib/api/authentication.js';
 
@@ -79,6 +79,8 @@ let selectedClasses = ' !bg-slate-200/70 pl-5 ';
 				<div class="flex flex-col gap-1">
 					<Button id="dashboard" href="/sales/dashboard" class="{selectedPage==='dashboard'&&selectedClasses} {buttonClasses}"
 									variant="secondary"><LayoutDashboard size={20} strokeWidth={1.25} />Overview</Button>
+					<Button id="orders" href="/sales/earnings" class="{selectedPage==='earnings'&&selectedClasses} {buttonClasses}"
+									variant="secondary"><Wallet size={20} strokeWidth={1.25} />Earnings</Button>
 					<Button id="listings" href="/sales/listings" class="{selectedPage==='listings'&&selectedClasses} {buttonClasses}"
 									variant="secondary"><LayoutList size={20} strokeWidth={1.25} />Listings</Button>
 					<Button id="orders" href="/sales/orders" class="{selectedPage==='orders'&&selectedClasses} {buttonClasses}"
