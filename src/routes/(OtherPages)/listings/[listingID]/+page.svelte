@@ -187,7 +187,7 @@
 
 <!--		Basket options	-->
 <div class="fixed w-full sm:w-1/2 justify-self-end bottom-4 min-h-24 p-3 z-20 right-3 min-w-fit">
-	<div class=" bg-slate-100 rounded-xl p-3 flex flex-col md:flex-row gap-1 items-end align-middle md:items-center md:justify-between border-2 border-slate-200 shadow-md">
+	<div class=" bg-slate-200/50 backdrop-blur-xl rounded-xl p-3 flex flex-col md:flex-row gap-1 items-end align-middle md:items-center md:justify-between  shadow-md">
 		
 		<div>
 			{#if selectedSKU.id in basketStore.basket.items}

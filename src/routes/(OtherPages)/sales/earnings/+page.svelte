@@ -29,7 +29,7 @@
 	{/snippet}
 
 	{#snippet page()}
-		<div class="flex flex-col justify-center items-center">
+		<div class="flex flex-col justify-center items-center h-[80dvh]">
 			<Tabs.Root value="balance" class="w-96">
 				<Tabs.List class="gap-1">
 					<Tabs.Trigger value="balance">
@@ -104,7 +104,7 @@
 									max="{data.user.balance / 100}"
 									>Amount (GBP)</InputWithLabel>
 
-								<div class="flex flex-row gap-1.5 w-full py-2 items-center">
+								<div class="flex flex-row gap-1.5 mt-4 w-full py-2 items-center">
 									<Price price={withdrawalValue*100} small class="text-sm font-semibold text-muted-foreground" />
 									<Progress value={withdrawalValue} max={data.user.balance / 100} class="w-full h-2 bg-slate-200" />
 									<Price price={data.user.balance} small class="text-sm font-semibold text-muted-foreground" />
@@ -170,11 +170,11 @@
 				</Tabs.Content>
 			</Tabs.Root>
 
-			<Card.Root class="md:w-96 w-full mt-4">
-				<Card.Header>
+			<Card.Root class="md:w-96 w-full mt-4 overflow-y-auto grow">
+				<Card.Header class="sticky top-0 bg-card/50 py-4 pb-3 backdrop-blur-lg">
 					<Card.Title>Orders</Card.Title>
 				</Card.Header>
-				<Card.Content class="flex flex-col gap-2">
+				<Card.Content class="flex flex-col gap-2 pt-0.5">
 					{#each data.orders.sales as order}
 						<div class="flex flex-row justify-between items-center ">
 							<div class="flex flex-row items-center gap-0.5">

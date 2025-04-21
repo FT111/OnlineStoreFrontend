@@ -2,9 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-h1 {
-  font-family: 'Syne', sans-serif;
-}
 
 @layer base {
   @font-face {
@@ -14,37 +11,41 @@ h1 {
     src: url(/fonts/AlbertSans-VariableFont_wght.ttf) format('truetype');
   }
 
+  /* * {
+    font-family: 'Albert', sans-serif;
+  } */
+  
   :root {
     --background: 0 0% 100%;
     --foreground: 240 10% 3.9%;
-
+    
     --muted: 240 4.8% 95.9%;
     --muted-foreground: 240 3.8% 46.1%;
-
+    
     --popover: 0 0% 100%;
     --popover-foreground: 240 10% 3.9%;
-
+    
     --card: 0 0% 100%;
     --card-foreground: 240 10% 3.9%;
-
+    
     --border: 240 5.9% 90%;
     --input: 240 5.9% 90%;
-
+    
     /*--primary: 201 47% 12%;*/
     --primary: 238 20% 21%;
     --primary-foreground: 0 0% 98%;
-
+    
     --secondary: 240 4.8% 95.9%;
     --secondary-foreground: 240 5.9% 10%;
-
+    
     --accent: 15 91% 44%;
     --accent-foreground: 0 0% 98%;
-
+    
     --destructive: 0 72.2% 50.6%;
     --destructive-foreground: 0 0% 98%;
-
+    
     --ring: 240 10% 3.9%;
-
+    
     --radius: 0.5rem;
     --sidebar-background: 0 0% 98%;
     --sidebar-foreground: 240 5.3% 26.1%;
@@ -55,7 +56,7 @@ h1 {
     --sidebar-border: 220 13% 91%;
     --sidebar-ring: 217.2 91.2% 59.8%;
   }
-
+  
   .dark {
     --background: 240 10% 3.9%;
     --foreground: 0 0% 98%;
@@ -76,7 +77,7 @@ h1 {
     --destructive: 0 62.8% 30.6%;
     --destructive-foreground: 0 0% 98%;
     --ring: 240 4.9% 83.9%;
-	--sidebar-background: 240 5.9% 10%;
+    --sidebar-background: 240 5.9% 10%;
     --sidebar-foreground: 240 4.8% 95.9%;
     --sidebar-primary: 224.3 76.3% 48%;
     --sidebar-primary-foreground: 0 0% 100%;
@@ -97,5 +98,9 @@ h1 {
 }
 
 * {
-  text-rendering: optimizeLegibility;
+  text-rendering: optimizeLegibility !important;
+  font-synthesis: none !important;
 }
+/* h1, h2 {
+  font-family: 'Syne', sans-serif;
+} */

@@ -13,13 +13,13 @@
 <div class="flex flex-col gap-0 h-40 bg-emerald-600/15 rounded-xl overflow-y-auto">
 				<div class="px-4 pt-2 flex flex-row justify-between items-center bg-background/10 backdrop-blur-md sticky top-0 pb-1.5">
 					<div class="flex flex-row gap-2 items-center">
-						<a  href={`/users/${review.user.id}`}>
+						<a  href={`/users/${review.reviewer.id}`}>
 							<Avatar.Root>
-								<Avatar.Image src={review.user.profilePictureURL} alt='Avatar' />
-								<Avatar.Fallback>{review.user.username.slice(0,2).toUpperCase()}</Avatar.Fallback>
+								<Avatar.Image src={review.reviewer.profilePictureURL} alt='Avatar' />
+								<Avatar.Fallback>{review.reviewer.username.slice(0,2).toUpperCase()}</Avatar.Fallback>
 							</Avatar.Root>
 						</a>
-						<p class="text-md font-semibold">{review.user?.username}</p>
+						<p class="text-md font-semibold">{review.reviewer?.username}</p>
 					</div>
 					<div class="flex flex-col justify-end gap-0.5 items-end">
 						<div class="flex flex-row gap-[0.25] items-center">
