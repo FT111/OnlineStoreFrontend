@@ -4,7 +4,7 @@
 	import * as Card from '$lib/components/ui/card/index.js';
 	import Price from '$lib/components/price.svelte';
 	import { onMount } from 'svelte';
-	import { HandCoins, BanknoteIcon, ArrowDown } from 'lucide-svelte';
+	import { HandCoins, BanknoteIcon, ArrowDown, Plus } from 'lucide-svelte';
 	import { Button } from '$lib/components/ui/button/index.js';
 	import { backOut } from 'svelte/easing';
 	import * as InputOTP from '$lib/components/ui/input-otp/index.js';
@@ -131,16 +131,18 @@
 				</Tabs.List>
 				<Tabs.Content value="balance">
 					<div class="flex flex-col gap-2 justify-end">
-						<Card.Root class="md:w-96 w-full">
-							<Card.Header>
-								<Card.Title>Available Balance</Card.Title>
-			<!--					<Card.Description>-->
-			<!--						Your earnings from sales made on the platform.-->
-			<!--					</Card.Description>-->
-							</Card.Header>
-							<Card.Content class="flex flex-col gap-4 py-1">
-								<Price price={data.user.balance} />
-							</Card.Content>
+						<Card.Root class="md:w-96 w-full min-h-44 justify-between flex flex-col ">
+							<div class="flex flex-col">
+								<Card.Header>
+									<Card.Title>Available Balance</Card.Title>
+				<!--					<Card.Description>-->
+				<!--						Your earnings from sales made on the platform.-->
+				<!--					</Card.Description>-->
+								</Card.Header>
+								<Card.Content class="flex flex-col gap-4 py-1">
+									<Price price={data.user.balance} />
+								</Card.Content>
+							</div>
 							<Card.Footer>
 								<p class="text-xs font-light text-muted-foreground text-right w-full">Last updated: {pageOpenTime.toLocaleTimeString('UK')}</p>
 							</Card.Footer>
@@ -148,23 +150,44 @@
 					</div>
 				</Tabs.Content>
 				<Tabs.Content value="earnings">
-					<Card.Root class="md:w-96 w-full">
-						<Card.Header>
-							<Card.Title>Overall Earnings</Card.Title>
-						</Card.Header>
-						<Card.Content class="flex flex-col gap-2 py-1">
-							<Price price={data.user.allTimeBalance} />
-							<Card.Description class="text-xs text-muted-foreground">
-								Your all-time earnings from sales.  <br />
-								Refunded orders are not included.
-							</Card.Description>
-						</Card.Content>
-						<Card.Footer>
+					<Card.Root class="md:w-96 w-full min-h-44 justify-between flex flex-col">
+						<div class="flex flex-col">
+							<Card.Header>
+								<Card.Title>Overall Earnings</Card.Title>
+							</Card.Header>
+							<Card.Content class="flex flex-col gap-2 py-1">
+								<Price price={data.user.allTimeBalance} />
+								<Card.Description class="text-xs text-muted-foreground">
+									Your all-time earnings from sales.  <br />
+									Refunded orders are not included.
+								</Card.Description>
+							</Card.Content>
+						</div>
+						<Card.Footer class="self-end justify-self-end place-self-end">
 							<p class="text-xs font-light text-muted-foreground text-right w-full">Last updated: {pageOpenTime.toLocaleTimeString('UK')}</p>
-						</Card.Footer>
+						</Card.Footer >
 					</Card.Root>
 				</Tabs.Content>
 			</Tabs.Root>
+
+			<Card.Root class="md:w-96 w-full mt-4">
+				<Card.Header>
+					<Card.Title>Orders</Card.Title>
+				</Card.Header>
+				<Card.Content class="flex flex-col gap-2">
+					{#each data.orders.sales as order}
+						<div class="flex flex-row justify-between items-center ">
+							<div class="flex flex-row items-center gap-0.5">
+								<p class="text-sm font-medium {order.status==='Cancelled' && 'line-through' }">{new Date(order.addedAt *1000).toLocaleDateString('GB')}</p>
+								{#if order.status === 'Cancelled'}
+									<p class="text-xs text-muted-foreground !no-underline">• Refunded</p>
+								{/if}
+							</div>
+							<p class="text-emerald-700 flex flex-row items-center gap-0.5 {order.status==='Cancelled' && 'line-through' }"><Plus size={20} /> £{order.value/100}</p>
+						</div>
+					{/each}
+				</Card.Content>
+			</Card.Root>
 
 
 		</div>
