@@ -7,6 +7,7 @@
 	import { HandCoins, BanknoteIcon, ArrowDown } from 'lucide-svelte';
 	import { Button } from '$lib/components/ui/button/index.js';
 	import { backOut } from 'svelte/easing';
+	import * as InputOTP from '$lib/components/ui/input-otp/index.js';
 	import { fly } from 'svelte/transition';
 	import * as Dialog from '$lib/components/ui/dialog/index.js';
 	import InputWithLabel from '$lib/components/InputWithLabel.svelte';
@@ -54,22 +55,43 @@
 								</Dialog.Description>
 							</Dialog.Header>
 
-							<form class="flex flex-col gap-1">
+							<form class="flex flex-col gap-2">
 								<InputWithLabel
 									label="Account Number"
 									type="text"
 									placeholder="12345678"
 									class="w-full"
+									maxlength="8"
 									required
 									>Account Number</InputWithLabel>
 
-								<InputWithLabel
-									label="Sort Code"
-									type="text"
-									placeholder="12-34-56"
-									class="w-full"
-									required
-									>Sort Code</InputWithLabel>
+								<div class="flex flex-col w-full gap-1">
+									<label for="sort" class="text-xs  px-1.5 font-medium text-slate-600">
+										Sort Code
+									</label>
+									<InputOTP.Root maxlength={6} name="sort" >
+										{#snippet children({ cells })}
+											<InputOTP.Group>
+												{#each cells.slice(0, 2) as cell}
+													<InputOTP.Slot {cell} />
+												{/each}
+											</InputOTP.Group>
+											<InputOTP.Separator />
+											<InputOTP.Group>
+												{#each cells.slice(2, 4) as cell}
+													<InputOTP.Slot {cell} />
+												{/each}
+											</InputOTP.Group>
+											<InputOTP.Separator />
+											<InputOTP.Group>
+												{#each cells.slice(4, 6) as cell}
+													<InputOTP.Slot {cell} />
+												{/each}
+											</InputOTP.Group>
+										{/snippet}
+									</InputOTP.Root>
+								</div>
+
 
 								<InputWithLabel
 									label="Amount (GBP)"
@@ -129,13 +151,13 @@
 					<Card.Root class="md:w-96 w-full">
 						<Card.Header>
 							<Card.Title>Overall Earnings</Card.Title>
-												<Card.Description class="text-xs text-muted-foreground">
-													Your all-time earnings from sales.  <br />
-													Refunded orders are not included.
-												</Card.Description>
 						</Card.Header>
-						<Card.Content class="flex flex-col gap-4 py-1">
+						<Card.Content class="flex flex-col gap-2 py-1">
 							<Price price={data.user.allTimeBalance} />
+							<Card.Description class="text-xs text-muted-foreground">
+								Your all-time earnings from sales.  <br />
+								Refunded orders are not included.
+							</Card.Description>
 						</Card.Content>
 						<Card.Footer>
 							<p class="text-xs font-light text-muted-foreground text-right w-full">Last updated: {pageOpenTime.toLocaleTimeString('UK')}</p>
