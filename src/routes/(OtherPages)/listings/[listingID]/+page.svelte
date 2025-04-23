@@ -27,6 +27,7 @@
 		price: 0,
 		id: 0
 	});
+	$inspect(selectedSKU);
 	
 	let variantOptions = $derived(
 		listing && listing.skuOptions && Object.keys(listing.skuOptions).length !== 0
@@ -54,9 +55,9 @@
 	onMount(() => {
 		registerListingView(listing);
 		
-		if (listing.skus?.length > 0) {
-			selectedSKU = listing.skus[0];
-		}
+		// if (listing.skus?.length > 0) {
+		// 	selectedSKU = listing.skus[0];
+		// }
 	});
 	
 	$effect(() => {

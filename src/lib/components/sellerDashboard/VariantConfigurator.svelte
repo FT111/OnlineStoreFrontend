@@ -144,23 +144,40 @@
 		if (!validation) {
 			return;
 		}
-		
+
 		// Check if the page has a selected SKU in the URL
 		// Lets the user share a link to a specific product configuration, or navigate back to a previous configuration
 		if (page.url.searchParams.has('selected')) {
 			if (defaultOptions) {
 				// If the product has default options, it sets the options manually
 				selectedProduct = skus.find((sku) => sku.id === page.url.searchParams.get('selected'));
-				selectedOptions = {'Styles': selectedProduct.title};
-				
+				selectedOptions = { 'Styles': selectedProduct.title };
+
 			} else {
 				// If the product has selectable options, it sets the options based on the selected SKU's options
 				selectedOptions = (skus.find((sku) => sku.id === page.url.searchParams.get('selected')))?.options;
 				selectedProduct = selectSKUFromSelectedOptions(selectedOptions);
 				determineSelectableOptions();
 			}
+		} else {
+// If no SKU is selected, set the cheapest SKU as the selected product
+			const cheapestSKU = skus.reduce((cheapest, sku) => {
+				return !cheapest || sku.price < cheapest.price ? sku : cheapest;
+			}, null);
+
+			if (cheapestSKU) {
+				selectedProduct = cheapestSKU;
+				if (defaultOptions) {
+					selectedOptions = { 'Styles': selectedProduct.title };
+				} else {
+					selectedOptions = cheapestSKU.options;
+				}
+				determineSelectableOptions();
+			}
 		}
-	});
+	}
+	);
+
 	
 	
 </script>
