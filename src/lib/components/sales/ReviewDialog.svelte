@@ -12,7 +12,7 @@
 	import * as Avatar from "../ui/avatar/index.js";
 	import { submitUserReview } from "$lib/api/user.js";
 
-    let { open = $bindable(), selectedListing, selectedUser } = $props();
+    let { open = $bindable(), selectedListing, selectedUser} = $props();
     
     let reviewData = $state({
         // listingID: selectedListing?.listing?.id,
@@ -20,7 +20,7 @@
         description: "",
     });
 		$effect(() => {
-			if (selectedUser) {
+			if (selectedUser?.id) {
 				reviewData.userID = selectedUser.id;
 			} else {
 				reviewData.listingID = selectedListing?.listing?.id;
@@ -51,6 +51,8 @@
 				}
     };
 
+		$inspect(selectedUser, selectedListing);
+
 </script>
 
 <Dialog.Root bind:open={open}>
@@ -58,7 +60,7 @@
 		<Dialog.Header class="flex flex-col gap-2">
 			<Dialog.Title>Add a review for {selectedListing?.listing?.title}</Dialog.Title>
 			<Dialog.Description>
-				{#if selectedListing.id}
+				{#if selectedListing.listing?.id}
                 <div class="flex flex-row gap-2 text-black">   
                     <SkUrow
                         product={selectedListing}
@@ -66,11 +68,11 @@
                     />
                     </div>
 					{:else}
-					<div class="text-lg flex flex-col gap-0.5 w-full py-4 p-1.5 rounded-xl bg-accent/15">
+					<div class="text-lg flex flex-col gap-0.5 w-full py-4 p-1.5 rounded-xl bg-accent/10 text-foreground">
 						<div class="flex flex-row gap-1.5 items-center">
 							<Avatar.Root>
 								<Avatar.Image src={selectedUser?.profilePictureURL} alt="Avatar" />
-								<Avatar.Fallback class="">{selectedUser?.username[0] + selectedUser?.username[1]}</Avatar.Fallback>
+								<Avatar.Fallback class=""></Avatar.Fallback>
 							</Avatar.Root>
 							{selectedUser?.username}
 						</div>
