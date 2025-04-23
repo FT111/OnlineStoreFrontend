@@ -66,9 +66,11 @@
 		transaction.basket = basketStore.basket
 		
 		await submitCheckout(transaction)
+
+		toast.success('Purchase completed successfully')
 		
 		basketStore.clearBasket()
-		await goto('/')
+		await goto('/account/purchases')
 		
 	}
 </script>
@@ -192,7 +194,7 @@
 						</p>
 					</div>
 <!--			Background		-->
-					<div class="size-full backdrop-blur-2xl h-56 bottom-0"
+					<div class="size-full backdrop-blur-2xl h-full bottom-0"
 							 style="mask: linear-gradient(transparent, whitesmoke, white, white);
 											grid-column: 1;grid-row: 1"></div>
 				</div>

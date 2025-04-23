@@ -10,6 +10,7 @@
 	import { goto, invalidateAll } from '$app/navigation';
 		import { Label } from '$lib/components/ui/dropdown-menu/index.js';
 	import { toast } from 'svelte-sonner';
+	import InputWithLabel from '$lib/components/InputWithLabel.svelte';
 	
 	let emailAddress = $state();
 	let password = $state();
@@ -55,12 +56,12 @@
 			
 			<form bind:this={signInFormElement} onsubmit={(event)=>{signIn(event, true)}} class="flex flex-col gap-4 md:w-5/6 w-full">
 				<Input bind:value={name} type="text" required placeholder="Your first and last name" name="name" />
-				<Input bind:value={username} type="text" required placeholder="Username" name="username" />
+				<InputWithLabel description='Must be available' bind:value={username} type="text" required placeholder="Username" name="username" />
 				<Input bind:value={emailAddress} type="email" required placeholder="Email" name="email" />
 				<Input bind:this={passwordInput} bind:value={password} type="password" required placeholder="Password" name="password"  />
 				<Input bind:this={passwordConfirmInput} bind:value={confirmPassword} type="password" required placeholder="Confirm Password" name="passwordConfirm" />
-				
-				
+
+
 				<StateButton bind:this={submitBtnElement} authFunction={handleSignUp} bind:onPress={signIn} class="w-full justify-between hover:drop-shadow-xl drop-shadow-none transition-all duration-150 ">
 					Sign up
 					<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">

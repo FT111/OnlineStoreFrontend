@@ -7,9 +7,10 @@ import { Card } from '$lib/components/ui/card/index.js';
 import { Button } from '$lib/components/ui/button/index.js';
 import * as DropdownMenu from "$lib/components/ui/dropdown-menu";
 import { page } from '$app/state';
-	import { ChartSpline, LayoutDashboard, LayoutList, Plus, Truck, Wallet } from 'lucide-svelte';
+	import { ChartSpline, LayoutDashboard, LayoutList, Plus, Settings2, Truck, Wallet } from 'lucide-svelte';
 import NewListingDialog from '$lib/components/NewListingDialog.svelte';
 import { logout } from '$lib/api/authentication.js';
+	import { pushState } from '$app/navigation';
 
 
 	let { data, children } = $props();
@@ -85,6 +86,8 @@ let selectedClasses = ' !bg-slate-200/70 pl-5 ';
 									variant="secondary"><LayoutList size={20} strokeWidth={1.25} />Listings</Button>
 					<Button id="orders" href="/sales/orders" class="{selectedPage==='orders'&&selectedClasses} {buttonClasses}"
 									variant="secondary"><Truck size={20} strokeWidth={1.25} />Orders</Button>
+					<Button id="listings" onclick={()=>{pushState('', {settingsOpen: true})}} class="{selectedPage==='settings'&&selectedClasses} {buttonClasses}"
+									variant="secondary"><Settings2 size={20} strokeWidth={1.25} />Settings</Button>
 				</div>
 				<Separator />
 			</div>

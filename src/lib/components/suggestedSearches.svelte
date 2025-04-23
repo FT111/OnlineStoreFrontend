@@ -20,21 +20,14 @@
 		Suggested
 	</div>
 	{#await suggestions()}
-		<div class="bg-amber-700 text-white rounded-3xl flex items-center p-2 px-4 min-w-24 cursor-pointer text-center hover:bg-amber-800 hover:scale-[1.01] transition-all">
-		
-		</div>
-		<div class="bg-amber-700 text-white rounded-3xl flex items-center p-2 px-4 min-w-24 cursor-pointer text-center hover:bg-amber-800 hover:scale-[1.01] transition-all">
-		</div>
-		<div class="bg-amber-700 text-white rounded-3xl flex items-center p-2 px-4 min-w-24 cursor-pointer text-center hover:bg-amber-800 hover:scale-[1.01] transition-all">
-		</div>
-		<div class="bg-amber-700 text-white rounded-3xl flex items-center p-2 px-4 min-w-24 cursor-pointer text-center hover:bg-amber-800 hover:scale-[1.01] transition-all">
-		</div>
-		<div class="bg-amber-700 text-white rounded-3xl flex items-center p-2 px-4 min-w-24 cursor-pointer text-center hover:bg-amber-800 hover:scale-[1.01] transition-all">
-		</div>
+		{#each [...Array(6).keys()] as i}
+			<div class="bg-slate-700/50 text-white rounded-3xl flex items-center p-2 px-4 h-10 min-w-32 cursor-pointer text-center">
+			</div>
+		{/each}
 		{:then suggestions}
 		{#each [...Array(6).keys()] as i}
 			<a href="/listings?category={suggestions.data[i].title}&showCategoryHeader=true" style="background-color: #{suggestions.data[i]['colour']};}" class="text-white
-			border border-sky-950 border-1 rounded-3xl hover:brightness-200 brightness-125 flex justify-center items-center p-2 px-4
+			border border-sky-950 rounded-3xl hover:brightness-200 brightness-125 h-10 flex justify-center items-center p-2 px-4
 			min-w-24 cursor-pointer text-center hover:bg-amber-800 hover:scale-[1.01] transition-all">
 				{suggestions.data[i].title}
 			</a>
