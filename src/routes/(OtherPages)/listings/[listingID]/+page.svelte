@@ -22,6 +22,7 @@
 
 	let { data } = $props();
 	let listing = $derived(data.listing)
+	let listingSKUs = $derived(new Set(data.listing.skus))
 
 	let selectedSKU = $state({
 		price: 0,
@@ -32,7 +33,12 @@
 	let variantOptions = $derived(
 		listing && listing.skuOptions && Object.keys(listing.skuOptions).length !== 0
 			? listing.skuOptions
-			: { 'Styles': listing?.skus?.map(sku => sku.title) }
+			: { 'Styles': listing?.skus?.reduce((acc, sku) => {
+				if (!acc.includes(sku.title)) {
+					acc.push(sku.title);
+				}
+				return acc;
+			}, []) }
 	);
 	let defaultOptions = $derived(
 		listing && listing.skuOptions && Object.keys(listing.skuOptions).length === 0
@@ -115,23 +121,23 @@
 	<!--			Quick Info Row -->
 				<div class="flex flex-row gap-1.5 w-full h-20 ">
 					<div class="basis-1/5 h-full rounded-l-xl bg-cyan-500/15 flex flex-col items-center flex-wrap align-middle justify-center">
-						<p class="text-2xl font-bold">{listing.views}</p>
+						<p class="text-xl font-semibold">{listing.views}</p>
 						<p class="text-lg">views</p>
 					</div>
-					<div class="basis-1/5 h-full   bg-cyan-500/15 flex flex-col items-center flex-wrap align-middle justify-center">
-						<p class="text-2xl font-bold">10+</p>
-						<p class="text-lg">sales</p>
-					</div>
+<!--					<div class="basis-1/5 h-full   bg-cyan-500/15 flex flex-col items-center flex-wrap align-middle justify-center">-->
+<!--						<p class="text-2xl font-bold">0</p>-->
+<!--						<p class="text-lg">sales</p>-->
+<!--					</div>-->
 					<div class="basis-1/5 h-full  bg-cyan-500/15 flex flex-col  items-center flex-wrap align-middle justify-center">
-						<p class="text-2xl font-bold">{listing.rating}</p>
+						<p class="text-xl font-semibold">{listing.rating}</p>
 						<p class="text-lg">rating</p>
 					</div>
 					<div class="basis-1/5 h-full   bg-cyan-500/15   flex flex-col  items-center flex-wrap align-middle justify-center">
-						<p class="text-2xl font-bold">{selectedSKU.stock}</p>
+						<p class="text-xl font-semibold">{selectedSKU.stock}</p>
 						<p class="text-lg">in stock</p>
 					</div>
-					<div class="basis-1/5 h-full rounded-r-xl bg-cyan-500/15 flex flex-col items-center flex-wrap align-middle justify-center">
-						<p class="text-2xl font-bold">New</p>
+					<div class="basis-2/5 h-full rounded-r-xl bg-cyan-500/15 flex flex-col items-center flex-wrap align-middle justify-center">
+						<p class="text-xl font-semibold">{listing.condition}</p>
 						<p class="text-lg">condition</p>
 					</div>
 				</div>
@@ -168,7 +174,7 @@
 					{#key listing.id}
 						<VariantConfigurator
 							variantOptions={variantOptions}
-							skus={listing.skus}
+							skus={listingSKUs}
 							validation={true}
 							defaultOptions={defaultOptions}
 							bind:selectedProduct={selectedSKU}
@@ -202,7 +208,14 @@
 		
 		<div class="flex flex-row items-center h-full gap-4">
 			{#key selectedSKU.price}
-			<Price price={selectedSKU.price ? selectedSKU.price : listing.skus[0].price} />
+				{#if !!selectedSKU.discount}
+					<Price price={selectedSKU.price} strike />
+
+					<Price price={selectedSKU.price * (1-(selectedSKU.discount/100))} discounted={!!selectedSKU?.discount} />
+					{:else}
+			<Price price={selectedSKU.price ? selectedSKU.price : listing.skus[0].price} discounted={!!selectedSKU?.discount} />
+					{/if}
+
 				{/key}
 			<Button onclick={()=> {handleAddToBasket()}} type={addProductButtonState==='outOfStock' && 'disabled'} class="{addProductButtonStateClasses} w-56 h-full text-2xl font-bold border-[1.5px] p-3 px-5 transition-all rounded-xl" variant="default">
 				<div class="grid grid-cols-1 grid-rows-1 items-center size-full">
