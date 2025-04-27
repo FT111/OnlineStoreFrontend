@@ -106,11 +106,18 @@
 					{:else}
 						<div class="flex flex-col gap-0 w-full justify-end text-right">
 							{#if listing.multipleSKUs === true}
-								<p class="text-sm font-bold">{listing.hasDiscount ? 'Discounted •' : ''} Starting at</p>
+								<p class="{listing.condition!=='New' && listing.hasDiscount ? 'text-xs tracking-tight' : 'text-sm'} font-semibold">
+								{#if listing.condition !== 'New'}
+									{listing.condition} •
+									{/if}
+									{listing.hasDiscount ? 'Discounted •' : ''}
+									Starting at</p>
 							{:else}
 								<br>
 							{/if}
 							<div class="flex-row flex gap-2 items-center justify-end">
+
+								<div class="flex flex-row gap-1 items-center">
 								{#if listing.hasDiscount === true}
 									<div class="items-center justify-center align-middle">
 										<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" class="absolute w-4 h-4 fill-red-500 animate-ping opacity-60">
@@ -124,6 +131,7 @@
 								{:else}
 									<Price price={listing.basePrice} />
 								{/if}
+								</div>
 							</div>
 						</div>
 					{/if}

@@ -36,7 +36,7 @@
 				{...props}
 				role="combobox"
 				aria-expanded={open}
-				class={`w-full justify-between text-ellipsis hover:bg-secondary hover:text-secondary-foreground ${className}`}
+				class={`w-full justify-between text-ellipsis text-secondary-foreground hover:bg-secondary hover:text-secondary-foreground ${className}`}
 				>
 					{#if value !== undefined && value !== null}
 						{value}
@@ -55,7 +55,7 @@
 				<Command.List>
 					<Command.Empty>No {title} found.</Command.Empty>
 					<Command.Group>
-						{#each options as option}
+						{#each options as option (option)}
 							<Command.Item
 								class="aria-selected:text-white transition-all duration-100"
 								value={option}

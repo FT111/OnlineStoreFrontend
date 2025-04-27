@@ -7,7 +7,7 @@
 	import InputWithLabel from '$lib/components/InputWithLabel.svelte';
 	import { baseURL } from '$lib/api/core.js';
 	import { onMount } from 'svelte';
-	import { newListing, updateListing } from '$lib/api/listings.js';
+	import { fetchConditions, newListing, updateListing } from '$lib/api/listings.js';
 	import {
 		EyeOff,
 		FileWarning,
@@ -216,6 +216,16 @@
 							</Toggle>
 						</div>
 					</div>
+				</div>
+				<div class="w-52 self-start">
+					{#await fetchConditions()}
+						<DropdownWithLabel class="w-52 text-ellipsis" required title="What condition is it in?">Condition</DropdownWithLabel>
+					{:then conditions}
+						<DropdownWithLabel class="w-52 text-ellipsis" required options={conditions.data} title="What condition is it in?"
+															 bind:value={listing.condition}>Condition</DropdownWithLabel>
+					{:catch error}
+						<p>{error.message}</p>
+					{/await}
 				</div>
 					<p class="text-sm font-light text-muted-foreground self-start">If multiple product variants are added, the listing's least expensive variation will be shown as the base price and image</p>
 				</div>
