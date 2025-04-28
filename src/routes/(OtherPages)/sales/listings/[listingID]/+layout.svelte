@@ -21,9 +21,6 @@
 		listing: { skus: []}},
 							children } = $props();
 	
-	
-	let variantCardContainer = $state(null);
-	let scrollDistance = $state(0); // For tracking scroll position of variant card container
 	let selectedVariant = $state('not selected');
 	let currentListing = $state(selectedListing.listing)
 	$inspect(currentListing);
@@ -39,7 +36,7 @@
 	}
 	
 	// Handles selecting the variant to display
-	run(() => {
+	$effect(() => {
 		if (page.url.pathname.includes('new')) {
 			selectedVariant = 'new';
 		} else if (page.params.skuID === undefined || !currentListing.skus) {
@@ -53,13 +50,13 @@
 		}
 	});
 
-	if (browser) {
-		onMount(() => {
-			variantCardContainer.addEventListener('scroll', debounce(() => {
-				scrollDistance = variantCardContainer.scrollTop;
-			}, 100));
-		});
-	}
+	// if (browser) {
+	// 	onMount(() => {
+	// 		variantCardContainer.addEventListener('scroll', debounce(() => {
+	// 			scrollDistance = variantCardContainer.scrollTop;
+	// 		}, 100));
+	// 	});
+	// }
 
 
 
@@ -109,7 +106,7 @@
 										<p class="overflow-hidden text-wrap">{currentListing.title}</p>
 									</Card.Header>
 									<Card.Description class="px-3.5 text-sm line-clamp-2">
-										<p>{currentListing.description}</p>
+										{currentListing.description}
 									</Card.Description>
 								</div>
 								
@@ -130,7 +127,7 @@
 								You may need to scroll to see all variations.
 							</HelpTooltip></p>
 						<div class="flex flex-row justify-between gap-1 items-center w-full">
-						<div bind:this={variantCardContainer} class="flex flex-row gap-3 gap-y-2 h-36 flex-wrap overflow-y-auto">
+						<div class="flex flex-row gap-3 gap-y-2 h-36 flex-wrap overflow-y-auto">
 							{#if !currentListing.skus}
 								<div></div>
 							{:else}
@@ -141,13 +138,13 @@
 											<Card.Header class="p-3.5 text-sm line-clamp-2">
 												<p>{sku.title}</p>
 											</Card.Header>
-											<Card.Description class="px-3.5 p-4 self-end text-black bg-none pt-0 pb-2">
+											<Card.Content class="px-3.5 p-4 self-end text-black bg-none pt-0 pb-2">
 												<div class="flex flex-col items-end justify-end">
 													{#key sku.price}
 														<Price small price={sku.price} />
 													{/key}
 													
-													<div class="flex flex-row gap-2">
+													<div class="flex flex-row gap-2 text-xs font-medium text-muted-foreground">
 <!--												Checks for sku option/listing option integrity		-->
 														{#if
 															// Checks if the sku has more options than the listing
@@ -201,7 +198,7 @@
 														</Tooltip.Provider>
 													</div>
 												</div>
-											</Card.Description>
+											</Card.Content>
 										</Card.Root>
 									</a>
 								{/each}
@@ -222,12 +219,12 @@
 							</a>
 						</div>
 							
-							{#if currentListing.skus.length > 1}
-							
-						<ArrowDown strokeWidth="1.25" class="size-8 text-slate-700 opacity-70 transition-all
-																{scrollDistance !== (variantCardContainer?.scrollHeight - variantCardContainer?.clientHeight) ? 'rotate-0' : 'rotate-180'}" />
-								
-								{/if}
+						<!--	{#if currentListing.skus.length > 1}-->
+						<!--	-->
+						<!--<ArrowDown strokeWidth="1.25" class="size-8 text-slate-700 opacity-70 transition-all-->
+						<!--										{scrollDistance !== (variantCardContainer?.scrollHeight - variantCardContainer?.clientHeight) ? 'rotate-0' : 'rotate-180'}" />-->
+						<!--		-->
+						<!--		{/if}-->
 						</div>
 					</div>
 				</div>
