@@ -43,11 +43,21 @@ const orders = ['Asc.', 'Desc.'];
 //
 
 
-let query = page.url.searchParams.get('query') || '';
+let query = $state(page.url.searchParams.get('query') || '');
 let selectedCategory = $state(page.url.searchParams.get('category') || undefined);
 let selectedSubcategory = $state(page.url.searchParams.get('subCategory') || undefined);
 let selectedSort = $state(page.url.searchParams.get('sort'));
 let selectedOrder = $state(page.url.searchParams.get('order') || 'asc');
+// let derivedOrder = $derived.by(()=>{
+// 	switch (selectedOrder) {
+// 		case 'asc': {
+// 			return 'Asc.'
+// 		}
+// 		case 'desc': {
+// 			return 'Desc.'
+// 		}
+// 	}
+// })
 let selectedPage = $state(1);
 
 const filterTitles = ['Categories', 'Sub Categories', 'Sort', 'Order'];
@@ -55,16 +65,15 @@ let filters = $derived([query, selectedCategory, selectedSubcategory, selectedSo
 let selectedFilters = $derived(filters.filter((filter) => filter !== undefined));
 
 let showCategoryHeader = $state(false);
-switch (selectedOrder) {
-	case 'asc': {
-		selectedOrder = 'Asc.'
-		break
-	}
-	case 'desc': {selectedOrder = 'Desc.'}
-}
 
 afterNavigate(() => {
 	showCategoryHeader = page.url.searchParams.get('showCategoryHeader') === 'true';
+	query = page.url.searchParams.get('query') || '';
+	selectedCategory = page.url.searchParams.get('category') || undefined;
+	selectedSubcategory = page.url.searchParams.get('subCategory') in subCategories ? page.url.searchParams.get('subCategory') : undefined;
+	selectedSort = page.url.searchParams.get('sort');
+	selectedOrder = page.url.searchParams.get('order') || 'asc';
+	selectedPage = 1;
 })
 
 onMount(() => {
@@ -78,9 +87,9 @@ onMount(() => {
 
 })
 // Resets subcategories when category is changed
-run(() => {
+$effect(() => {
 		if (selectedCategory) {
-		subCategories = []
+			subCategories = []
 	  	selectedSubcategory = 'All Sub Categories'
 	}
 	});
@@ -94,6 +103,9 @@ const refineListings = () => {
 			subCategories = data.data.subCategories.map(subcategory => {
 				return subcategory.title
 			})})
+		if (!selectedSubcategory in subCategories) {
+			selectedSubcategory = 'All Sub Categories'
+		}
 	}
 	goto(formQueryURL(query, selectedCategory, selectedSubcategory, selectedSort, selectedOrder));
 }
@@ -103,10 +115,8 @@ const fetchListings = async () => {
 	return queryListings(query, selectedCategory, selectedSubcategory, selectedSort, selectedOrder, null, selectedPage);
 }
 
+$inspect(selectedSubcategory);
 
-// TESTING
-let slider1Value = $state([10]);
-let slider2Value = 10;
 </script>
 
 <div class="w-full h-full flex flex-row">

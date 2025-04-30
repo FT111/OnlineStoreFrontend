@@ -1,6 +1,7 @@
 import { browser } from '$app/environment';
 import { isConsentGiven } from '$lib/analytics/consent.js';
 import { token } from '$lib/api/authentication.js';
+import { toast } from 'svelte-sonner';
 
 export const baseURL = 'http://localhost:8000/'
 
@@ -38,7 +39,10 @@ export const GET = async (endpoint, token=null, credentialsOpt='omit') => {
 	).then((response) => response.json()
 		.then((data) => {
 			if (!response.ok) {
-				return new Error(data.detail[0]);
+				if (browser) {
+					toast.error(data.detail);
+				}
+				return new Error(data.detail[0] || 'An error occurred');
 			}
 			return data;
 		}).catch((error) => {
@@ -60,7 +64,10 @@ export const POST = async (endpoint, data = null, credentialsOpt='omit') => {
 		.then((data) => {
 			console.log('Data: ', data);
 			if (!response.ok) {
-				throw new Error(data.detail);
+				if (browser) {
+					toast.error(data.detail);
+				}
+				throw new Error(data.detail[0] || 'An error occurred');
 			}
 			return data
 		})}
@@ -76,6 +83,12 @@ export const PUT = async (endpoint, data, token=null, credentialsOpt='omit') => 
 
 	}).then((response) => response.json()
 		.then((data) => {
+			if (!response.ok) {
+				if (browser) {
+					toast.error(data.detail);
+				}
+				throw new Error(data.detail[0] || 'An error occurred');
+			}
 			return data
 		}).catch((error) => {
 			return error

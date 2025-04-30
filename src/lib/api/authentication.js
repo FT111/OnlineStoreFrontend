@@ -47,6 +47,7 @@ export const logout = async () => {
 	await POST('auth/logout/', null);
 	document.cookie.split(';').forEach(function(c) {
 		const split = c.trim().split('=');
+		if (split[0] !== 'token') return;
 		document.cookie = `${split[0]}=; expires=Thu, 01 Jan 1970 00:00:01 UTC; path=/;`;
 	});
 

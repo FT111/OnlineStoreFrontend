@@ -105,7 +105,7 @@
 									<Card.Header class="p-3.5 pb-0.5 w-full">
 										<p class="overflow-hidden text-wrap">{currentListing.title}</p>
 									</Card.Header>
-									<Card.Description class="px-3.5 text-sm line-clamp-2">
+									<Card.Description class="px-3.5 text-xs line-clamp-2">
 										{currentListing.description}
 									</Card.Description>
 								</div>
