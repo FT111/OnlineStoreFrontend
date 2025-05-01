@@ -45,7 +45,7 @@
 							
 							<div class="flex flex-row gap-1 items-center w-full justify-end">
 								{#key product.sku.id}
-								<Price price={product.sku?.price} />
+								<Price price={Math.floor(product.sku?.price * (100 - product.sku?.discount) /100)} discounted={!!product.sku?.discount} />
 									<div class="flex flex-col w-16 justify-center items-center">
 										<Button variant="ghost" size="sm" class="{mutableQuantity || 'hidden'} hover:bg-accent/20 hover:text-secondary-foreground" onclick={increaseQuantityCallback}><Plus size={20} strokeWidth={1.25}  /></Button>
 										{!mutableQuantity ? 'x' : ''} {product.quantity}

@@ -50,7 +50,11 @@ const createBasket = () => {
 				basket.items[sku.id] = { quantity: 1 };
 			}
 			basket.total++;
-			basket.value += sku.price;
+
+			if (sku.discount === null) {
+				sku.discount = 0;
+			}
+			basket.value += Math.floor((sku.price * (100-sku.discount)) / 100);
 			basket.enriched = false;
 			saveBasketLocally();
 			resolve();
@@ -65,7 +69,7 @@ const createBasket = () => {
 			delete basket.items[sku.id];
 		}
 		basket.total--;
-		basket.value -= sku.price;
+		basket.value -= Math.floor((sku.price * (100-sku.discount)) / 100);
 		saveBasketLocally();
 	}
 
@@ -80,6 +84,7 @@ const createBasket = () => {
 			enrichBasket(JSON.parse(localStorage.getItem('basket')))
 				.then((response) => {
 					basket = { ...response.data, ...response.meta, enriched: true };
+					saveBasketLocally();
 					resolve(basket);
 				})
 				.catch((error) => {
@@ -88,6 +93,8 @@ const createBasket = () => {
 				});
 		});
 	}
+
+	$inspect(basket);
 
 	return {
 		get basket() {
