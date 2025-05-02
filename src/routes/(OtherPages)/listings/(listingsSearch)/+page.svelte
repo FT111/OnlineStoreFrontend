@@ -189,7 +189,7 @@ $inspect(listings);
 <div class="flex flex-col w-full mt-16">
 	{#if listings.meta.suggestedQuery && listings.data.length > 0}
 			<div class="w-full flex flex-row p-4 pb-0 max-w-72">
-				<p class="text-sm font-medium text-muted-foreground">Did you mean <a href="
+				<p class="text-sm font-medium text-muted-foreground">Did you mean <a onclick={()=>{sessionStorage.setItem('searchQuery', listings.meta.suggestedQuery); dispatchEvent(new Event('QueryUpdate'))}} href="
 	/listings?query={listings.meta.suggestedQuery}&category={selectedCategory}&subCategory={selectedSubcategory}&sort={selectedSort}&order={selectedOrder}
 " class="font-semibold">{listings.meta.suggestedQuery}</a>?</p>
 			</div>

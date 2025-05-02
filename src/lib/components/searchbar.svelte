@@ -29,6 +29,9 @@
 	)
 	if (browser) {
 		searchQuery = sessionStorage.getItem('searchQuery') || '';
+		addEventListener('QueryUpdate', () => {
+			searchQuery = sessionStorage.getItem('searchQuery') || '';
+		})
 	}
 
 </script>
