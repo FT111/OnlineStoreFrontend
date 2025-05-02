@@ -23,13 +23,14 @@
 			{/each}
 		
 		{:then data}
-			{#if Object.keys(data).length === 0}
-				<div class="col-span-full p-16 flex flex-row gap-4 justify-center">
+			{#if data.data.length === 0}
+				<div class="col-span-full p-16 h-[70dvh] flex flex-row gap-4 justify-center">
 					<p class="text-5xl text-center"> No listings found
 					</p>
 				
 				</div>
 			{:else}
+
 				{#each data.data as listing, i}
 					<Listing listing={listing} editMode={false} />
 				{/each}

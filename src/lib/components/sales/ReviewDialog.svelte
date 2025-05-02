@@ -30,7 +30,7 @@
     const handleReviewSubmission = (e) => {
         e.preventDefault();
 
-				if (selectedListing.id) {
+				if (selectedListing.listing?.id) {
         submitListingReview(selectedListing.listing.id, reviewData)
             .then((response) => {
                 toast.success("Review submitted successfully", response);
