@@ -31,7 +31,7 @@
 						<Table.Head>Views</Table.Head>
 						<Table.Head>Clicks</Table.Head>
 						<Table.Head>Sales</Table.Head>
-						<Table.Head class="text-right">Revenue</Table.Head>
+<!--						<Table.Head class="text-right">Revenue</Table.Head>-->
 						<Table.Head class="w-[100px]">Actions</Table.Head>
 					</Table.Row>
 				</Table.Header>
@@ -63,12 +63,12 @@
 									<Table.Cell>{listing.views}</Table.Cell>
 									<Table.Cell>{listing.clicks}</Table.Cell>
 									<Table.Cell>{listing.sales}</Table.Cell>
-									<Table.Cell class="text-right"><Price price={listing.basePrice} /></Table.Cell>
+<!--									<Table.Cell class="text-right"><Price price={listing.basePrice} /></Table.Cell>-->
 									<Table.Cell class="flex flex-row gap-2 justify-end">
 										<a href={`/sales/listings/${listing.id}`}>
 											<Button variant="ghost">Edit</Button>
 										</a>
-										<Button variant="destructive">Delete</Button>
+<!--										<Button variant="destructive">Delete</Button>-->
 									</Table.Cell>
 								</Table.Row>
 							{/each}

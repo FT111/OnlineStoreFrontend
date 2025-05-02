@@ -30,39 +30,41 @@
 </script>
 
 
-<nav class="fixed top-0 z-50">
-	<div bind:this={navElement}  class="fixed top-0 w-screen h-16 align-center items-center justify-between
-                 flex flex-row p-3 sm:p-5 sm:px-8 px-4 gap-5 bg-primary //border-t-accent text-white
+<nav class="fixed top-0 z-50 w-screen">
+	<div class="fixed top-0 w-full">
+
+	<div bind:this={navElement}  class="align-center items-center justify-between
+                 flex flex-row p-3 sm:p-5 sm:px-8 px-4 h-16 gap-5 bg-primary //border-t-accent text-white
                  //border-t-[6px] backdrop-blur-2xl z-50 transition-all">
 		<a href="/" class="hidden sm:block">
 			<h2 class=" text-3xl tracking-tight font-medium">eBuy</h2>
 		</a>
-		
-		
+
+
 			<div class="lg:w-1/2 md:w-2/3 w-full grow sm:grow-0 transition-all ease-in-out {hideClass}" bind:this={searchElement}>
-				
+
 				<Searchbar />
-				
+
 			</div>
-		
+
 		<div class="flex flex-row w-min sm:gap-5 gap-4 items-center">
-			
+
 			<NewListingDialog>
 				<div class="flex flex-row gap-1.5 bg-background/15 items-center p-2 px-4 rounded-3xl hover:backdrop-brightness-125 transition-colors">
 					<Plus class="size-6 {hideSearch ? 'text-black' : 'text-white'}" />
 					Sell
-					
+
 				</div>
 			</NewListingDialog>
-			
+
 			<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6 hidden sm:block">
 				<path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6A2.25 2.25 0 0 1 6 3.75h2.25A2.25 2.25 0 0 1 10.5 6v2.25a2.25 2.25 0 0 1-2.25 2.25H6a2.25 2.25 0 0 1-2.25-2.25V6ZM3.75 15.75A2.25 2.25 0 0 1 6 13.5h2.25a2.25 2.25 0 0 1 2.25 2.25V18a2.25 2.25 0 0 1-2.25 2.25H6A2.25 2.25 0 0 1 3.75 18v-2.25ZM13.5 6a2.25 2.25 0 0 1 2.25-2.25H18A2.25 2.25 0 0 1 20.25 6v2.25A2.25 2.25 0 0 1 18 10.5h-2.25a2.25 2.25 0 0 1-2.25-2.25V6ZM13.5 15.75a2.25 2.25 0 0 1 2.25-2.25H18a2.25 2.25 0 0 1 2.25 2.25V18A2.25 2.25 0 0 1 18 20.25h-2.25A2.25 2.25 0 0 1 13.5 18v-2.25Z" />
 			</svg>
-			
+
 			<Basket />
 			{#key user}
 				{#if user}
-					
+
 					<DropdownMenu.Root>
 						<DropdownMenu.Trigger
 						>
@@ -147,7 +149,8 @@
 							</div>
 				{/if}
 			{/key}
-		
+
 		</div>
+	</div>
 	</div>
 </nav>

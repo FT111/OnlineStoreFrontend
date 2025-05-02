@@ -105,16 +105,15 @@
 						</div>
 					{:else}
 						<div class="flex flex-col gap-0 w-full justify-end text-right">
-							{#if listing.multipleSKUs === true}
-								<p class="{listing.condition!=='New' && listing.hasDiscount ? 'text-xs tracking-tight' : 'text-sm'} font-medium">
+								<p class="{listing.condition!=='New' && listing.hasDiscount ? 'text-xs tracking-tight' : 'text-sm'} h-4 font-medium">
 								{#if listing.condition !== 'New'}
 									{listing.condition} •
 									{/if}
 									{listing.hasDiscount ? 'Discounted •' : ''}
-									Starting at</p>
-							{:else}
-								<br>
-							{/if}
+							{#if listing.maxPrice !== listing.basePrice}
+									Starting at
+								{/if}
+								</p>
 							<div class="flex-row flex gap-2 items-center justify-end">
 
 								<div class="flex flex-row gap-1 items-center">
