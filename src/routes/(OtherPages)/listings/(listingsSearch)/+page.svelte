@@ -25,6 +25,9 @@ import { formQueryURL } from '$lib/utils.js';
 import { Skeleton } from '$lib/components/ui/skeleton/index.js';
 import { Badge } from '$lib/components/ui/badge/index.js';
 	import ListingGrid from '$lib/components/ListingGrid.svelte';
+	import { fly } from 'svelte/transition';
+	import { cubicInOut} from 'svelte/easing';
+
 	let { data } = $props();
 
 let categories = [];
@@ -65,6 +68,7 @@ let filters = $derived([query, selectedCategory, selectedSubcategory, selectedSo
 let selectedFilters = $derived(filters.filter((filter) => filter !== undefined));
 
 let showCategoryHeader = $state(false);
+let listings = $state({'meta': {'elapsed': 0, 'total': 0}, 'data': []});
 
 afterNavigate(() => {
 	showCategoryHeader = page.url.searchParams.get('showCategoryHeader') === 'true';
@@ -112,10 +116,11 @@ const refineListings = () => {
 
 
 const fetchListings = async () => {
-	return queryListings(query, selectedCategory, selectedSubcategory, selectedSort, selectedOrder, null, selectedPage);
+	listings =  await queryListings(query, selectedCategory, selectedSubcategory, selectedSort, selectedOrder, null, selectedPage);
+	return listings;
 }
 
-$inspect(selectedSubcategory);
+$inspect(listings);
 
 </script>
 
@@ -125,8 +130,19 @@ $inspect(selectedSubcategory);
 <!--		Spacer -->
 		<div class=""></div>
 	
+		<div class="h-4 w-full">
+			{#if listings.data.length>0}
+		<p class="text-xs -z-10 text-muted-foreground h-full" transition:fly={{y:25, z: -10, duration: 100, easing: cubicInOut}}>
+				{listings.meta.total}
+				result{listings.meta.total!==1 ? 's' : ''} in
+				{listings.meta.elapsedSeconds}
+				seconds
+		</p>
+			{/if}
+
+		</div>
 <!--	Quick filters container	-->
-		<div class="bg-slate-200 rounded-lg flex flex-col">
+		<div class="bg-slate-200 rounded-lg z-10 flex flex-col">
 			<p class="text-sm font-medium p-1.5 px-2.5">Applied Filters</p>
 			<div class="flex flex-row flex-wrap gap-2 border border-slate-200 rounded-b-lg w-full p-3 min-h-24 bg-white">
 				{#each selectedFilters as filter, i}
@@ -170,10 +186,17 @@ $inspect(selectedSubcategory);
 	
 	</Sidebar>
 	
-
+<div class="flex flex-col w-full mt-16">
+	{#if listings.meta.suggestedQuery && listings.data.length > 0}
+			<div class="w-full flex flex-row p-4 pb-0 max-w-72">
+				<p class="text-sm font-medium text-muted-foreground">Did you mean <a href="
+	/listings?query={listings.meta.suggestedQuery}&category={selectedCategory}&subCategory={selectedSubcategory}&sort={selectedSort}&order={selectedOrder}
+" class="font-semibold">{listings.meta.suggestedQuery}</a>?</p>
+			</div>
+			{/if}
 <!--	Listings   -->
-	<div class="mt-16 grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 2xl:grid-cols-5 gap-3 w-full p-1 sm:p-4 md:p-8 md:px-4 justify-left">
-	
+	<div class="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 2xl:grid-cols-5 gap-3 w-full p-1 sm:p-4 md:p-8 md:px-4 justify-left">
+
 <!--	Category Header	-->
 		{#key selectedCategory}
 			{#if showCategoryHeader && selectedCategory !== 'All Categories' && selectedCategory !== 'Categories' && selectedCategory !== undefined}
@@ -217,4 +240,5 @@ $inspect(selectedSubcategory);
 		{/key}
 	
 	</div>
+</div>
 </div>
