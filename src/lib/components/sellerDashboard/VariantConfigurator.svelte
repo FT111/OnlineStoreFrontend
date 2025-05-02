@@ -152,18 +152,18 @@
 		if (page.url.searchParams.has('selected')) {
 			if (defaultOptions) {
 				// If the product has default options, it sets the options manually
-				selectedProduct = skus.find((sku) => sku.id === page.url.searchParams.get('selected'));
+				selectedProduct = Array.from(skus).find((sku) => sku.id === page.url.searchParams.get('selected'));
 				selectedOptions = { 'Styles': selectedProduct.title };
 
 			} else {
 				// If the product has selectable options, it sets the options based on the selected SKU's options
-				selectedOptions = (skus.find((sku) => sku.id === page.url.searchParams.get('selected')))?.options;
+				selectedOptions = (Array.from(skus).find((sku) => sku.id === page.url.searchParams.get('selected')))?.options;
 				selectedProduct = selectSKUFromSelectedOptions(selectedOptions);
 				determineSelectableOptions();
 			}
 		} else {
 // If no SKU is selected, set the cheapest SKU as the selected product
-			const cheapestSKU = skus.reduce((cheapest, sku) => {
+			const cheapestSKU = Array.from(skus).reduce((cheapest, sku) => {
 				return !cheapest || sku.price < cheapest.price ? sku : cheapest;
 			}, null);
 

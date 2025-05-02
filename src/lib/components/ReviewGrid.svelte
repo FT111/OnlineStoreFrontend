@@ -40,7 +40,6 @@
 	$inspect(reviews)
 </script>
 
-
 <Collapsible.Root class="flex flex-col gap-4" bind:open={isReviewsOpen}>
 	<div class="flex flex-row justify-between">
 		<h3 class="text-3xl font-medium flex flex-row gap-2.5 items-center">
