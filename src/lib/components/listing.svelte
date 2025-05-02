@@ -50,15 +50,15 @@
 					transition-all duration-150 ease-in-out hover:bg-slate-200/50 hover:border-accent/50
 					border-slate-200 gap-0" href="/listings/{listing.id}">
 		
-		<Card.Header class="pb-4">
+		<Card.Header class="pb-0.5 flex flex-col gap-1 !space-y-0">
 			{#if isLoading === true}
 				<Skeleton class="w-2/3 h-5 rounded-md my-2" />
 				<Skeleton class="w-full h-4 rounded-md" />
 			
 			
 			{:else}
-				<Card.Title class="line-clamp-2 first-line:text-xl text-md">{ listing.title }</Card.Title>
-				<Card.Description class="truncate hover:text-wrap mt-0">{ listing.description }</Card.Description>
+				<p title="{listing.title}" class="truncate text-ellipsis text-lg leading-5 m-0 p-0 font-medium">{ listing.title }</p>
+				<p class="truncate hover:text-wrap m-0 p-0 text-xs text-muted-foreground">{ listing.description }</p>
 			{/if}
 		
 			<div class="flex flex-row justify-between pt-2 items-center">
@@ -106,7 +106,7 @@
 					{:else}
 						<div class="flex flex-col gap-0 w-full justify-end text-right">
 							{#if listing.multipleSKUs === true}
-								<p class="{listing.condition!=='New' && listing.hasDiscount ? 'text-xs tracking-tight' : 'text-sm'} font-semibold">
+								<p class="{listing.condition!=='New' && listing.hasDiscount ? 'text-xs tracking-tight' : 'text-sm'} font-medium">
 								{#if listing.condition !== 'New'}
 									{listing.condition} •
 									{/if}
