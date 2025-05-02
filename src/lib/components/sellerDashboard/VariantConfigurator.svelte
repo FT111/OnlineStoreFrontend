@@ -74,9 +74,9 @@
 		return matchedProduct;
 	};
 	
-	const findSelectableOptions = (category, option) => {
+	const findSelectableOptionsWithSpecificOption = (category, option) => {
 		"Return the first options that return a valid SKU, containing this category option"
-		let sku = skus.reduce((acc, sku) => {
+		let sku = Array.from(skus).reduce((acc, sku) => {
 			if (sku.options[category] === option) {
 				acc.push(sku);
 			}
@@ -90,6 +90,8 @@
 	
 	
 	const onSelect = (category, option) => {
+		"Selects the option for the category and updates the available options" +
+		"Runs as a handler when the user selects an option"
 		selectedOptions[category] = option;
 		onSelectCallback(selectedOptions);
 		
@@ -98,7 +100,7 @@
 			selectedProduct = selectSKUFromSelectedOptions(selectedOptions);
 			determineSelectableOptions();
 			if (selectedProduct.title === 'None') {
-				findSelectableOptions(category, option);
+				findSelectableOptionsWithSpecificOption(category, option);
 				onSelect(category, option);
 			}
 		}
